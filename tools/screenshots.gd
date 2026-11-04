@@ -86,5 +86,8 @@ func _go() -> void:
 	main.show_help()
 	await _wait(0.5)
 	await _shot("10_help")
+	main.show_help(1)
+	await _wait(0.5)
+	await _shot("10b_help2")
 	G.reset_save()
 	quit()

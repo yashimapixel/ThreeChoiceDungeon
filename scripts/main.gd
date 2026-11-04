@@ -414,7 +414,7 @@ func show_title() -> void:
 	_label(s, "― 地下百階を目指せ ―", Vector2(0, 266), Vector2(SW, 20), FS, R, HORIZONTAL_ALIGNMENT_CENTER)
 	var sv: Dictionary = Game.save
 	_label(s, "最高到達 B%dF　探索 %d回" % [sv["best"], sv["runs"]], Vector2(0, 294), Vector2(SW, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "累計 %d階　所持コイン %d" % [sv["total"], sv["coins"]], Vector2(0, 314), Vector2(SW, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "累計 %d階　魂の欠片 %d" % [sv["total"], sv["coins"]], Vector2(0, 314), Vector2(SW, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
 	var y := 344
 	if Game.has_run():
 		var r: Dictionary = sv["run"]
@@ -437,7 +437,7 @@ func show_title() -> void:
 			show_title()))
 	if sv["cleared"]:
 		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 596), Vector2(SW, 18), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.1　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "v1.1.1　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _start(is_endless: bool) -> void:
@@ -464,7 +464,7 @@ func show_help(page := 0) -> void:
 		"[color=%s]■ 選択[/color]\n各階で出来事が起き、三つの選択肢から一つを選ぶ。［判定］のついた選択は、表示された確率で成否が決まる。確率は今の能力値と所持品で上下する。深く潜るほど出来事は苛烈になる。" % h,
 		"[color=%s]■ 結果の記憶[/color]\n一度見た結果は、選択肢に「成功→肉体-2」のように表示される。\n\n" % h +
 		"[color=%s]■ 所持品[/color]\n〈 〉は所持品が必要な選択肢。所持品をタップすると効果がわかる。薬瓶はタップで使える。\n\n" % h +
-		"[color=%s]■ 死と継承[/color]\n力尽きると、到達した深さに応じてコインを得る。コインで初期能力を強化できる。累計で潜った階数が増えるほど、新たな出来事が解放される。\n\n" % h +
+		"[color=%s]■ 死と継承[/color]\n探索中に拾う金貨は、その探索の中での支払いに使う。力尽きると、到達した深さと残った金貨が「魂の欠片」に換わる。魂の欠片で初期能力を強化できる。累計で潜った階数が増えるほど、新たな出来事が解放される。\n\n" % h +
 		"[color=%s]■ 門番[/color]\n地下25・50・75階には門番が待つ。そして地下100階には――。" % h,
 	]
 	var r := _rich(s, Vector2(16, 52), Vector2(328, 470))
@@ -481,7 +481,7 @@ func show_help(page := 0) -> void:
 func show_shop() -> void:
 	var s := _new_screen("Shop")
 	_label(s, "強化", Vector2(0, 10), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
-	_label(s, "所持コイン %d" % Game.save["coins"], Vector2(0, 44), Vector2(SW, 20), FS, R, HORIZONTAL_ALIGNMENT_CENTER, true)
+	_label(s, "魂の欠片 %d" % Game.save["coins"], Vector2(0, 44), Vector2(SW, 20), FS, R, HORIZONTAL_ALIGNMENT_CENTER, true)
 	var desc := {"b": "傷や戦いに耐える力。", "m": "恐怖や狂気に耐える力。", "f": "幸運と、罠を避ける力。"}
 	var y := 72
 	for st in Game.STATS:
@@ -496,7 +496,7 @@ func show_shop() -> void:
 		var now := Game.stat_max_base(st)
 		_label(box, "初期値 %d → %d" % [now, now + int(Game.B["stat_per_level"])], Vector2(10, 50), Vector2(316, 20))
 		var cost := Game.upgrade_cost(st)
-		var b := _button(box, "強化する（%dコイン）" % cost, Vector2(10, 76), Vector2(316, 36), func():
+		var b := _button(box, "強化する（魂の欠片 %d）" % cost, Vector2(10, 76), Vector2(316, 36), func():
 			if Game.buy_upgrade(st):
 				sfx.play("good")
 				show_shop())
@@ -860,11 +860,11 @@ func show_gameover(sum: Dictionary, _res := {}) -> void:
 				cause = {"b": "肉体が限界を迎えた", "m": "精神が闇に呑まれた", "f": "運命に見放された"}[st]
 				break
 	_label(s, cause, Vector2(0, 262), Vector2(SW, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
-	var rows := [["到達報酬", str(sum["depth_coins"]), W], ["拾った金貨", str(sum["gold"]), W]]
+	var rows := [["深さの報酬", str(sum["depth_coins"]), W], ["残った金貨", str(sum["gold"]), W]]
 	if sum["bonus"] > 0:
 		rows.append(["踏破ボーナス", str(sum["bonus"]), W])
-	rows.append(["獲得コイン", "+%d" % sum["coins"], R])
-	rows.append(["所持コイン", str(Game.save["coins"]), W])
+	rows.append(["得た魂の欠片", "+%d" % sum["coins"], R])
+	rows.append(["魂の欠片 合計", str(Game.save["coins"]), W])
 	var y := 290
 	for row in rows:
 		_label(s, row[0], Vector2(60, y), Vector2(150, 20), FS, row[2], HORIZONTAL_ALIGNMENT_LEFT, row[2] == R)
