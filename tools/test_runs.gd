@@ -61,5 +61,21 @@ func _run() -> void:
 	for e in G.events:
 		if not ev_seen.has(e["id"]): missing.append(e["id"])
 	print("events never seen: ", missing)
+	# item stacking
+	for s in G.STATS:
+		G.save["lv"][s] = 0
+	G.start_run(false)
+	G.add_item("potion"); G.add_item("potion"); G.add_item("dog"); G.add_item("dog")
+	assert(G.item_count("potion") == 2 and G.item_count("dog") == 1)
+	G.use_potion()
+	assert(G.item_count("potion") == 1)
+	G.remove_item("potion")
+	assert(not G.flags.has("potion"))
+	G.add_item("curse"); G.add_item("curse")
+	var c := {"chk": "f", "p": 0.5}
+	var p2: float = G.chance(c)
+	G.remove_item("curse")
+	assert(G.chance(c) > p2)
+	print("stacking OK")
 	G.reset_save()
 	quit()

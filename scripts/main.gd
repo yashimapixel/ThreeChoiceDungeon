@@ -25,6 +25,7 @@ var g_floor: Label
 var g_gold: Label
 var g_bars := {}
 var g_img: TextureRect
+var g_res: TextureRect   # result still, cross-faded over g_img
 var g_title: Label
 var g_desc: RichTextLabel
 var g_items: HFlowContainer
@@ -317,6 +318,13 @@ func _image(parent: Node, id: String, pos: Vector2) -> TextureRect:
 	return tr
 
 
+func _res_tex(key: String) -> Texture2D:
+	var p := "res://art/results/%s.png" % key
+	if ResourceLoader.exists(p):
+		return load(p)
+	return null
+
+
 func _tex(id: String) -> Texture2D:
 	var p := "res://art/events/%s.png" % id
 	if ResourceLoader.exists(p):
@@ -437,7 +445,7 @@ func show_title() -> void:
 			show_title()))
 	if sv["cleared"]:
 		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 596), Vector2(SW, 18), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.1.1　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "v1.2　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _start(is_endless: bool) -> void:
@@ -526,6 +534,10 @@ func show_game(intro := false) -> void:
 		s.add_child(b)
 		g_bars[st] = b
 	g_img = _image(s, Game.event["id"], Vector2(12, 67))
+	g_res = g_img.duplicate()
+	g_res.texture = null
+	g_res.modulate.a = 0.0
+	g_img.get_parent().add_child(g_res)
 	g_title = _label(s, "", Vector2(12, 271), Vector2(336, 20), FS, W, HORIZONTAL_ALIGNMENT_LEFT, true)
 	g_desc = _rich(s, Vector2(12, 292), Vector2(336, 120))
 	g_desc.gui_input.connect(func(ev):
@@ -560,7 +572,8 @@ func _refresh_hud(animate := true) -> void:
 	for f in Game.item_list():
 		var it: Dictionary = Game.ITEMS[f]
 		var b := Button.new()
-		b.text = it["name"]
+		var n := Game.item_count(f)
+		b.text = it["name"] + ("×%d" % n if n > 1 else "")
 		b.add_theme_font_size_override("font_size", FS_S)
 		var bad: bool = it.get("bad", false)
 		var st := _sb(K, R if bad else W)
@@ -583,7 +596,8 @@ func _item_popup(f: String) -> void:
 	var p := _overlay_panel(170)
 	var c := Control.new()
 	p.add_child(c)
-	_label(c, it["name"], Vector2(8, 8), Vector2(304, 20), FS, R if it.get("bad", false) else W, HORIZONTAL_ALIGNMENT_LEFT, true)
+	var cnt := Game.item_count(f)
+	_label(c, it["name"] + ("　×%d" % cnt if cnt > 1 else ""), Vector2(8, 8), Vector2(304, 20), FS, R if it.get("bad", false) else W, HORIZONTAL_ALIGNMENT_LEFT, true)
 	_label(c, it["desc"], Vector2(8, 34), Vector2(304, 76))
 	if f == "potion" and not busy:
 		_button(c, "使う", Vector2(8, 120), Vector2(144, 36), func():
@@ -628,6 +642,8 @@ func _floor_card(then: Callable) -> void:
 
 
 func _clear_event_view() -> void:
+	g_res.modulate.a = 0.0
+	g_res.texture = null
 	g_img.modulate.a = 0.0
 	g_img.texture = _tex(Game.event["id"])
 	g_title.text = ""
@@ -638,6 +654,8 @@ func _clear_event_view() -> void:
 
 func _present_event() -> void:
 	var e: Dictionary = Game.event
+	g_res.modulate.a = 0.0
+	g_res.texture = null
 	g_img.texture = _tex(e["id"])
 	g_img.modulate.a = 0.0
 	create_tween().tween_property(g_img, "modulate:a", 1.0, 0.4)
@@ -669,7 +687,7 @@ func _effect_text(r: Dictionary) -> String:
 		var g := Game.sv(int(r["g"]), fx)
 		parts.append("[color=%s]金貨%+d[/color]" % [_hex(R if g < 0 else W), g])
 	for f in r.get("set", []):
-		if Game.ITEMS.has(f) and not Game.flags.has(f):
+		if Game.ITEMS.has(f) and not (Game.ITEMS[f].get("unique", false) and Game.flags.has(f)):
 			parts.append("[color=%s]〈%s〉[/color]" % [_hex(R if Game.ITEMS[f].get("bad", false) else W), Game.ITEMS[f]["name"]])
 	for f in r.get("clr", []):
 		if Game.ITEMS.has(f) and Game.flags.has(f):
@@ -789,7 +807,8 @@ func _show_result(res: Dictionary) -> void:
 	if res.has("gold") and res["gold"] != 0:
 		parts.append("[color=%s]金貨%+d[/color]" % [_hex(R if res["gold"] < 0 else W), res["gold"]])
 	for f in res["gained"]:
-		parts.append("[color=%s]〈%s〉を得た[/color]" % [_hex(R if Game.ITEMS.get(f, {}).get("bad", false) else W), Game.ITEMS.get(f, {"name": f})["name"]])
+		var n := Game.item_count(f)
+		parts.append("[color=%s]〈%s〉を得た%s[/color]" % [_hex(R if Game.ITEMS.get(f, {}).get("bad", false) else W), Game.ITEMS.get(f, {"name": f})["name"], "（×%d）" % n if n > 1 else ""])
 	for f in res["lost"]:
 		parts.append("〈%s〉を失った" % Game.ITEMS.get(f, {"name": f})["name"])
 	if res["skip"] > 0:
@@ -802,6 +821,11 @@ func _show_result(res: Dictionary) -> void:
 		t += "\n[color=%s]赤い護符が砕け散り、死を免れた！[/color]" % _hex(R)
 	_set_fit(g_desc, t)
 	_typewrite()
+	var rt := _res_tex(res.get("key", ""))
+	if rt:
+		g_res.texture = rt
+		g_res.modulate.a = 0.0
+		create_tween().tween_property(g_res, "modulate:a", 1.0, 0.35)
 	_refresh_hud()
 	# the floor label still shows the floor the event happened on
 	g_floor.text = "B%dF" % pending["old_floor"]
@@ -989,20 +1013,39 @@ func _sort_key(e: Dictionary) -> float:
 	return float(e.get("min", 1)) + float(int(str(e["id"]).substr(1))) * 0.001
 
 
-func _collection_detail(e: Dictionary) -> void:
+func _collection_detail(e: Dictionary, page := 0) -> void:
 	sfx.play("click")
-	var p := _overlay_panel(440)
+	# page 0 = the event itself, then every outcome the player has seen
+	var pages := [{"tex": _tex(e["id"]), "title": e["t"], "text": e["d"]}]
+	for ci in e["c"].size():
+		var ch: Dictionary = e["c"][ci]
+		for br in ["r", "ok", "ng"]:
+			if ch.has(br) and Game.save["known"].has("%s:%d:%s" % [e["id"], ci, br]):
+				var tag: String = {"r": "", "ok": "（成功）", "ng": "（失敗）"}[br]
+				pages.append({"tex": _res_tex("%s_%d_%s" % [e["id"], ci, br]), "title": "▶ " + ch["t"] + tag, "text": ch[br]["d"]})
+	page = clampi(page, 0, pages.size() - 1)
+	var pg: Dictionary = pages[page]
+	var p := _overlay_panel(470)
 	var c := Control.new()
 	p.add_child(c)
 	var tr := TextureRect.new()
-	tr.texture = _tex(e["id"])
+	tr.texture = pg["tex"]
 	tr.position = Vector2(0, 0)
 	tr.size = Vector2(320, 190)
 	tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	c.add_child(tr)
-	_label(c, e["t"], Vector2(4, 196), Vector2(312, 20), FS, R if e.has("fixed") else W, HORIZONTAL_ALIGNMENT_LEFT, true)
-	var r := _rich(c, Vector2(4, 220), Vector2(312, 160))
-	_set_fit(r, e["d"])
-	_button(c, "閉じる", Vector2(86, 390), Vector2(148, 36), func(): _close_overlay())
+	var tl := _label(c, pg["title"], Vector2(4, 196), Vector2(312, 20), FS, R if e.has("fixed") or page > 0 else W, HORIZONTAL_ALIGNMENT_LEFT, true)
+	tl.clip_text = true
+	var r := _rich(c, Vector2(4, 220), Vector2(312, 150))
+	_set_fit(r, pg["text"])
+	if pages.size() > 1:
+		_label(c, "%d / %d" % [page + 1, pages.size()], Vector2(110, 384), Vector2(100, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
+		var pv := _button(c, "◀", Vector2(4, 378), Vector2(70, 32), func(): _collection_detail(e, page - 1))
+		pv.disabled = page == 0
+		var nx := _button(c, "▶", Vector2(246, 378), Vector2(70, 32), func(): _collection_detail(e, page + 1))
+		nx.disabled = page >= pages.size() - 1
+	else:
+		_label(c, "結果はまだ見ていない", Vector2(4, 384), Vector2(312, 20), FS_S, WD, HORIZONTAL_ALIGNMENT_CENTER)
+	_button(c, "閉じる", Vector2(86, 418), Vector2(148, 36), func(): _close_overlay())

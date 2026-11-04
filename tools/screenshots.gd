@@ -38,9 +38,9 @@ func _go() -> void:
 	await _wait(0.5)
 	await _shot("02_shop")
 	G.start_run(false)
-	G.flags["torch"] = true
-	G.flags["curse"] = true
-	G.flags["potion"] = true
+	G.flags["torch"] = 1
+	G.flags["curse"] = 1
+	G.flags["potion"] = 2
 	G.event = G.by_id["e002"]
 	main.show_game(false)
 	await _wait(3.0)
@@ -83,6 +83,9 @@ func _go() -> void:
 	main.show_collection()
 	await _wait(0.5)
 	await _shot("09_collection")
+	main._collection_detail(G.by_id["e002"], 2)
+	await _wait(0.4)
+	await _shot("09b_collection_result")
 	main.show_help()
 	await _wait(0.5)
 	await _shot("10_help")

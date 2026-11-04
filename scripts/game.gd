@@ -10,22 +10,23 @@ const STAT_NAME := {"b": "肉体", "m": "精神", "f": "運命"}
 const GATES := [25, 50, 75, 100]
 
 ## Run flags shown as items. Flags starting with "_" are hidden.
+## Items stack (flags[f] = count); "unique" ones are held at most once.
 const ITEMS := {
 	"torch": {"name": "たいまつ", "desc": "闇を払う灯り。精神判定+5%。火を使う選択肢が選べる。"},
 	"rope": {"name": "ロープ", "desc": "丈夫な縄。危険な場所を安全に渡れる。"},
 	"key": {"name": "錆びた鍵", "desc": "どこかの扉や檻を開けられそうだ。"},
 	"holy": {"name": "聖水", "desc": "清められた水。亡者や呪いに効く。使うと無くなる。"},
-	"dog": {"name": "黒い犬", "desc": "忠実な相棒。肉体判定+10%。"},
+	"dog": {"name": "黒い犬", "desc": "忠実な相棒。肉体判定+10%。", "unique": true},
 	"map": {"name": "古地図", "desc": "迷宮の抜け道が記された地図。"},
-	"sword": {"name": "銀の剣", "desc": "魔を断つ銀の刃。肉体判定+10%。強敵に有効。"},
-	"amulet": {"name": "赤い護符", "desc": "一度だけ、死を免れる。"},
-	"potion": {"name": "薬瓶", "desc": "タップで使用。肉体を最大値の40%回復する。"},
-	"girl": {"name": "少女の霊", "desc": "母を探す少女の霊がついてくる。"},
-	"oath": {"name": "騎士の誓い", "desc": "王女を救うと誓った証。"},
-	"crown": {"name": "王冠", "desc": "地下都市の王の冠。精神判定+10%。"},
-	"curse": {"name": "呪い", "desc": "運命判定-15%。祓う方法があるはずだ。", "bad": true},
-	"mark": {"name": "魔女の印", "desc": "肉体・精神判定+10%、運命判定-10%。いずれ代償を求められる。", "bad": true},
-	"eye": {"name": "第三の眼", "desc": "見えないものが見える。運命判定+15%。", "bad": true},
+	"sword": {"name": "銀の剣", "desc": "魔を断つ銀の刃。肉体判定+10%。強敵に有効。", "unique": true},
+	"amulet": {"name": "赤い護符", "desc": "死を免れる。1回ごとに1枚砕ける。"},
+	"potion": {"name": "薬瓶", "desc": "タップで1つ使用。肉体を最大値の40%回復する。"},
+	"girl": {"name": "少女の霊", "desc": "母を探す少女の霊がついてくる。", "unique": true},
+	"oath": {"name": "騎士の誓い", "desc": "王女を救うと誓った証。", "unique": true},
+	"crown": {"name": "王冠", "desc": "地下都市の王の冠。精神判定+10%。", "unique": true},
+	"curse": {"name": "呪い", "desc": "運命判定-15%（重なるほど悪化）。祓う方法があるはずだ。", "bad": true},
+	"mark": {"name": "魔女の印", "desc": "肉体・精神判定+10%、運命判定-10%。いずれ代償を求められる。", "bad": true, "unique": true},
+	"eye": {"name": "第三の眼", "desc": "見えないものが見える。運命判定+15%。", "bad": true, "unique": true},
 }
 
 const ENDINGS := {
@@ -287,7 +288,9 @@ func chance(c: Dictionary) -> float:
 	var p: float = float(c["p"]) + float(B["chk_per"]) * (float(cur[s]) - float(B["chk_ref"]) - floor_n * float(B["chk_floor"]))
 	for fl in B["item_bonus"]:
 		if flags.has(fl):
-			p += float(B["item_bonus"][fl].get(s, 0.0))
+			# bonuses apply once; only curses stack
+			var mult: int = int(flags[fl]) if fl == "curse" else 1
+			p += float(B["item_bonus"][fl].get(s, 0.0)) * mult
 	return clampf(p, float(B["chk_min"]), float(B["chk_max"]))
 
 
@@ -307,6 +310,7 @@ func resolve(c: Dictionary) -> Dictionary:
 	else:
 		r = c["r"]
 	save["known"][_known_key(c, branch)] = true
+	res["key"] = "%s_%d_%s" % [event["id"], event["c"].find(c), branch]
 	res["text"] = r.get("d", "")
 	var fx: bool = r.get("fixed", false)
 	var deltas := {}
@@ -332,13 +336,11 @@ func resolve(c: Dictionary) -> Dictionary:
 	var gained := []
 	var lost := []
 	for f in r.get("set", []):
-		if not flags.has(f) and not f.begins_with("_"):
+		if add_item(f) and not f.begins_with("_"):
 			gained.append(f)
-		flags[f] = true
 	for f in r.get("clr", []):
-		if flags.has(f) and not f.begins_with("_"):
+		if remove_item(f) and not f.begins_with("_"):
 			lost.append(f)
-		flags.erase(f)
 	res["gained"] = gained
 	res["lost"] = lost
 	for m in r.get("meta", []):
@@ -352,7 +354,7 @@ func resolve(c: Dictionary) -> Dictionary:
 	res["dead"] = false
 	if is_dead():
 		if flags.has("amulet"):
-			flags.erase("amulet")
+			remove_item("amulet")
 			for s in STATS:
 				if int(cur[s]) <= 0:
 					cur[s] = maxi(1, roundi(float(mx[s]) * float(B["amulet_revive"])))
@@ -371,6 +373,30 @@ func is_known(c: Dictionary, branch: String) -> bool:
 	return save["known"].has(_known_key(c, branch))
 
 
+## Adds one of an item. Unique items (and hidden flags) are held at most once.
+## Returns true if something was actually added.
+func add_item(f: String) -> bool:
+	var unique: bool = f.begins_with("_") or ITEMS.get(f, {}).get("unique", false)
+	if unique and flags.has(f):
+		return false
+	flags[f] = int(flags.get(f, 0)) + 1
+	return true
+
+
+## Removes one of an item. Returns true if one was removed.
+func remove_item(f: String) -> bool:
+	if not flags.has(f):
+		return false
+	flags[f] = int(flags[f]) - 1
+	if int(flags[f]) <= 0:
+		flags.erase(f)
+	return true
+
+
+func item_count(f: String) -> int:
+	return int(flags.get(f, 0))
+
+
 func is_dead() -> bool:
 	for s in STATS:
 		if int(cur[s]) <= 0:
@@ -381,7 +407,7 @@ func is_dead() -> bool:
 func use_potion() -> int:
 	if not flags.has("potion"):
 		return 0
-	flags.erase("potion")
+	remove_item("potion")
 	var before: int = cur["b"]
 	cur["b"] = mini(int(mx["b"]), int(cur["b"]) + roundi(float(mx["b"]) * float(B["potion_heal"])))
 	return int(cur["b"]) - before
@@ -442,7 +468,7 @@ func end_run(cleared: bool) -> Dictionary:
 
 ## Mid-run snapshot so a killed app can resume (taken after each advance).
 func save_run() -> void:
-	save["run"] = {"floor": floor_n, "cur": cur, "mx": mx, "flags": flags.keys(), "seen": seen_run.keys(),
+	save["run"] = {"floor": floor_n, "cur": cur, "mx": mx, "flags": flags, "seen": seen_run.keys(),
 		"gold": gold, "endless": endless, "event": event["id"], "meta_new": meta_new.keys()}
 	write_save()
 
@@ -465,8 +491,12 @@ func resume_run() -> void:
 		cur[s] = int(r["cur"][s])
 		mx[s] = int(r["mx"][s])
 	flags = {}
-	for f in r["flags"]:
-		flags[f] = true
+	if r["flags"] is Dictionary:
+		for f in r["flags"]:
+			flags[f] = int(r["flags"][f])
+	else:  # v1.0 saves stored a plain list
+		for f in r["flags"]:
+			flags[f] = 1
 	seen_run = {}
 	for f in r["seen"]:
 		seen_run[f] = true

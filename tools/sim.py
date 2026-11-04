@@ -23,7 +23,7 @@ def chance(c, st, F):
     s = c['chk']
     p = c['p'] + B['chk_per'] * (st['cur'][s] - B['chk_ref'] - F * B['chk_floor'])
     for fl, bon in B['item_bonus'].items():
-        if fl in st['flags']: p += bon.get(s, 0)
+        if fl in st['flags']: p += bon.get(s, 0) * (st['flags'][fl] if fl == 'curse' else 1)
     return min(B['chk_max'], max(B['chk_min'], p))
 
 def ok_flags(o, flags):
@@ -68,15 +68,26 @@ def apply(r, st, F):
         if k in r:
             st['max'][s] = max(1, st['max'][s] + r[k]); st['cur'][s] = min(st['max'][s], st['cur'][s] + max(0, r[k]))
     if 'g' in r: st['gold'] = max(0, st['gold'] + sv(r['g'], F, fx))
-    for f in r.get('set', []): st['flags'].add(f)
-    for f in r.get('clr', []): st['flags'].discard(f)
+    for f in r.get('set', []): add_item(st, f)
+    for f in r.get('clr', []): remove_item(st, f)
     st['meta_new'] |= set(r.get('meta', []))
     return r.get('skip', 0), r.get('end')
+
+UNIQUE = {'dog', 'sword', 'girl', 'oath', 'crown', 'mark', 'eye'}
+
+def add_item(st, f):
+    if (f in UNIQUE or f.startswith('_')) and f in st['flags']: return
+    st['flags'][f] = st['flags'].get(f, 0) + 1
+
+def remove_item(st, f):
+    if f in st['flags']:
+        st['flags'][f] -= 1
+        if st['flags'][f] <= 0: del st['flags'][f]
 
 def dead(st):
     if all(st['cur'][s] > 0 for s in STATS): return False
     if 'amulet' in st['flags']:
-        st['flags'].discard('amulet')
+        remove_item(st, 'amulet')
         for s in STATS:
             if st['cur'][s] <= 0: st['cur'][s] = max(1, round(st['max'][s] * B['amulet_revive']))
         return False
@@ -108,14 +119,14 @@ def choose(ch, st, F, rng, policy):
 
 def run(meta, levels, rng, endless=False, policy='smart'):
     mx = {s: B['base_stat'] + B['stat_per_level'] * levels[s] for s in STATS}
-    st = dict(cur=dict(mx), max=dict(mx), flags=set(), seen=set(), gold=0, endless=endless, meta_new=set())
+    st = dict(cur=dict(mx), max=dict(mx), flags={}, seen=set(), gold=0, endless=endless, meta_new=set())
     F = 1
     while True:
         e = pick_event(F, st, meta, rng); st['seen'].add(e['id'])
         ch = visible_choices(e, st, F)
         c = choose(ch, st, F, rng, policy)
         if 'potion' in st['flags'] and min(st['cur'][s] / st['max'][s] for s in 'b') < 0.4:
-            st['flags'].discard('potion'); st['cur']['b'] = min(st['max']['b'], st['cur']['b'] + round(st['max']['b'] * B['potion_heal']))
+            remove_item(st, 'potion'); st['cur']['b'] = min(st['max']['b'], st['cur']['b'] + round(st['max']['b'] * B['potion_heal']))
         r = c['r'] if 'r' in c else (c['ok'] if rng.random() < chance(c, st, F) else c['ng'])
         skip, end = apply(r, st, F)
         if end: return 100, st, True
