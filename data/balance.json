@@ -1,0 +1,44 @@
+{
+ "base_stat": 10,
+ "stat_per_level": 2,
+ "cost_base": 10,
+ "cost_lin": 8,
+ "cost_quad": 1.5,
+ "depth_div": 20,
+ "chk_per": 0.03,
+ "chk_ref": 10,
+ "chk_floor": 0.2,
+ "chk_min": 0.05,
+ "chk_max": 0.95,
+ "coin_div": 25,
+ "clear_bonus": 300,
+ "potion_heal": 0.4,
+ "amulet_revive": 0.3,
+ "item_bonus": {
+  "dog": {
+   "b": 0.1
+  },
+  "sword": {
+   "b": 0.1
+  },
+  "torch": {
+   "m": 0.05
+  },
+  "mark": {
+   "b": 0.1,
+   "m": 0.1,
+   "f": -0.1
+  },
+  "eye": {
+   "f": 0.15
+  },
+  "curse": {
+   "f": -0.15
+  },
+  "crown": {
+   "m": 0.1
+  }
+ },
+ "neg_mult": 2.0,
+ "pos_mult": 0.9
+}
