@@ -346,7 +346,7 @@ func _shake() -> void:
 	tw.tween_property(screen, "position", Vector2.ZERO, 0.03)
 
 
-func _overlay_panel(h: int) -> PanelContainer:
+func _overlay_panel(h: int, w := 328) -> PanelContainer:
 	_close_overlay()
 	overlay = Control.new()
 	overlay.size = Vector2(SW, SH)
@@ -360,8 +360,8 @@ func _overlay_panel(h: int) -> PanelContainer:
 			_close_overlay())
 	overlay.add_child(dim)
 	var p := PanelContainer.new()
-	p.position = Vector2(16, (SH - h) / 2)
-	p.size = Vector2(328, h)
+	p.position = Vector2((SW - w) / 2, (SH - h) / 2)
+	p.size = Vector2(w, h)
 	overlay.add_child(p)
 	return p
 
@@ -445,7 +445,7 @@ func show_title() -> void:
 			show_title()))
 	if sv["cleared"]:
 		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 596), Vector2(SW, 18), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.2　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "v1.3　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _start(is_endless: bool) -> void:
@@ -1025,27 +1025,27 @@ func _collection_detail(e: Dictionary, page := 0) -> void:
 				pages.append({"tex": _res_tex("%s_%d_%s" % [e["id"], ci, br]), "title": "▶ " + ch["t"] + tag, "text": ch[br]["d"]})
 	page = clampi(page, 0, pages.size() - 1)
 	var pg: Dictionary = pages[page]
-	var p := _overlay_panel(470)
+	var p := _overlay_panel(480, 344)
 	var c := Control.new()
 	p.add_child(c)
 	var tr := TextureRect.new()
 	tr.texture = pg["tex"]
 	tr.position = Vector2(0, 0)
-	tr.size = Vector2(320, 190)
-	tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	tr.size = Vector2(336, 200)
+	tr.stretch_mode = TextureRect.STRETCH_SCALE
 	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	c.add_child(tr)
-	var tl := _label(c, pg["title"], Vector2(4, 196), Vector2(312, 20), FS, R if e.has("fixed") or page > 0 else W, HORIZONTAL_ALIGNMENT_LEFT, true)
+	var tl := _label(c, pg["title"], Vector2(4, 206), Vector2(328, 20), FS, R if e.has("fixed") or page > 0 else W, HORIZONTAL_ALIGNMENT_LEFT, true)
 	tl.clip_text = true
-	var r := _rich(c, Vector2(4, 220), Vector2(312, 150))
+	var r := _rich(c, Vector2(4, 230), Vector2(328, 150))
 	_set_fit(r, pg["text"])
 	if pages.size() > 1:
-		_label(c, "%d / %d" % [page + 1, pages.size()], Vector2(110, 384), Vector2(100, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
-		var pv := _button(c, "◀", Vector2(4, 378), Vector2(70, 32), func(): _collection_detail(e, page - 1))
+		_label(c, "%d / %d" % [page + 1, pages.size()], Vector2(118, 394), Vector2(100, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
+		var pv := _button(c, "◀", Vector2(4, 388), Vector2(70, 32), func(): _collection_detail(e, page - 1))
 		pv.disabled = page == 0
-		var nx := _button(c, "▶", Vector2(246, 378), Vector2(70, 32), func(): _collection_detail(e, page + 1))
+		var nx := _button(c, "▶", Vector2(262, 388), Vector2(70, 32), func(): _collection_detail(e, page + 1))
 		nx.disabled = page >= pages.size() - 1
 	else:
-		_label(c, "結果はまだ見ていない", Vector2(4, 384), Vector2(312, 20), FS_S, WD, HORIZONTAL_ALIGNMENT_CENTER)
-	_button(c, "閉じる", Vector2(86, 418), Vector2(148, 36), func(): _close_overlay())
+		_label(c, "結果はまだ見ていない", Vector2(4, 394), Vector2(328, 20), FS_S, WD, HORIZONTAL_ALIGNMENT_CENTER)
+	_button(c, "閉じる", Vector2(94, 428), Vector2(148, 36), func(): _close_overlay())

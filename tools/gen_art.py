@@ -1,6 +1,6 @@
 """Procedural 3-colour (black / white / red) pixel-art generator for event scenes.
 
-Usage: python3 -I tools/gen_art.py            -> writes art/events/<id>.png (168x100)
+Usage: python3 -I tools/gen_art.py            -> writes art/events/<id>.png (336x200)
        python3 -I tools/gen_art.py --sheet    -> also writes a contact sheet to /tmp
 Each event's "a" field is "<background>:<prop>".
 """
@@ -15,24 +15,89 @@ R = (196, 28, 40)
 B4 = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]]
 
 
+S = 2                      # output scale: drawing code uses 168x100 coords,
+PW, PH = W * S, H * S      # images are rendered at the game's native 336x200
+
+
 def dith(x, y, lv):
     return B4[int(y) & 3][int(x) & 3] < lv * 16
 
 
+def _pt(v):
+    return v * S + (S - 1) / 2
+
+
+def _box(b):
+    x0, y0, x1, y1 = b
+    return (x0 * S, y0 * S, x1 * S + S - 1, y1 * S + S - 1)
+
+
+def _pts(xy):
+    xy = list(xy)
+    if xy and not isinstance(xy[0], (tuple, list)):
+        xy = list(zip(xy[0::2], xy[1::2]))
+    return [(_pt(x), _pt(y)) for x, y in xy]
+
+
+class SD:
+    """ImageDraw proxy: takes 168x100 logical coordinates, draws at native resolution."""
+    def __init__(s, im):
+        s.d = ImageDraw.Draw(im)
+
+    def line(s, xy, fill=None, width=1):
+        s.d.line(_pts(xy), fill=fill, width=width)
+
+    def polygon(s, xy, fill=None, outline=None):
+        s.d.polygon(_pts(xy), fill=fill, outline=outline)
+
+    def ellipse(s, box, fill=None, outline=None):
+        s.d.ellipse(_box(box), fill=fill, outline=outline)
+
+    def rectangle(s, box, fill=None, outline=None):
+        s.d.rectangle(_box(box), fill=fill, outline=outline)
+
+    def arc(s, box, a0, a1, fill=None, width=1):
+        s.d.arc(_box(box), a0, a1, fill=fill, width=width)
+
+
 class C:
     def __init__(s, seed):
-        s.im = Image.new('RGB', (W, H), K)
-        s.d = ImageDraw.Draw(s.im)
+        s.im = Image.new('RGB', (PW, PH), K)
+        s.d = SD(s.im)
         s.r = random.Random(seed)
 
-    # --- primitives -------------------------------------------------------
+    @classmethod
+    def from_image(cls, img, seed):
+        c = cls(seed)
+        c.im = img.copy()
+        c.d = SD(c.im)
+        return c
+
+    def reset_draw(s):
+        s.d = SD(s.im)
+
+    # --- primitives (logical coordinates) ----------------------------------
     def p(s, x, y, c=WH):
+        """One logical pixel = an SxS block (keeps tiny details like eyes readable)."""
         x, y = int(round(x)), int(round(y))
         if 0 <= x < W and 0 <= y < H:
-            s.im.putpixel((x, y), c)
+            s.im.paste(c, (x * S, y * S, x * S + S, y * S + S))
+
+    def px1(s, x, y, c=WH):
+        """A single native pixel at a (fractional) logical position."""
+        X, Y = int(round(x * S)), int(round(y * S))
+        if 0 <= X < PW and 0 <= Y < PH:
+            s.im.putpixel((X, Y), c)
 
     def g(s, x, y):
-        return s.im.getpixel((x, y))
+        X, Y = int(x) * S, int(y) * S
+        if 0 <= X < PW and 0 <= Y < PH:
+            return s.im.getpixel((X, Y))
+        return K
+
+    def clear(s, box, c=K):
+        x0, y0, x1, y1 = box
+        s.im.paste(c, (int(x0 * S), int(y0 * S), int(x1 * S), int(y1 * S)))
 
     def line(s, a, b, c=WH, w=1):
         s.d.line([tuple(a), tuple(b)], fill=c, width=w)
@@ -50,8 +115,8 @@ class C:
         s.d.arc(box, a0, a1, fill=c)
 
     def mask(s, draw_fn):
-        m = Image.new('L', (W, H), 0)
-        draw_fn(ImageDraw.Draw(m))
+        m = Image.new('L', (PW, PH), 0)
+        draw_fn(SD(m))
         return m
 
     def dpoly(s, pts, lv, c=WH, fn=None):
@@ -63,43 +128,46 @@ class C:
         s.dmask(m, lv, c)
 
     def dmask(s, m, lv, c=WH, fn=None):
-        px = m.load()
-        for y in range(H):
-            for x in range(W):
-                if px[x, y]:
-                    l = fn(x, y) if fn else lv
-                    if dith(x, y, l):
-                        s.p(x, y, c)
+        mp = m.load()
+        ip = s.im.load()
+        for Y in range(PH):
+            for X in range(PW):
+                if mp[X, Y]:
+                    l = fn(X / S, Y / S) if fn else lv
+                    if dith(X, Y, l):
+                        ip[X, Y] = c
 
     def drect(s, box, lv, c=WH, fn=None):
-        x0, y0, x1, y1 = [int(v) for v in box]
-        for y in range(max(0, y0), min(H, y1 + 1)):
-            for x in range(max(0, x0), min(W, x1 + 1)):
-                l = fn(x, y) if fn else lv
-                if dith(x, y, l):
-                    s.p(x, y, c)
+        x0, y0, x1, y1 = box
+        ip = s.im.load()
+        for Y in range(max(0, int(y0 * S)), min(PH, int(y1 * S) + S)):
+            for X in range(max(0, int(x0 * S)), min(PW, int(x1 * S) + S)):
+                l = fn(X / S, Y / S) if fn else lv
+                if dith(X, Y, l):
+                    ip[X, Y] = c
 
     def glow(s, cx, cy, r, lv, c=WH, only_black=True):
-        for y in range(max(0, int(cy - r)), min(H, int(cy + r) + 1)):
-            for x in range(max(0, int(cx - r)), min(W, int(cx + r) + 1)):
-                dd = math.hypot(x - cx, (y - cy) * 1.2)
+        ip = s.im.load()
+        for Y in range(max(0, int((cy - r) * S)), min(PH, int((cy + r) * S) + 1)):
+            for X in range(max(0, int((cx - r) * S)), min(PW, int((cx + r) * S) + 1)):
+                dd = math.hypot(X / S - cx, (Y / S - cy) * 1.2)
                 if dd < r:
                     l = lv * (1 - dd / r) ** 1.4
-                    if dith(x, y, l) and (not only_black or s.g(x, y) == K):
-                        s.p(x, y, c)
+                    if dith(X, Y, l) and (not only_black or ip[X, Y] == K):
+                        ip[X, Y] = c
 
     def speck(s, box, n, c=WH):
         x0, y0, x1, y1 = box
         for _ in range(n):
-            s.p(s.r.randint(x0, x1), s.r.randint(y0, y1), c)
+            s.px1(s.r.uniform(x0, x1), s.r.uniform(y0, y1), c)
 
     def fade(s, fn):
         """Darkness: keep a non-black pixel only where dither < visibility."""
-        px = s.im.load()
-        for y in range(H):
-            for x in range(W):
-                if px[x, y] != K and not dith(x, y, fn(x, y)):
-                    px[x, y] = K
+        ip = s.im.load()
+        for Y in range(PH):
+            for X in range(PW):
+                if ip[X, Y] != K and not dith(X, Y, fn(X / S, Y / S)):
+                    ip[X, Y] = K
 
     def vignette(s, k=1.0):
         s.fade(lambda x, y: 1.6 - k * 1.25 * max(abs(x - W / 2) / (W / 2), abs(y - H / 2) / (H / 2)) ** 3)
@@ -109,8 +177,7 @@ class C:
         s.p(x + gap // 2, y, c)
 
     def drip(s, x, y, n, c=R):
-        for i in range(n):
-            s.p(x, y + i, c)
+        s.line((x, y), (x, y + n), c, 2)
         s.p(x, y + n, c)
 
 
@@ -299,7 +366,7 @@ def bg_room(c, lit=0.3):
             c.line((xx, yy - 8), (xx, yy))
     for _ in range(5):
         x0, y0 = c.r.randint(bx0 + 4, bx1 - 20), c.r.randint(by0 + 2, by1 - 14)
-        c.im.paste(K, (x0, y0, x0 + c.r.randint(8, 22), y0 + c.r.randint(5, 12)))
+        c.clear((x0, y0, x0 + c.r.randint(8, 22), y0 + c.r.randint(5, 12)))
     for yy in [by1 + 6, by1 + 14, by1 + 25]:
         t = (yy - by1) / (H - by1)
         c.line((bx0 * (1 - t), yy), (bx1 + (W - 1 - bx1) * t, yy))
@@ -357,7 +424,7 @@ def bg_stairs(c, lit=0.3, flip=False):
     c.fade(lambda x, y: (abs(x - 84) / 84 * 1.2 + (y - 30) / 70) * 1.1)
     if flip:
         c.im = c.im.transpose(Image.FLIP_TOP_BOTTOM)
-        c.d = ImageDraw.Draw(c.im)
+        c.reset_draw()
 
 
 def bg_lake(c, lit=0.3, horizon=56):
@@ -997,7 +1064,7 @@ def _(c):
 
 @prop('flooded')
 def _(c):
-    c.im.paste(K, (0, 56, W, H))
+    c.clear((0, 56, W, H))
     for yy in range(58, H, 3):
         for x in range(0, W):
             if c.r.random() < 0.2 and (x // 4) % 2:
@@ -1369,7 +1436,7 @@ def _(c):
 
 @prop('giant')
 def _(c):
-    c.im.paste(K, (0, 0, W, H))
+    c.clear((0, 0, W, H))
     for x in range(0, W, 14):
         c.poly([(x, 0), (x + 12, 0), (x + 10, 16), (x + 2, 16)], WH, K)
         c.poly([(x, 99), (x + 12, 99), (x + 10, 86), (x + 2, 86)], WH, K)
@@ -1402,7 +1469,7 @@ def _(c):
 @prop('corpse')
 def _(c):
     figure(c, 84, 84, 10, head='plain', body='robe', eyes=None)
-    c.im.paste(K, (60, 60, 110, 90))
+    c.clear((60, 60, 110, 90))
     c.poly([(54, 80), (110, 78), (112, 84), (56, 86)], K, WH)
     c.ell((106, 76, 116, 86), K, WH)
     c.p(109, 80, WH); c.p(113, 80, WH)
@@ -1597,7 +1664,7 @@ def _(c):
 
 @prop('gameover')
 def _(c):
-    c.im.paste(K, (40, 20, 128, 96))
+    c.clear((40, 20, 128, 96))
     c.ell((60, 22, 108, 70), WH, WH)
     c.rect((70, 64, 98, 82), WH, WH)
     c.ell((68, 38, 80, 52), K, K); c.ell((88, 38, 100, 52), K, K)
@@ -1610,12 +1677,8 @@ def _(c):
 
 @prop('clear')
 def _(c):
-    c.im.paste(K, (0, 0, W, H))
-    for y in range(H):
-        for x in range(W):
-            l = max(0, 1 - math.hypot(x - 84, (y - 20) * 1.3) / 90)
-            if dith(x, y, l * 0.9):
-                c.p(x, y)
+    c.clear((0, 0, W, H))
+    c.drect((0, 0, W - 1, H - 1), 0, WH, lambda x, y: 0.9 * max(0, 1 - math.hypot(x - 84, (y - 20) * 1.3) / 90))
     figure(c, 84, 96, 30, head='plain', body='legs', arms='up', eyes=None)
 
 
@@ -1636,19 +1699,18 @@ def main():
     if '--sheet' in sys.argv:
         cols = 8
         rows = (len(imgs) + cols - 1) // cols
-        sheet = Image.new('RGB', (cols * (W + 4), rows * (H + 14)), (60, 60, 60))
+        sheet = Image.new('RGB', (cols * (PW + 4), rows * (PH + 14)), (60, 60, 60))
         d = ImageDraw.Draw(sheet)
         for i, (eid, im) in enumerate(imgs):
-            x, y = (i % cols) * (W + 4), (i // cols) * (H + 14)
+            x, y = (i % cols) * (PW + 4), (i // cols) * (PH + 14)
             sheet.paste(im, (x, y))
-            d.text((x + 2, y + H), eid, fill=(255, 255, 255))
+            d.text((x + 2, y + PH), eid, fill=(255, 255, 255))
         dest = sys.argv[sys.argv.index('--sheet') + 1]
         sheet.save(dest)
         # split into parts for viewing
         part_rows = 4
         for p in range(0, rows, part_rows):
-            sheet.crop((0, p * (H + 14), sheet.width, min(sheet.height, (p + part_rows) * (H + 14)))).resize(
-                (sheet.width, min(sheet.height, (p + part_rows) * (H + 14)) - p * (H + 14))).save(dest.replace('.png', f'_{p // part_rows}.png'))
+            sheet.crop((0, p * (PH + 14), sheet.width, min(sheet.height, (p + part_rows) * (PH + 14)))).save(dest.replace('.png', f'_{p // part_rows}.png'))
 
 
 if __name__ == '__main__':

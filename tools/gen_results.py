@@ -21,10 +21,7 @@ def seed_of(s):
 
 
 def canvas_from(img, seed):
-    c = C(seed)
-    c.im = img.copy()
-    c.d = ImageDraw.Draw(c.im)
-    return c
+    return C.from_image(img, seed)
 
 
 def scene(c, bg):
@@ -94,9 +91,9 @@ def icon(c, name, cx, cy, lost=False):
 # ------------------------------------------------------------------ effect transforms
 def t_wound(c, sev):
     if sev >= 3:
-        c.drect((0, 0, W - 1, H - 1), 0, R, lambda x, y: 0.02 * sev * (1 - abs(x - 84) / 84) if c.g(x, y) == K else 0)
+        c.drect((0, 0, W - 1, H - 1), 0, R, lambda x, y: 0.01 * sev * (1 - abs(x - 84) / 84) if c.g(x, y) == K else 0)
     x0 = c.r.randint(50, 100)
-    for k in range(2 + min(sev, 3)):
+    for k in range(0 if sev <= 1 else 1 + min(sev, 3)):
         pts = []
         for i in range(14):
             t = i / 13
@@ -112,21 +109,22 @@ def t_wound(c, sev):
 
 
 def t_madness(c, sev):
+    S, PW, PH = G.S, G.PW, G.PH
     src = c.im.copy()
-    amp = min(4, 1 + sev)
+    amp = min(4, 1 + sev) * S
     ph = c.r.random() * 6
-    for y in range(H):
-        sh = int(round(amp * math.sin(y / 4.0 + ph)))
-        c.im.paste(src.crop((0, y, W, y + 1)), (sh, y))
+    for Y in range(PH):
+        sh = int(round(amp * math.sin(Y / (4.0 * S) + ph)))
+        c.im.paste(src.crop((0, Y, PW, Y + 1)), (sh, Y))
     if sev >= 3:
-        y0 = c.r.randint(20, 70)
+        y0 = c.r.randint(20, 70) * S
         px = c.im.load()
-        for y in range(y0, min(H, y0 + 8 + sev * 2)):
-            for x in range(W):
-                if px[x, y] == K:
-                    px[x, y] = WH
-                elif px[x, y] == WH:
-                    px[x, y] = K
+        for Y in range(y0, min(PH, y0 + (8 + sev * 2) * S)):
+            for X in range(PW):
+                if px[X, Y] == K:
+                    px[X, Y] = WH
+                elif px[X, Y] == WH:
+                    px[X, Y] = K
     for _ in range(2 + sev * 2):
         for _try in range(20):
             x, y = c.r.randint(8, W - 8), c.r.randint(6, H - 6)
@@ -286,7 +284,7 @@ def _(c):
 @bespoke('e004:0:ng', 'e004:1:ng')
 def _(c):
     scene(c, 'room')
-    c.drect((0, 0, W - 1, H - 1), 0, R, lambda x, y: 0.05 if c.g(x, y) == K else 0)
+    c.drect((0, 0, W - 1, H - 1), 0, R, lambda x, y: 0.03 if c.g(x, y) == K else 0)
     c.rect((60, 70, 108, 90), K, WH)
     c.poly([(60, 70), (108, 70), (112, 36), (56, 36)], K, WH)
     c.ell((64, 56, 104, 76), R, R)
@@ -468,7 +466,7 @@ def _(c):
 @bespoke('e069:1:ng')
 def _(c):
     scene(c, 'fungus')
-    c.drect((0, 0, W - 1, H - 1), 0, R, lambda x, y: 0.05 if c.g(x, y) == K else 0)
+    c.drect((0, 0, W - 1, H - 1), 0, R, lambda x, y: 0.03 if c.g(x, y) == K else 0)
     c.poly([(60, 96), (64, 60), (76, 50), (92, 50), (104, 60), (108, 96)], K, WH)
     for k in range(9):
         a = math.radians(-160 + k * 18)
@@ -606,10 +604,7 @@ def _(c):
 @bespoke('g100:3:r')
 def _(c):
     c.im.paste(K, (0, 0, W, H))
-    for y in range(0, 60):
-        for x in range(W):
-            if dith(x, y, 0.75 - y / 90):
-                c.p(x, y)
+    c.drect((0, 0, W - 1, 59), 0, WH, lambda x, y: 0.75 - y / 90)
     c.poly([(0, 60), (40, 40), (70, 52), (110, 36), (168, 56), (168, 100), (0, 100)], K, WH)
     door(c) if False else None
     c.ell((70, 62, 98, 90), K, WH); c.rect((70, 76, 98, 100), K, WH)
@@ -634,45 +629,129 @@ def door(c):
     pass
 
 
+def effects_for(r, light=False):
+    """[(kind, severity)] derived from a result's numbers."""
+    b, m, f = r.get('b', 0), r.get('m', 0), r.get('f', 0)
+    bad = [x for x in r.get('set', []) if x in BAD]
+    eff = []
+    if b < 0: eff.append(('wound', -b))
+    if m < 0: eff.append(('mad', -m))
+    if f < 0 or bad: eff.append(('doom', -min(f, 0) + 3 * len(bad)))
+    heal = max(0, b) + max(0, m) + 2 * (r.get('mb', 0) + r.get('mm', 0))
+    if heal > 0: eff.append(('heal', heal))
+    bless = max(0, f) + 2 * r.get('mf', 0)
+    if bless > 0: eff.append(('bless', bless))
+    eff.sort(key=lambda e: -e[1])
+    out = []
+    for kind, mag in eff[:2]:
+        sev = max(1, min(4, round(mag / 1.5)))
+        if light:
+            sev = max(1, sev - 1)
+        out.append((kind, sev))
+    return out
+
+
+FXFN = {'wound': t_wound, 'mad': t_madness, 'doom': t_doom, 'heal': t_heal, 'bless': t_bless}
+FX_ORDER = ['mad', 'doom', 'heal', 'bless', 'wound']
+
+
+def apply_fx(c, fx):
+    fx.sort(key=lambda e: FX_ORDER.index(e[0]) if e[0] in FX_ORDER else 9)
+    for kind, sev in fx:
+        if kind in FXFN:
+            FXFN[kind](c, sev)
+        elif kind == 'quiet':
+            c.fade(lambda x, y: 0.5)
+        elif kind == 'dark':
+            c.vignette(1.6)
+        elif kind == 'red':
+            c.drect((0, 0, W - 1, H - 1), 0, R, lambda x, y: 0.04 if c.g(x, y) == K else 0)
+
+
+def corner_icons(c, r):
+    gained = [x for x in r.get('set', []) if x in ICON_NAMES]
+    lost = [x for x in r.get('clr', []) if x in ICON_NAMES]
+    for i, (n, l) in enumerate([(g, False) for g in gained] + [(g, True) for g in lost]):
+        icon(c, n, W - 14 - i * 24, 13, l)
+
+
+def render_result(e, ci, br, base, bg_only):
+    import scene_kit, result_scenes
+    ch = e['c'][ci]
+    r = ch[br]
+    key = '%s:%d:%s' % (e['id'], ci, br)
+    sd = seed_of(key)
+    if key in BESPOKE:
+        c = C(sd)
+        BESPOKE[key](c)
+        c.vignette(0.9)
+        return c.im, 'bespoke'
+    spec = result_scenes.SCENES.get(key)
+    if spec:
+        c, fxs, auto, icons = scene_kit.compose(spec, e, sd, base, bg_only)
+        fx = []
+        for f in fxs:
+            if f in ('quiet', 'dark', 'red'):
+                fx.append((f, 1))
+            else:
+                fx.append((f.rstrip('0123456789'), int(f[len(f.rstrip('0123456789')):] or 2)))
+        if auto and not fxs:
+            fx = effects_for(r, light=True)
+        apply_fx(c, fx)
+        if icons:
+            corner_icons(c, r)
+        c.vignette(0.9)
+        return c.im, 'scene'
+    return generic(base, r, sd), 'generic'
+
+
+def bg_only_img(e):
+    bg, pr = e['a'].split(':')
+    c = C(seed_of(e['id']))
+    if bg == 'stairs':
+        G.bg_stairs(c, flip=(pr == 'inverted'))
+    else:
+        G.BGS[bg](c)
+    c.fade(lambda x, y: G.BG_DIM.get(bg, 0.5))
+    return c.im
+
+
 def main():
     out = os.path.join(ROOT, 'art', 'results')
     os.makedirs(out, exist_ok=True)
     ev = []
     for f in sorted(glob.glob(os.path.join(ROOT, 'data/events/*.json'))):
         ev += json.load(open(f))
+    only = sys.argv[sys.argv.index('--only') + 1].split(',') if '--only' in sys.argv else None
     imgs = []
-    nb = 0
+    kinds = {}
     for e in ev:
+        if only and e['id'] not in only:
+            continue
         base = G.render(e['a'], seed_of(e['id']))
+        bgi = bg_only_img(e)
         for ci, ch in enumerate(e['c']):
             for br in ('r', 'ok', 'ng'):
                 if br not in ch:
                     continue
-                key = '%s:%d:%s' % (e['id'], ci, br)
-                sd = seed_of(key)
-                if key in BESPOKE:
-                    c = C(sd)
-                    BESPOKE[key](c)
-                    c.vignette(0.9)
-                    im = c.im
-                    nb += 1
-                else:
-                    im = generic(base, ch[br], sd)
+                im, kind = render_result(e, ci, br, base, bgi)
+                kinds[kind] = kinds.get(kind, 0) + 1
                 name = '%s_%d_%s' % (e['id'], ci, br)
                 im.save(os.path.join(out, name + '.png'))
                 imgs.append((name, im))
-    print('wrote', len(imgs), 'results,', nb, 'bespoke')
+    print('wrote', len(imgs), kinds)
     if '--sheet' in sys.argv:
         dest = sys.argv[sys.argv.index('--sheet') + 1]
-        pick = [x for x in imgs if x[0].split('_')[0] in sys.argv[sys.argv.index('--sheet') + 2:]] or imgs[:48]
-        cols = 6
+        pick = imgs[:60]
+        cols = 4
         rows = (len(pick) + cols - 1) // cols
-        sheet = Image.new('RGB', (cols * (W + 4), rows * (H + 14)), (60, 60, 60))
+        PW, PH = G.PW, G.PH
+        sheet = Image.new('RGB', (cols * (PW + 4), rows * (PH + 14)), (60, 60, 60))
         d = ImageDraw.Draw(sheet)
         for i, (n, im) in enumerate(pick):
-            x, y = (i % cols) * (W + 4), (i // cols) * (H + 14)
+            x, y = (i % cols) * (PW + 4), (i // cols) * (PH + 14)
             sheet.paste(im, (x, y))
-            d.text((x + 2, y + H), n, fill=(255, 255, 255))
+            d.text((x + 2, y + PH), n, fill=(255, 255, 255))
         sheet.save(dest)
 
 
