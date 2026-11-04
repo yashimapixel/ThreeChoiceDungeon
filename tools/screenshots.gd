@@ -46,9 +46,20 @@ func _go() -> void:
 	await _wait(3.0)
 	await _shot("03_game")
 	var ch: Array = G.visible_choices()
+	G.cur["b"] = 10
 	main._choose(ch[1]["c"])
+	await _wait(0.3)
+	await _shot("04a_gauge_damage")
 	await _wait(3.0)
 	await _shot("04_result")
+	# previews of already-seen outcomes
+	G.event = G.by_id["e002"]
+	for c in G.event["c"]:
+		for br in ["r", "ok", "ng"]:
+			G.save["known"]["e002:%d:%s" % [G.event["c"].find(c), br]] = true
+	main._present_event()
+	await _wait(3.0)
+	await _shot("03b_preview")
 	G.floor_n = 25
 	G.event = G.by_id["g025"]
 	main._present_event()

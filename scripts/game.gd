@@ -78,7 +78,7 @@ func _load_json(path: String) -> Variant:
 # ============================================================ persistence
 func default_save() -> Dictionary:
 	return {"coins": 0, "lv": {"b": 0, "m": 0, "f": 0}, "best": 0, "best_endless": 0, "total": 0,
-		"runs": 0, "meta": [], "seen": [], "cleared": false, "endings": [], "unlocked_seen": []}
+		"runs": 0, "meta": [], "seen": [], "cleared": false, "endings": [], "unlocked_seen": [], "known": {}}
 
 
 func load_save() -> void:
@@ -91,6 +91,8 @@ func load_save() -> void:
 				save[k] = d[k]
 	for s in STATS:
 		save["lv"][s] = int(save["lv"].get(s, 0))
+	if not save["known"] is Dictionary:
+		save["known"] = {}
 	# baseline of unlocked events so the first game over doesn't list starters as "new"
 	if save["unlocked_seen"].is_empty():
 		save["unlocked_seen"] = unlocked_ids()
@@ -293,15 +295,18 @@ func chance(c: Dictionary) -> float:
 func resolve(c: Dictionary) -> Dictionary:
 	var res := {"check": "", "success": true}
 	var r: Dictionary
+	var branch := "r"
 	if c.has("chk"):
 		var p := chance(c)
 		var ok := rng.randf() < p
 		res["check"] = c["chk"]
 		res["success"] = ok
 		res["chance"] = p
-		r = c["ok"] if ok else c["ng"]
+		branch = "ok" if ok else "ng"
+		r = c[branch]
 	else:
 		r = c["r"]
+	save["known"][_known_key(c, branch)] = true
 	res["text"] = r.get("d", "")
 	var fx: bool = r.get("fixed", false)
 	var deltas := {}
@@ -355,6 +360,15 @@ func resolve(c: Dictionary) -> Dictionary:
 		else:
 			res["dead"] = true
 	return res
+
+
+func _known_key(c: Dictionary, branch: String) -> String:
+	return "%s:%d:%s" % [event["id"], event["c"].find(c), branch]
+
+
+## Has the player already seen this outcome ("r", "ok" or "ng") of choice c in the current event?
+func is_known(c: Dictionary, branch: String) -> bool:
+	return save["known"].has(_known_key(c, branch))
 
 
 func is_dead() -> bool:
