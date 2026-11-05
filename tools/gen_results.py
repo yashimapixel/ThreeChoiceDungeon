@@ -567,6 +567,46 @@ def ending_base(c):
 
 @bespoke('g100:0:r')
 def _(c):
+    """True ending: mother, daughter and knight rising into the light."""
+    c.clear((0, 0, W, H))
+    c.drect((0, 0, W - 1, H - 1), 0, WH, lambda x, y: 0.85 * max(0, 1 - math.hypot(x - 84, (y + 10) * 1.1) / 110))
+    for i in range(10):
+        a = math.radians(-70 + i * 15)
+        for t in range(10, 120, 3):
+            c.px1(84 + math.sin(a) * t, -10 + math.cos(a) * t, WH)
+    figure(c, 70, 66, 46, head='plain', body='dress', arms='out', eyes=None, fill=K, out=WH)
+    figure(c, 88, 66, 26, head='girl', body='dress', arms='up', eyes=None, fill=K, out=WH)
+    figure(c, 112, 72, 40, head='helm', body='armor', arms='down', eyes=None, fill=K, out=WH)
+    c.line((124, 72), (122, 44)); c.line((119, 50), (125, 50))
+    for _ in range(40):
+        c.px1(c.r.uniform(20, 150), c.r.uniform(60, 99), WH)
+    import scene_kit
+    scene_kit.hero(c, 84, 99, 18, 'back')
+
+
+@bespoke('g100:3:r')
+def _(c):
+    """Release: the hero gives up their wish; the giant eye cracks, the mother walks toward a child's voice."""
+    G.bg_void(c)
+    c.fade(lambda x, y: 0.7)
+    c.ell((54, 14, 114, 52), WH, WH)
+    c.ell((72, 18, 96, 48), R, R)
+    c.ell((80, 24, 88, 42), K, K)
+    c.d.line([(84, 10), (80, 22), (88, 30), (82, 42), (86, 56)], fill=K, width=2)
+    c.glow(140, 60, 26, 0.45)
+    figure(c, 118, 92, 38, head='plain', body='dress', arms='out', eyes=None)
+    figure(c, 146, 86, 14, head='girl', body='dress', arms='up', eyes=None, fill=WH, out=WH)
+    import scene_kit
+    scene_kit.hero(c, 40, 96, 34, 'pray')
+
+
+def _ending_base_unused(c):
+    G.bg_void(c)
+    c.fade(lambda x, y: 0.8)
+
+
+@bespoke('g100:1:r')
+def _(c):
     ending_base(c)
     c.glow(84, 0, 110, 0.6)
     figure(c, 72, 70, 50, head='plain', body='dress', arms='out', eyes=None, fill=WH, out=WH)
@@ -575,7 +615,7 @@ def _(c):
     figure(c, 84, 100, 14, head='plain', body='legs', eyes=None)
 
 
-@bespoke('g100:1:r')
+@bespoke('g100:2:r')
 def _(c):
     ending_base(c)
     c.glow(84, 50, 50, 0.4)
@@ -585,7 +625,7 @@ def _(c):
     c.ell((20, 74, 38, 92), K, WH); c.line((24, 82), (34, 82), R)
 
 
-@bespoke('g100:2:r')
+@bespoke('g100:4:r')
 def _(c):
     ending_base(c)
     for k in range(14):
@@ -601,7 +641,7 @@ def _(c):
     figure(c, 84, 100, 30, head='plain', body='legs', arms='up', eyes=None)
 
 
-@bespoke('g100:3:r')
+@bespoke('g100:5:r')
 def _(c):
     c.im.paste(K, (0, 0, W, H))
     c.drect((0, 0, W - 1, 59), 0, WH, lambda x, y: 0.75 - y / 90)
@@ -611,7 +651,7 @@ def _(c):
     figure(c, 120, 96, 30, head='plain', body='legs', arms='up', eyes=None)
 
 
-@bespoke('g100:4:r')
+@bespoke('g100:6:r')
 def _(c):
     ending_base(c)
     c.rect((62, 30, 106, 84), K, WH)

@@ -95,5 +95,32 @@ func _run() -> void:
 	assert(sm["depth_coins"] == G.depth_reward(30) - G.depth_reward(25))
 	assert(int(G.save["total"]) == 5)
 	print("checkpoints OK: depth reward from B26 to B30 =", sm["depth_coins"])
+	# finale: which endings are offered, and truth-dependent epilogues
+	var fin := func(fl: Array, meta: Array) -> Array:
+		G.reset_save()
+		for m in meta:
+			G.save["meta"].append(m)
+		G.start_run(false)
+		for f in fl:
+			G.add_item(f)
+		G.floor_n = 100
+		G.event = G.by_id["g100"]
+		var ends := []
+		for ch in G.visible_choices():
+			ends.append(ch["c"]["r"]["end"])
+		return ends
+	assert(fin.call([], []) == ["slay", "wish", "throne"])
+	assert(fin.call(["girl", "oath"], []) == ["true", "reunion", "oath"])
+	assert(fin.call(["girl"], ["diary3"]) == ["reunion", "release", "slay"])
+	assert(fin.call([], ["knight_truth"]) == ["release", "slay", "wish"])
+	fin.call([], ["heart_truth"])
+	var r2: Dictionary = G.resolve(G.event["c"][4])
+	assert(r2["end"] == "slay" and r2["text"].contains("斬るべきもの"))
+	fin.call([], [])
+	var r3: Dictionary = G.resolve(G.event["c"][4])
+	assert(not r3["text"].contains("斬るべきもの"))
+	var sm3: Dictionary = G.end_run(true)
+	assert(G.save["endings"] == ["slay"] and sm3["cleared"])
+	print("endings OK")
 	G.reset_save()
 	quit()

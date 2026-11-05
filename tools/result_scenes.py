@@ -401,8 +401,8 @@ e078:1:ok bg=flesh H:walk@84,96,30 X:stairs@84,99,3
 e078:1:ng B H:hurt@84 X:blood@84,98,30 FX:red
 e078:2:ok B H:walk@84,96,24 FX:quiet
 e078:2:ng B H:hurt@84,90,30 FX:mad1
-e079:0:r  B H:walk@60 X:stairs@120,98,5
-e079:1:r  B H:sit@60 X:light@84,40,40
+e079:0:r  B H:reach@60 X:light@84,40,34
+e079:1:r  B H:walk@60 X:stairs@120,98,5
 e079:2:r  B H:kneel@60 X:item@74,60,amulet noicons
 ''')
 

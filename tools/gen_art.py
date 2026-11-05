@@ -1586,6 +1586,11 @@ def _(c):
     c.ell((60, 36, 108, 64), WH, WH)
     c.ell((74, 38, 94, 62), R, R)
     c.ell((81, 42, 87, 58), K, K)
+    # the grieving mother, curled up at the foot of the eye
+    c.glow(84, 76, 14, 0.25)
+    c.ell((76, 70, 92, 84), K, WH)
+    c.ell((79, 64, 89, 73), K, WH)
+    c.line((80, 73), (76, 84)); c.line((88, 73), (92, 84))
     figure(c, 84, 98, 14, head='plain', body='legs', eyes=None)
 
 

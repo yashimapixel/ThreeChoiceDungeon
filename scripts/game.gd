@@ -31,11 +31,13 @@ const ITEMS := {
 }
 
 const ENDINGS := {
-	"reunion": "母と娘",
-	"oath": "果たされた誓い",
 	"slay": "闇を斬る者",
 	"wish": "生還",
 	"throne": "底の主",
+	"release": "願いの終わり",
+	"oath": "果たされた誓い",
+	"reunion": "母と娘",
+	"true": "還る光",
 }
 
 var B: Dictionary = {}
@@ -232,7 +234,17 @@ func _flags_ok(o: Dictionary) -> bool:
 	for n in o.get("no", []):
 		if flags.has(n):
 			return false
-	return true
+	return _meta_ok(o)
+
+
+## "mreq_any": satisfied if any listed meta flag is known (from earlier runs or this one).
+func _meta_ok(o: Dictionary) -> bool:
+	if not o.has("mreq_any"):
+		return true
+	for m in o["mreq_any"]:
+		if save["meta"].has(m) or meta_new.has(m):
+			return true
+	return false
 
 
 func pick_event() -> void:
@@ -295,6 +307,8 @@ func visible_choices() -> Array:
 		for n in c.get("no", []):
 			if flags.has(n):
 				hidden = true
+		if not _meta_ok(c):
+			hidden = true   # secret choices only appear once the player knows the truth
 		if hidden:
 			continue
 		var req_ok := true
@@ -354,6 +368,9 @@ func resolve(c: Dictionary) -> Dictionary:
 	save["known"][_known_key(c, branch)] = true
 	res["key"] = "%s_%d_%s" % [event["id"], event["c"].find(c), branch]
 	res["text"] = r.get("d", "")
+	for x in r.get("dx", []):
+		if _flags_ok(x):
+			res["text"] += "\n" + x["d"]
 	var fx: bool = r.get("fixed", false)
 	var deltas := {}
 	for s in STATS:

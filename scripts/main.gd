@@ -446,7 +446,7 @@ func show_title() -> void:
 			show_title()))
 	if sv["cleared"]:
 		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 596), Vector2(SW, 18), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.4　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "v1.5　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _start(is_endless: bool) -> void:
@@ -1051,7 +1051,10 @@ func _tease(title: String) -> String:
 func show_ending(res: Dictionary, sum: Dictionary) -> void:
 	var s := _new_screen("Ending")
 	sfx.play("bell")
-	_image(s, "clear", Vector2(12, 20))
+	var still := _image(s, "clear", Vector2(12, 20))
+	var et := _res_tex(res.get("key", ""))
+	if et:
+		still.texture = et
 	var nm: String = Game.ENDINGS.get(res["end"], "")
 	_label(s, "ENDING", Vector2(0, 228), Vector2(SW, 20), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
 	_label(s, "「%s」" % nm, Vector2(0, 248), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)

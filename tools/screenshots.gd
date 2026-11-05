@@ -67,7 +67,9 @@ func _go() -> void:
 	await _wait(3.0)
 	await _shot("05_gate")
 	G.floor_n = 100
-	G.flags["girl"] = true
+	G.flags["girl"] = 1
+	G.flags["oath"] = 1
+	G.save["meta"].append("diary3")
 	G.event = G.by_id["g100"]
 	main._present_event()
 	await _wait(3.0)
