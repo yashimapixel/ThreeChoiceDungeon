@@ -77,5 +77,23 @@ func _run() -> void:
 	G.remove_item("curse")
 	assert(G.chance(c) > p2)
 	print("stacking OK")
+	# checkpoints
+	G.reset_save()
+	G.start_run(false)
+	G.floor_n = 25
+	G.event = G.by_id["g025"]
+	for s in G.STATS:
+		G.cur[s] = 999; G.mx[s] = 999
+	var res: Dictionary = G.resolve(G.event["c"][4])   # pay toll with fate
+	assert(res.get("checkpoint", 0) == 25 and G.unlocked_checkpoints() == [25])
+	G.save["coins"] = 5
+	assert(not G.start_from_checkpoint(25))        # cannot afford 20
+	G.save["coins"] = 30
+	assert(G.start_from_checkpoint(25) and G.floor_n == 26 and int(G.save["coins"]) == 10)
+	G.floor_n = 30
+	var sm: Dictionary = G.end_run(false)
+	assert(sm["depth_coins"] == G.depth_reward(30) - G.depth_reward(25))
+	assert(int(G.save["total"]) == 5)
+	print("checkpoints OK: depth reward from B26 to B30 =", sm["depth_coins"])
 	G.reset_save()
 	quit()

@@ -28,7 +28,8 @@ var g_img: TextureRect
 var g_res: TextureRect   # result still, cross-faded over g_img
 var g_title: Label
 var g_desc: RichTextLabel
-var g_items: HFlowContainer
+var g_items: Control
+var item_scroll := 0   # index of the first item shown in the one-line item row
 var g_choices: VBoxContainer
 var busy := false
 var pending: Dictionary = {}
@@ -445,14 +446,47 @@ func show_title() -> void:
 			show_title()))
 	if sv["cleared"]:
 		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 596), Vector2(SW, 18), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.3　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "v1.4　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _start(is_endless: bool) -> void:
 	if Game.has_run():
-		_confirm("中断中の探索は失われます。\n新しく潜りますか？", func(): _begin(is_endless))
+		_confirm("中断中の探索は失われます。\n新しく潜りますか？", func(): _choose_start(is_endless))
 	else:
+		_choose_start(is_endless)
+
+
+## Normal runs can start below a cleared gate (25/50/75) for a soul fee.
+func _choose_start(is_endless: bool) -> void:
+	var cps := Game.unlocked_checkpoints()
+	if is_endless or cps.is_empty():
 		_begin(is_endless)
+		return
+	var h := 150 + cps.size() * 46
+	var p := _overlay_panel(h)
+	var c := Control.new()
+	p.add_child(c)
+	_label(c, "どこから潜る？", Vector2(8, 8), Vector2(304, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER, true)
+	_label(c, "魂の欠片 %d" % Game.save["coins"], Vector2(8, 30), Vector2(304, 20), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
+	var y := 56
+	_button(c, "地下1階から", Vector2(8, y), Vector2(304, 38), func():
+		_close_overlay()
+		_begin_from(1))
+	for g in cps:
+		y += 46
+		var cost := Game.checkpoint_cost(g)
+		var b := _button(c, "地下%d階から（魂の欠片 %d）" % [g + 1, cost], Vector2(8, y), Vector2(304, 38), func():
+			_close_overlay()
+			_begin_from(g))
+		b.disabled = int(Game.save["coins"]) < cost
+	y += 46
+	_label(c, "途中から始めると、深さの報酬は開始した階より先の分だけになる。", Vector2(8, y), Vector2(304, 40), 12, WD, HORIZONTAL_ALIGNMENT_LEFT)
+
+
+func _begin_from(g: int) -> void:
+	if Game.start_from_checkpoint(g):
+		Game.save_run()
+		show_game(true)
 
 
 func _begin(is_endless: bool) -> void:
@@ -473,7 +507,7 @@ func show_help(page := 0) -> void:
 		"[color=%s]■ 結果の記憶[/color]\n一度見た結果は、選択肢に「成功→肉体-2」のように表示される。\n\n" % h +
 		"[color=%s]■ 所持品[/color]\n〈 〉は所持品が必要な選択肢。所持品をタップすると効果がわかる。薬瓶はタップで使える。\n\n" % h +
 		"[color=%s]■ 死と継承[/color]\n探索中に拾う金貨は、その探索の中での支払いに使う。力尽きると、到達した深さと残った金貨が「魂の欠片」に換わる。魂の欠片で初期能力を強化できる。累計で潜った階数が増えるほど、新たな出来事が解放される。\n\n" % h +
-		"[color=%s]■ 門番[/color]\n地下25・50・75階には門番が待つ。そして地下100階には――。" % h,
+		"[color=%s]■ 門番[/color]\n地下25・50・75階には門番が待つ。門番を越えると、次からは魂の欠片を払ってその先の階から潜れる。そして地下100階には――。" % h,
 	]
 	var r := _rich(s, Vector2(16, 52), Vector2(328, 470))
 	_set_fit(r, pages[page])
@@ -543,11 +577,12 @@ func show_game(intro := false) -> void:
 	g_desc.gui_input.connect(func(ev):
 		if ev is InputEventMouseButton and ev.pressed:
 			g_desc.visible_ratio = 1.0)
-	g_items = HFlowContainer.new()
+	g_items = Control.new()
 	g_items.position = Vector2(12, 414)
 	g_items.size = Vector2(336, 22)
-	g_items.add_theme_constant_override("h_separation", 4)
+	g_items.clip_contents = true
 	s.add_child(g_items)
+	item_scroll = 0
 	g_choices = VBoxContainer.new()
 	g_choices.position = Vector2(12, 440)
 	g_choices.size = Vector2(336, 194)
@@ -567,19 +602,38 @@ func _refresh_hud(animate := true) -> void:
 	for st in Game.STATS:
 		var b: StatBar = g_bars[st]
 		b.set_stat(int(Game.cur[st]), int(Game.mx[st]), animate)
+	_build_items()
+
+
+const ARW := 24   # width of the ◀ ▶ buttons of the item row
+
+
+func _item_style(col: Color) -> StyleBoxFlat:
+	var st := _sb(K, col)
+	st.set_content_margin_all(1)
+	st.content_margin_left = 4
+	st.content_margin_right = 4
+	return st
+
+
+## One-line item row. When the items don't fit, ◀ ▶ buttons page through them.
+func _build_items() -> void:
 	for c in g_items.get_children():
+		g_items.remove_child(c)
 		c.queue_free()
-	for f in Game.item_list():
+	var names: Array = Game.item_list()
+	if names.is_empty():
+		return
+	var btns := []
+	var widths := []
+	for f in names:
 		var it: Dictionary = Game.ITEMS[f]
 		var b := Button.new()
 		var n := Game.item_count(f)
 		b.text = it["name"] + ("×%d" % n if n > 1 else "")
 		b.add_theme_font_size_override("font_size", FS_S)
 		var bad: bool = it.get("bad", false)
-		var st := _sb(K, R if bad else W)
-		st.set_content_margin_all(1)
-		st.content_margin_left = 4
-		st.content_margin_right = 4
+		var st := _item_style(R if bad else W)
 		b.add_theme_stylebox_override("normal", st)
 		b.add_theme_stylebox_override("hover", st)
 		b.add_theme_stylebox_override("pressed", st)
@@ -588,6 +642,55 @@ func _refresh_hud(animate := true) -> void:
 			b.add_theme_color_override("font_hover_color", R)
 		b.pressed.connect(func(): _item_popup(f))
 		g_items.add_child(b)
+		btns.append(b)
+		widths.append(b.get_combined_minimum_size().x)
+	var gap := 4.0
+	var total := -gap
+	for w in widths:
+		total += w + gap
+	var arrows: bool = total > g_items.size.x
+	item_scroll = clampi(item_scroll, 0, btns.size() - 1) if arrows else 0
+	var x0 := (ARW + gap) if arrows else 0.0
+	var x1 := g_items.size.x - ((ARW + gap) if arrows else 0.0)
+	var x := x0
+	var last := item_scroll - 1
+	for i in btns.size():
+		var b: Button = btns[i]
+		if i >= item_scroll and x + widths[i] <= x1 + 0.5:
+			b.position = Vector2(x, 0)
+			b.size = Vector2(widths[i], g_items.size.y)
+			x += widths[i] + gap
+			last = i
+		else:
+			b.visible = false
+			if i > last and last >= item_scroll:
+				x = x1 + 1   # stop placing after the first item that does not fit
+	if arrows:
+		var lb := _item_arrow("◀", 0, item_scroll > 0, -1)
+		var rb := _item_arrow("▶", g_items.size.x - ARW, last < btns.size() - 1, 1)
+		lb.tooltip_text = ""
+		rb.tooltip_text = ""
+
+
+func _item_arrow(t: String, x: float, enabled: bool, step: int) -> Button:
+	var b := Button.new()
+	b.text = t
+	b.position = Vector2(x, 0)
+	b.size = Vector2(ARW, g_items.size.y)
+	b.add_theme_font_size_override("font_size", FS_S)
+	var st := _item_style(W)
+	st.set_content_margin_all(0)
+	b.add_theme_stylebox_override("normal", st)
+	b.add_theme_stylebox_override("hover", st)
+	b.add_theme_stylebox_override("pressed", _item_style(R))
+	b.add_theme_stylebox_override("disabled", _item_style(WD))
+	b.disabled = not enabled
+	b.pressed.connect(func():
+		sfx.play("click")
+		item_scroll += step
+		_build_items())
+	g_items.add_child(b)
+	return b
 
 
 func _item_popup(f: String) -> void:
@@ -819,6 +922,8 @@ func _show_result(res: Dictionary) -> void:
 		t += "\n" + "　".join(parts)
 	if res.get("amulet", false):
 		t += "\n[color=%s]赤い護符が砕け散り、死を免れた！[/color]" % _hex(R)
+	if res.has("checkpoint"):
+		t += "\n[color=%s]◆ 次回から地下%d階から潜れるようになった[/color]" % [_hex(R), int(res["checkpoint"]) + 1]
 	_set_fit(g_desc, t)
 	_typewrite()
 	var rt := _res_tex(res.get("key", ""))
@@ -887,14 +992,31 @@ func show_gameover(sum: Dictionary, _res := {}) -> void:
 	var rows := [["深さの報酬", str(sum["depth_coins"]), W], ["残った金貨", str(sum["gold"]), W]]
 	if sum["bonus"] > 0:
 		rows.append(["踏破ボーナス", str(sum["bonus"]), W])
-	rows.append(["得た魂の欠片", "+%d" % sum["coins"], R])
+	if sum.get("start", 1) > 1:
+		rows.insert(0, ["開始", "地下%d階" % sum["start"], W])
+	if sum.get("ad_bonus", 0) > 0:
+		rows.append(["広告ボーナス", "+%d" % sum["ad_bonus"], W])
+	rows.append(["得た魂の欠片", "+%d" % (int(sum["coins"]) + int(sum.get("ad_bonus", 0))), R])
 	rows.append(["魂の欠片 合計", str(Game.save["coins"]), W])
-	var y := 290
+	var y := 286
 	for row in rows:
 		_label(s, row[0], Vector2(60, y), Vector2(150, 20), FS, row[2], HORIZONTAL_ALIGNMENT_LEFT, row[2] == R)
 		_label(s, row[1], Vector2(190, y), Vector2(110, 20), FS, row[2], HORIZONTAL_ALIGNMENT_RIGHT, row[2] == R)
-		y += 21
-	var r := _rich(s, Vector2(24, y + 4), Vector2(312, 540 - y - 4))
+		y += 20
+	var ad_ok: bool = int(sum["coins"]) > 0 and not sum.get("ad_used", false)
+	var bottom := 496 if ad_ok else 540
+	var r := _rich(s, Vector2(24, y + 4), Vector2(312, bottom - y - 4))
+	if ad_ok:
+		var ab := _button(s, "▶ 広告を見て魂の欠片を2倍（+%d）" % int(sum["coins"]), Vector2(12, 500), Vector2(336, 40), func():
+			Ads.show_rewarded(self, func():
+				Game.grant_ad_bonus(int(sum["coins"]))
+				sum["ad_bonus"] = int(sum["coins"])
+				sum["ad_used"] = true
+				sfx.play("good"),
+				func(): show_gameover(sum)), FS_S)
+		ab.add_theme_color_override("font_color", R)
+		ab.add_theme_color_override("font_hover_color", R)
+		ab.disabled = not Ads.is_rewarded_ready()
 	var t := ""
 	if sum["new_best"]:
 		t += "[center][color=%s]★ 最高記録更新！[/color][/center]\n" % _hex(R)
@@ -912,7 +1034,7 @@ func show_gameover(sum: Dictionary, _res := {}) -> void:
 			t += "[center]次の解放まで あと累計 %d 階[/center]" % (nxt - int(Game.save["total"]))
 	_set_fit(r, t)
 	_button(s, "強化", Vector2(12, 548), Vector2(108, 40), show_shop)
-	_button(s, "再び潜る", Vector2(126, 548), Vector2(108, 40), func(): _begin(Game.endless))
+	_button(s, "再び潜る", Vector2(126, 548), Vector2(108, 40), func(): _start(Game.endless))
 	_button(s, "タイトル", Vector2(240, 548), Vector2(108, 40), show_title)
 	if sum["first_clear"]:
 		_label(s, "無限迷宮（エンドレス）が解放された！", Vector2(0, 600), Vector2(SW, 20), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER, true)

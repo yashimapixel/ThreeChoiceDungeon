@@ -8,6 +8,7 @@ const EVENT_FILES := ["res://data/events/tier1.json", "res://data/events/tier2.j
 const STATS := ["b", "m", "f"]
 const STAT_NAME := {"b": "肉体", "m": "精神", "f": "運命"}
 const GATES := [25, 50, 75, 100]
+const CHECKPOINTS := [25, 50, 75]   # clearing these gates lets later runs start just below them
 
 ## Run flags shown as items. Flags starting with "_" are hidden.
 ## Items stack (flags[f] = count); "unique" ones are held at most once.
@@ -53,6 +54,7 @@ var flags := {}
 var seen_run := {}
 var gold := 0
 var endless := false
+var start_floor := 1
 var event: Dictionary = {}
 var meta_new := {}
 var last_ending := ""
@@ -79,7 +81,7 @@ func _load_json(path: String) -> Variant:
 # ============================================================ persistence
 func default_save() -> Dictionary:
 	return {"coins": 0, "lv": {"b": 0, "m": 0, "f": 0}, "best": 0, "best_endless": 0, "total": 0,
-		"runs": 0, "meta": [], "seen": [], "cleared": false, "endings": [], "unlocked_seen": [], "known": {}}
+		"runs": 0, "meta": [], "seen": [], "cleared": false, "endings": [], "unlocked_seen": [], "known": {}, "checkpoints": []}
 
 
 func load_save() -> void:
@@ -94,6 +96,10 @@ func load_save() -> void:
 		save["lv"][s] = int(save["lv"].get(s, 0))
 	if not save["known"] is Dictionary:
 		save["known"] = {}
+	var cps := []
+	for g in save.get("checkpoints", []):
+		cps.append(int(g))
+	save["checkpoints"] = cps
 	# baseline of unlocked events so the first game over doesn't list starters as "new"
 	if save["unlocked_seen"].is_empty():
 		save["unlocked_seen"] = unlocked_ids()
@@ -157,9 +163,10 @@ func buy_upgrade(s: String) -> bool:
 
 
 # ============================================================ run
-func start_run(is_endless: bool) -> void:
+func start_run(is_endless: bool, from_floor := 1) -> void:
 	endless = is_endless
-	floor_n = 1
+	floor_n = from_floor
+	start_floor = from_floor
 	flags = {}
 	seen_run = {}
 	gold = 0
@@ -169,6 +176,41 @@ func start_run(is_endless: bool) -> void:
 		mx[s] = stat_max_base(s)
 		cur[s] = mx[s]
 	pick_event()
+
+
+func checkpoint_cost(g: int) -> int:
+	return int(B["checkpoint_cost"].get(str(g), 0))
+
+
+func unlocked_checkpoints() -> Array:
+	var out := []
+	for g in CHECKPOINTS:
+		if save["checkpoints"].has(g):
+			out.append(g)
+	return out
+
+
+## Pays the checkpoint fee and starts a normal run just below gate g.
+func start_from_checkpoint(g: int) -> bool:
+	if g > 1:
+		var c := checkpoint_cost(g)
+		if not save["checkpoints"].has(g) or int(save["coins"]) < c:
+			return false
+		save["coins"] = int(save["coins"]) - c
+		start_run(false, g + 1)
+	else:
+		start_run(false)
+	return true
+
+
+## Rewarded ad: doubles the souls earned by the last run.
+func grant_ad_bonus(amount: int) -> void:
+	save["coins"] = int(save["coins"]) + amount
+	write_save()
+
+
+func depth_reward(n: int) -> int:
+	return int(n * (1.0 + float(n) / float(B["coin_div"])))
 
 
 func depth_scale() -> float:
@@ -361,6 +403,11 @@ func resolve(c: Dictionary) -> Dictionary:
 			res["amulet"] = true
 		else:
 			res["dead"] = true
+	if not res["dead"] and event.has("fixed") and int(event["fixed"]) in CHECKPOINTS:
+		var g := int(event["fixed"])
+		if not save["checkpoints"].has(g):
+			save["checkpoints"].append(g)
+			res["checkpoint"] = g
 	return res
 
 
@@ -430,12 +477,13 @@ func advance(skip: int) -> void:
 ## Called when the run ends (death or clear). Returns summary for UI.
 func end_run(cleared: bool) -> Dictionary:
 	var score := 100 if cleared and not endless else floor_n
-	var depth_coins := int(score * (1.0 + float(score) / float(B["coin_div"])))
+	# starting from a checkpoint only pays for the floors actually descended
+	var depth_coins := maxi(0, depth_reward(score) - depth_reward(start_floor - 1))
 	var bonus := int(B["clear_bonus"]) if cleared else 0
 	var total_coins := depth_coins + gold + bonus
 	var before_unlocked: Array = save["unlocked_seen"]
 	save["coins"] = int(save["coins"]) + total_coins
-	save["total"] = int(save["total"]) + score
+	save["total"] = int(save["total"]) + maxi(1, score - start_floor + 1)
 	save["runs"] = int(save["runs"]) + 1
 	var new_best := false
 	if endless:
@@ -463,13 +511,14 @@ func end_run(cleared: bool) -> Dictionary:
 	save["unlocked_seen"] = now
 	write_save()
 	return {"score": score, "depth_coins": depth_coins, "gold": gold, "bonus": bonus, "coins": total_coins,
-		"new_best": new_best, "newly": newly, "first_clear": first_clear, "cleared": cleared}
+		"new_best": new_best, "newly": newly, "first_clear": first_clear, "cleared": cleared,
+		"start": start_floor}
 
 
 ## Mid-run snapshot so a killed app can resume (taken after each advance).
 func save_run() -> void:
 	save["run"] = {"floor": floor_n, "cur": cur, "mx": mx, "flags": flags, "seen": seen_run.keys(),
-		"gold": gold, "endless": endless, "event": event["id"], "meta_new": meta_new.keys()}
+		"gold": gold, "endless": endless, "event": event["id"], "meta_new": meta_new.keys(), "start": start_floor}
 	write_save()
 
 
@@ -486,6 +535,7 @@ func resume_run() -> void:
 	var r: Dictionary = save["run"]
 	floor_n = int(r["floor"])
 	endless = bool(r["endless"])
+	start_floor = int(r.get("start", 1))
 	gold = int(r["gold"])
 	for s in STATS:
 		cur[s] = int(r["cur"][s])

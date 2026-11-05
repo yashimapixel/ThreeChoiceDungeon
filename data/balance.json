@@ -40,5 +40,10 @@
   }
  },
  "neg_mult": 2.1,
- "pos_mult": 0.9
+ "pos_mult": 0.9,
+ "checkpoint_cost": {
+  "25": 20,
+  "50": 50,
+  "75": 100
+ }
 }

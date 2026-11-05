@@ -92,5 +92,45 @@ func _go() -> void:
 	main.show_help(1)
 	await _wait(0.5)
 	await _shot("10b_help2")
+	# --- v1.4: item row paging, checkpoints, rewarded ad
+	G.start_run(false)
+	for f in ["torch", "rope", "key", "holy", "dog", "map", "sword", "amulet", "potion", "curse", "mark", "eye"]:
+		G.add_item(f)
+	G.add_item("potion")
+	G.event = G.by_id["e009"]
+	main.show_game(false)
+	await _wait(2.5)
+	await _shot("11_items_paged")
+	main.item_scroll = 3
+	main._build_items()
+	await _wait(0.2)
+	await _shot("11b_items_scrolled")
+	G.save["checkpoints"] = [25, 50]
+	G.save["coins"] = 60
+	main.show_title()
+	await _wait(0.4)
+	main._choose_start(false)
+	await _wait(0.4)
+	await _shot("12_start_picker")
+	main.show_gameover({"cleared": false, "score": 31, "depth_coins": 40, "gold": 12, "bonus": 0, "coins": 52, "new_best": false, "newly": [], "first_clear": false, "start": 26})
+	await _wait(0.5)
+	await _shot("13_gameover_ad")
+	var sum2 := {"cleared": false, "score": 31, "depth_coins": 40, "gold": 12, "bonus": 0, "coins": 52, "new_best": false, "newly": [], "first_clear": false, "start": 26}
+	main.show_gameover(sum2)
+	await _wait(0.3)
+	root.get_node("Ads").show_rewarded(main, func():
+		G.grant_ad_bonus(52)
+		sum2["ad_bonus"] = 52
+		sum2["ad_used"] = true, func(): main.show_gameover(sum2))
+	await _wait(1.5)
+	await _shot("14_dummy_ad")
+	await _wait(5.0)
+	for n in main.get_children():
+		if n is ColorRect and n.z_index == 90:
+			for b in n.get_children():
+				if b is Button:
+					b.pressed.emit()
+	await _wait(0.6)
+	await _shot("15_after_ad")
 	G.reset_save()
 	quit()
