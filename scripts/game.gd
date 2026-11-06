@@ -4,7 +4,7 @@ extends Node
 
 const SAVE_PATH := "user://save.json"
 const EVENT_FILES := ["res://data/events/tier1.json", "res://data/events/tier2.json",
-		"res://data/events/tier3.json", "res://data/events/tier4.json"]
+		"res://data/events/tier3.json", "res://data/events/tier4.json", "res://data/events/endless.json"]
 const STATS := ["b", "m", "f"]
 const STAT_NAME := {"b": "肉体", "m": "精神", "f": "運命"}
 const GATES := [25, 50, 75, 100]
@@ -83,7 +83,7 @@ func _load_json(path: String) -> Variant:
 # ============================================================ persistence
 func default_save() -> Dictionary:
 	return {"coins": 0, "lv": {"b": 0, "m": 0, "f": 0}, "best": 0, "best_endless": 0, "total": 0,
-		"runs": 0, "meta": [], "seen": [], "cleared": false, "endings": [], "unlocked_seen": [], "known": {}, "checkpoints": []}
+		"runs": 0, "meta": [], "seen": [], "cleared": false, "endings": [], "unlocked_seen": [], "known": {}, "checkpoints": [], "recent1": [], "recent2": []}
 
 
 func load_save() -> void:
@@ -260,11 +260,11 @@ func pick_event() -> void:
 				break
 		var tot := 0.0
 		for e in cands:
-			tot += float(e.get("w", 5))
+			tot += _weight(e)
 		var x := rng.randf() * tot
 		event = cands[-1]
 		for e in cands:
-			x -= float(e.get("w", 5))
+			x -= _weight(e)
 			if x <= 0.0:
 				event = e
 				break
@@ -273,10 +273,22 @@ func pick_event() -> void:
 		save["seen"].append(event["id"])
 
 
+## Event weight, lowered for events seen in the last two runs (less early repetition).
+func _weight(e: Dictionary) -> float:
+	var w := float(e.get("w", 5))
+	if save["recent1"].has(e["id"]):
+		w *= float(B["recent_mult"][0])
+	elif save["recent2"].has(e["id"]):
+		w *= float(B["recent_mult"][1])
+	return w
+
+
 func _candidates(relax_seen: bool, relax_max: bool) -> Array:
 	var out := []
 	for e in events:
 		if e.has("fixed") or not is_unlocked(e):
+			continue
+		if e.get("endless", false) and not (endless and floor_n > 100):
 			continue
 		if floor_n < int(e.get("min", 1)):
 			continue
@@ -405,6 +417,10 @@ func resolve(c: Dictionary) -> Dictionary:
 	for m in r.get("meta", []):
 		meta_new[m] = true
 	res["skip"] = int(r.get("skip", 0))
+	if r.get("retire", false):
+		res["retire"] = true
+		res["dead"] = false
+		return res
 	if r.has("end"):
 		res["end"] = r["end"]
 		last_ending = r["end"]
@@ -492,7 +508,7 @@ func advance(skip: int) -> void:
 
 
 ## Called when the run ends (death or clear). Returns summary for UI.
-func end_run(cleared: bool) -> Dictionary:
+func end_run(cleared: bool, retired := false) -> Dictionary:
 	var score := 100 if cleared and not endless else floor_n
 	# starting from a checkpoint only pays for the floors actually descended
 	var depth_coins := maxi(0, depth_reward(score) - depth_reward(start_floor - 1))
@@ -526,10 +542,12 @@ func end_run(cleared: bool) -> Dictionary:
 		if not before_unlocked.has(id):
 			newly.append(id)
 	save["unlocked_seen"] = now
+	save["recent2"] = save["recent1"]
+	save["recent1"] = seen_run.keys()
 	write_save()
 	return {"score": score, "depth_coins": depth_coins, "gold": gold, "bonus": bonus, "coins": total_coins,
 		"new_best": new_best, "newly": newly, "first_clear": first_clear, "cleared": cleared,
-		"start": start_floor}
+		"start": start_floor, "retired": retired}
 
 
 ## Mid-run snapshot so a killed app can resume (taken after each advance).

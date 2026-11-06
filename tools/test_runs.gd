@@ -36,6 +36,8 @@ func _run() -> void:
 				var sm: Dictionary = G.end_run(false); scores.append(sm["score"]); break
 			G.advance(res["skip"])
 			G.save_run()
+			if res.get("retire", false):
+				G.end_run(false, true); scores.append(G.floor_n); break
 			if G.endless and G.floor_n > 160:
 				G.end_run(false); scores.append(G.floor_n); break
 	var avg := 0.0
@@ -146,5 +148,26 @@ func _run() -> void:
 	G.resolve(G.event["c"][2])
 	assert(not G.flags.has("oath") and G.item_count("amulet") == 1)
 	print("endings OK")
+	# girl never comes back after resting / fleeing in the same run
+	G.reset_save()
+	G.start_run(false)
+	G.add_item("_girl_rested")
+	G.floor_n = 10
+	var cand: Array = G._candidates(true, true)
+	assert(not cand.any(func(e): return e["id"] == "e008"))
+	# endless-only events: never in normal mode, available below B100 in endless
+	G.start_run(false)
+	G.floor_n = 99
+	assert(not G._candidates(true, true).any(func(e): return e.get("endless", false)))
+	G.start_run(true)
+	G.floor_n = 120
+	assert(G._candidates(false, false).any(func(e): return e.get("endless", false)))
+	# retire ends the run alive
+	G.event = G.by_id["x08"]
+	var rr: Dictionary = G.resolve(G.event["c"][0])
+	assert(rr.get("retire", false) and not rr["dead"])
+	var smr: Dictionary = G.end_run(false, true)
+	assert(smr["retired"] and smr["score"] == 120)
+	print("endless OK")
 	G.reset_save()
 	quit()

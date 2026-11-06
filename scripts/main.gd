@@ -19,6 +19,8 @@ var screen: Control
 var overlay: Control
 var flash: ColorRect
 var sfx: Sfx
+var music: Music
+const LULLABY_EVENTS := ["e027", "e079", "e095", "g100", "x04"]
 
 # game-screen widgets
 var g_floor: Label
@@ -94,6 +96,59 @@ class StatBar extends Control:
 			draw_rect(Rect2(2, by + 2, ws, 5), wc, true)
 		if wg > ws:
 			draw_rect(Rect2(2 + ws, by + 2, wg - ws, 5), rc, true)
+
+
+class Music extends Node:
+	## Cross-fading background music + a hummed lullaby overlay layer.
+	var a: AudioStreamPlayer
+	var b: AudioStreamPlayer
+	var lull: AudioStreamPlayer
+	var current := ""
+	const BASE_DB := -7.0
+	const LULL_DB := -9.0
+
+	func _ready() -> void:
+		a = _player()
+		b = _player()
+		lull = _player()
+		lull.stream = _load("lullaby")
+
+	func _player() -> AudioStreamPlayer:
+		var p := AudioStreamPlayer.new()
+		p.volume_db = -60
+		add_child(p)
+		return p
+
+	func _load(n: String) -> AudioStream:
+		var s = load("res://audio/%s.ogg" % n)
+		if s is AudioStreamOggVorbis:
+			s.loop = n != "gameover"
+		return s
+
+	func play(n: String, fade := 1.5) -> void:
+		if n == current:
+			return
+		current = n
+		var old := a
+		a = b
+		b = old
+		a.stream = _load(n)
+		a.volume_db = -40
+		a.play()
+		var tw := create_tween().set_parallel(true)
+		tw.tween_property(a, "volume_db", BASE_DB, fade)
+		tw.tween_property(b, "volume_db", -60.0, fade)
+		tw.chain().tween_callback(b.stop)
+
+	func lullaby(on: bool) -> void:
+		var target := LULL_DB if on else -60.0
+		if on and not lull.playing:
+			lull.volume_db = -60
+			lull.play()
+		var tw := create_tween()
+		tw.tween_property(lull, "volume_db", target, 2.0)
+		if not on:
+			tw.tween_callback(lull.stop)
 
 
 class Sfx extends Node:
@@ -182,6 +237,9 @@ func _ready() -> void:
 	add_child(bg)
 	sfx = Sfx.new()
 	add_child(sfx)
+	music = Music.new()
+	add_child(music)
+	AudioServer.set_bus_mute(0, not Game.save.get("sound", true))
 	flash = ColorRect.new()
 	flash.color = Color(R, 0)
 	flash.size = Vector2(SW, SH)
@@ -416,8 +474,20 @@ static func _hex(c: Color) -> String:
 
 
 # ================================================================ title
+func _music_menu() -> void:
+	music.lullaby(false)
+	music.play("title")
+
+
 func show_title() -> void:
 	var s := _new_screen("Title")
+	_music_menu()
+	var snd := _button(s, "", Vector2(282, 2), Vector2(74, 22), func():
+		Game.save["sound"] = not Game.save.get("sound", true)
+		Game.write_save()
+		AudioServer.set_bus_mute(0, not Game.save["sound"])
+		show_title(), FS_S)
+	snd.text = "♪ 音 ON" if Game.save.get("sound", true) else "♪ 音 OFF"
 	_image(s, "title", Vector2(12, 24))
 	_label(s, "三択ダンジョン", Vector2(0, 234), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
 	_label(s, "― 地下百階を目指せ ―", Vector2(0, 266), Vector2(SW, 20), FS, R, HORIZONTAL_ALIGNMENT_CENTER)
@@ -446,7 +516,7 @@ func show_title() -> void:
 			show_title()))
 	if sv["cleared"]:
 		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 596), Vector2(SW, 18), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.6　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "v1.7　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _start(is_endless: bool) -> void:
@@ -526,6 +596,7 @@ func show_prologue(then: Callable) -> void:
 # ================================================================ help
 func show_help(page := 0) -> void:
 	var s := _new_screen("Help")
+	_music_menu()
 	_label(s, "遊び方", Vector2(0, 12), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
 	var h := _hex(R)
 	var pages := [
@@ -551,6 +622,7 @@ func show_help(page := 0) -> void:
 # ================================================================ shop
 func show_shop() -> void:
 	var s := _new_screen("Shop")
+	_music_menu()
 	_label(s, "強化", Vector2(0, 10), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
 	_label(s, "魂の欠片 %d" % Game.save["coins"], Vector2(0, 44), Vector2(SW, 20), FS, R, HORIZONTAL_ALIGNMENT_CENTER, true)
 	var desc := {"b": "傷や戦いに耐える力。", "m": "恐怖や狂気に耐える力。", "f": "幸運と、罠を避ける力。"}
@@ -784,8 +856,22 @@ func _clear_event_view() -> void:
 		c.queue_free()
 
 
+func _game_music() -> void:
+	var e: Dictionary = Game.event
+	var n := "upper"
+	if e.has("fixed") and int(e["fixed"]) < 100:
+		n = "gate"
+	elif Game.floor_n >= 75:
+		n = "abyss"
+	elif Game.floor_n >= 50:
+		n = "deep"
+	music.play(n, 2.5)
+	music.lullaby(e["id"] in LULLABY_EVENTS)
+
+
 func _present_event() -> void:
 	var e: Dictionary = Game.event
+	_game_music()
 	g_res.modulate.a = 0.0
 	g_res.texture = null
 	g_img.texture = _tex(e["id"])
@@ -905,6 +991,9 @@ func _choose(c: Dictionary) -> void:
 	if res.has("end"):
 		Game.clear_run()
 		summary = Game.end_run(true)
+	elif res.get("retire", false):
+		Game.clear_run()
+		summary = Game.end_run(false, true)
 	elif res["dead"]:
 		Game.clear_run()
 		summary = Game.end_run(false)
@@ -978,6 +1067,8 @@ func _show_result(res: Dictionary) -> void:
 	var label := "さらに深く ▼"
 	if res.has("end"):
 		label = "……"
+	elif res.get("retire", false):
+		label = "地上へ ▲"
 	elif res.get("dead", false):
 		label = "力尽きた……"
 	var b := Button.new()
@@ -995,6 +1086,8 @@ func _after_result() -> void:
 	var res: Dictionary = pending["res"]
 	if res.has("end"):
 		show_ending(res, pending["summary"])
+	elif res.get("retire", false):
+		show_gameover(pending["summary"], res)
 	elif res.get("dead", false):
 		show_gameover(pending["summary"], res)
 	else:
@@ -1005,14 +1098,19 @@ func _after_result() -> void:
 # ================================================================ end screens
 func show_gameover(sum: Dictionary, _res := {}) -> void:
 	var s := _new_screen("GameOver")
+	music.lullaby(false)
+	music.play("ending" if sum["cleared"] else ("title" if sum.get("retired", false) else "gameover"), 0.8)
 	if sum["cleared"]:
 		_image(s, "clear", Vector2(12, 20))
 		_label(s, "迷宮踏破", Vector2(0, 228), Vector2(SW, 30), FS_L, R, HORIZONTAL_ALIGNMENT_CENTER, true)
+	elif sum.get("retired", false):
+		_image(s, "clear", Vector2(12, 20))
+		_label(s, "地下 %d 階から帰還した" % sum["score"], Vector2(0, 228), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
 	else:
 		_image(s, "gameover", Vector2(12, 20))
 		_label(s, "地下 %d 階で力尽きた" % sum["score"], Vector2(0, 228), Vector2(SW, 30), FS_L, R, HORIZONTAL_ALIGNMENT_CENTER, true)
 	var cause := ""
-	if not sum["cleared"]:
+	if not sum["cleared"] and not sum.get("retired", false):
 		for st in Game.STATS:
 			if int(Game.cur[st]) <= 0:
 				cause = {"b": "肉体が限界を迎えた", "m": "精神が闇に呑まれた", "f": "運命に見放された"}[st]
@@ -1079,6 +1177,8 @@ func _tease(title: String) -> String:
 
 func show_ending(res: Dictionary, sum: Dictionary) -> void:
 	var s := _new_screen("Ending")
+	music.lullaby(false)
+	music.play("ending", 2.0)
 	sfx.play("bell")
 	var still := _image(s, "clear", Vector2(12, 20))
 	var et := _res_tex(res.get("key", ""))
@@ -1103,6 +1203,7 @@ func show_collection(page := -1) -> void:
 	if page >= 0:
 		coll_page = page
 	var s := _new_screen("Collection")
+	_music_menu()
 	var seen: Array = Game.save["seen"]
 	var unl := Game.unlocked_ids()
 	_label(s, "図鑑", Vector2(0, 6), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)

@@ -1565,6 +1565,66 @@ def _(c):
     c.d.line([(84, 66), (90, 80), (80, 92), (60, 96)], fill=WH)
 
 
+@prop('footprints')
+def _(c):
+    for i in range(12):
+        t = i / 11
+        x = 84 + (8 if i % 2 else -8) * (1 - t * 0.7)
+        y = 98 - t * 40
+        w = 4 * (1 - t * 0.6)
+        c.ell((x - w * 0.6, y - w, x + w * 0.6, y), K, WH)
+        c.p(x, y - w - 1)
+    c.speck((10, 60, 158, 99), 60)
+
+
+@prop('wishpile')
+def _(c):
+    for _ in range(70):
+        x, y = c.r.randint(10, 158), c.r.randint(56, 98)
+        w, h = c.r.randint(4, 8), c.r.randint(3, 5)
+        c.poly([(x, y), (x + w, y - 1), (x + w + 1, y + h), (x + 1, y + h + 1)], WH if c.r.random() < 0.8 else K, WH)
+        if c.r.random() < 0.6:
+            c.line((x + 1, y + 2), (x + w - 1, y + 1), K)
+    for x in (40, 128):
+        c.poly([(x - 2, 56), (x + 2, 56), (x + 3, 30), (x - 3, 30)], K, WH)
+        c.poly([(x - 8, 30), (x + 8, 30), (x, 20)], WH, WH)
+    c.p(84, 70, R); c.p(85, 70, R)
+
+
+@prop('echo')
+def _(c):
+    c.glow(84, 50, 44, 0.3)
+    figure(c, 84, 90, 40, head='plain', body='dress', arms='pray', eyes=None, fill=K, out=WH)
+    c.fade(lambda x, y: 0.4 if 60 < x < 108 and 40 < y < 92 else 1)
+    for i in range(7):
+        x, y = 30 + i * 18, 26 + (i % 3) * 8
+        c.ell((x - 2, y, x + 2, y + 3), WH, WH)
+        c.line((x + 2, y + 1), (x + 2, y - 6))
+        if i % 2:
+            c.line((x + 2, y - 6), (x + 5, y - 4))
+
+
+@prop('eyeshard')
+def _(c):
+    c.poly([(54, 84), (80, 66), (112, 70), (118, 88), (90, 96), (60, 94)], WH, K)
+    c.poly([(70, 82), (84, 72), (102, 76), (100, 88), (78, 90)], R, R)
+    c.ell((82, 76, 94, 86), K, K)
+    c.d.line([(54, 84), (40, 92)], fill=K)
+    for _ in range(12):
+        x = c.r.randint(30, 140)
+        c.line((x, 99), (x + c.r.randint(-6, 6), 88), R)
+    c.drip(60, 94, 5)
+
+
+@prop('messenger')
+def _(c):
+    figure(c, 84, 92, 46, head='hood', body='robe', arms='out', eyes=WH)
+    c.line((108, 92), (110, 40))
+    c.rect((110, 40, 128, 56), K, WH)
+    c.ell((115, 44, 123, 52), K, R)
+    c.glow(84, 50, 30, 0.2)
+
+
 @prop('memory')
 def _(c):
     c.rect((24, 20, 64, 52), K, WH)

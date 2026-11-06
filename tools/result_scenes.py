@@ -523,3 +523,46 @@ e062:0:ok B H:run@40f X:tentacles@120,99,2
 e081:1:ok B H:walk@84,96,30 X:eyes@84,50,4 FX:quiet
 e085:1:ok B H:back@84,96,40 FX:quiet
 ''')
+
+
+# ------------------------------------------------------------ endless
+add('''
+x01:0:ok B H:walk@84,86,26 X:rays@84,0,6
+x01:0:ng B H:hurt@84,86,28 X:hands@84,99,5
+x01:1:ok B H:listen@60 X:light@84,30,30 X:text@100,40,2
+x01:1:ng B H:cower@60 X:text@84,40,14 FX:mad3
+x01:2:ok bg=stairs H:jump@84,60,26 X:stairs@84,99,4
+x01:2:ng B H:stand@40 X:hole@84,96,18 FX:doom2
+x02:0:ok B H:walk@84,80,24 X:stairs@84,99,3
+x02:0:ng B H:stand@84,80,24 X:text@84,40,6 FX:mad3
+x02:1:ok B H:kneel@84 X:coins@104,94,10
+x02:1:ng B H:cower@84 X:eyes@84,60,3
+x02:2:r  B H:walk@60 X:sparkle@84,80,6
+x03:0:ok B H:reach@40 X:light@40,50,30 X:sparkle@60,60,6
+x03:0:ng B H:cower@40 X:text@84,40,10 FX:mad3
+x03:1:r  B X:fire@84,96,8 X:rays@84,0,5 H:stand@30+lantern
+x03:2:r  B H:kneel@40 X:book@60,80 X:sparkle@84,40,4
+x03:3:r  B H:walk@150,96,26
+x04:0:r  B H:sit@40 X:light@84,40,40
+x04:1:ok B H:arms_up@40 X:sparkle@84,40,10
+x04:1:ng B H:stand@40 FX:quiet
+x04:2:ok BG X:cup@84,86 X:coins@84,92,6 H:kneel@60 X:light@84,70,20
+x04:2:ng BG H:stand@84 X:text@84,40,6 FX:dark
+x05:0:ok B H:fight@40 X:cracks@84,80,5
+x05:0:ng B H:hurt@40 X:blood@60,96,14
+x05:1:ok B H:reach@40 X:light@84,60,40
+x05:1:ng B H:cower@40 X:cracks@84,60,6 FX:doom2
+x05:2:r  B H:carry@40 X:coins@40,92,8 X:eyes@84,40,2
+x06:0:ok B H:walk@84,96,30 X:light@84,40,30
+x06:0:ng B H:stand@84 X:text@84,40,8 FX:mad3
+x06:1:ok bg=void X:cracks@84,40,7 H:slash@60+sword X:sparkle@100,60,10
+x06:1:ng B H:hurt@84 X:splat@84,56,8
+x06:2:r  B H:walk@84,96,26 X:eyes@84,40,4
+x07:0:r  B H:reach@40 X:item@70,60,amulet noicons
+x07:1:r  B H:reach@40 X:light@40,50,24 X:coins@60,92,4
+x07:2:r  B H:hurt@40 X:sparkle@40,50,6
+x07:3:r  BG H:walk@84 FX:dark
+x08:0:r  bg=stairs H:back@84,92,34 X:rays@84,0,9 X:light@84,0,60
+x08:1:r  B H:stand@30 X:light@84,40,30
+x08:2:r  B H:reach@40 X:item@60,60,potion X:item@84,60,holy noicons
+''')

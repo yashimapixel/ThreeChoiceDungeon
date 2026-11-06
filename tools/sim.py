@@ -26,8 +26,19 @@ def chance(c, st, F):
         if fl in st['flags']: p += bon.get(s, 0) * (st['flags'][fl] if fl == 'curse' else 1)
     return min(B['chk_max'], max(B['chk_min'], p))
 
-def ok_flags(o, flags):
+def ok_flags(o, flags, meta=None):
+    if 'mreq_any' in o and not (meta and any(m in meta for m in o['mreq_any'])):
+        return False
     return all(r in flags for r in o.get('req', [])) and not any(n in flags for n in o.get('no', []))
+
+
+def weight(e, meta):
+    w = e.get('w', 5)
+    if e['id'] in meta.get('recent1', ()):
+        w *= B['recent_mult'][0]
+    elif e['id'] in meta.get('recent2', ()):
+        w *= B['recent_mult'][1]
+    return w
 
 def pick_event(F, st, meta, rng):
     if F in FIXED and (F < 100 or not st['endless']): return FIXED[F]
@@ -36,6 +47,7 @@ def pick_event(F, st, meta, rng):
         out = []
         for e in EV:
             if 'fixed' in e or not unlocked(e, meta): continue
+            if e.get('endless') and not (st['endless'] and F > 100): continue
             if F < e.get('min', 1): continue
             if not relax_max and not st['endless'] and F > e.get('max', 99): continue
             if not ok_flags(e, st['flags']): continue
@@ -45,14 +57,15 @@ def pick_event(F, st, meta, rng):
     for rs, rm in [(False, False), (True, False), (False, True), (True, True)]:
         c = cands(rs, rm)
         if c: break
-    tot = sum(e.get('w', 5) for e in c); x = rng.random() * tot
+    tot = sum(weight(e, meta) for e in c); x = rng.random() * tot
     for e in c:
-        x -= e.get('w', 5)
+        x -= weight(e, meta)
         if x <= 0: return e
     return c[-1]
 
-def visible_choices(e, st, F):
-    av = [c for c in e['c'] if ok_flags(c, st['flags']) and gold_ok(c, st, F)]
+def visible_choices(e, st, F, meta=None):
+    known = (meta or {}).get('flags', set()) | st['meta_new']
+    av = [c for c in e['c'] if ok_flags(c, st['flags'], known) and gold_ok(c, st, F)]
     return av[:3]
 
 def gold_ok(c, st, F):
@@ -123,13 +136,14 @@ def run(meta, levels, rng, endless=False, policy='smart'):
     F = 1
     while True:
         e = pick_event(F, st, meta, rng); st['seen'].add(e['id'])
-        ch = visible_choices(e, st, F)
+        ch = visible_choices(e, st, F, meta)
         c = choose(ch, st, F, rng, policy)
         if 'potion' in st['flags'] and min(st['cur'][s] / st['max'][s] for s in 'b') < 0.4:
             remove_item(st, 'potion'); st['cur']['b'] = min(st['max']['b'], st['cur']['b'] + round(st['max']['b'] * B['potion_heal']))
         r = c['r'] if 'r' in c else (c['ok'] if rng.random() < chance(c, st, F) else c['ng'])
         skip, end = apply(r, st, F)
         if end: return 100, st, True
+        if r.get('retire'): return F, st, False
         if dead(st): return F, st, False
         F = next_floor(F, skip, endless)
         if endless and F > 300: return F, st, False
@@ -154,6 +168,7 @@ def campaign(seed, maxruns=200, verbose=False):
     for i in range(1, maxruns + 1):
         score, st, clear = run(meta, lv, rng)
         meta['total'] += score; meta['flags'] |= st['meta_new']
+        meta['recent2'], meta['recent1'] = meta.get('recent1', set()), set(st['seen'])
         meta['coins'] += coins_for(score, st['gold'], clear)
         while True:
             s = min(STATS, key=lambda k: lv[k])
