@@ -1586,12 +1586,15 @@ def _(c):
     c.ell((60, 36, 108, 64), WH, WH)
     c.ell((74, 38, 94, 62), R, R)
     c.ell((81, 42, 87, 58), K, K)
-    # the grieving mother, curled up at the foot of the eye
-    c.glow(84, 76, 14, 0.25)
-    c.ell((76, 70, 92, 84), K, WH)
-    c.ell((79, 64, 89, 73), K, WH)
-    c.line((80, 73), (76, 84)); c.line((88, 73), (92, 84))
-    figure(c, 84, 98, 14, head='plain', body='legs', eyes=None)
+    # the mother's sleeping face, half sunk into the flesh wall below the eye
+    c.glow(84, 80, 18, 0.3)
+    c.ell((72, 66, 96, 92), K, WH)
+    c.arc((76, 74, 82, 78), 20, 160); c.arc((86, 74, 92, 78), 20, 160)
+    c.line((84, 79), (83, 84)); c.line((81, 87), (87, 87))
+    for k in (-1, 1):
+        c.d.line([(84 + k * 12, 70), (84 + k * 16, 80), (84 + k * 14, 92)], fill=WH)
+    c.drip(78, 77, 3, WH)
+    figure(c, 122, 98, 14, head='plain', body='legs', eyes=None)
 
 
 # props with alternative names in data

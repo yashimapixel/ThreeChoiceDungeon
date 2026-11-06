@@ -230,9 +230,8 @@ e044:0:ng B H:hurt@84 FX:mad4
 e044:1:ok B H:drink@84,90,30 X:coins@120,60,6
 e044:1:ng B H:cower@84 X:blood@84,98,20
 e044:2:r  B H:walk@150,94,26
-e045:1:ok BG X:knight@100,94,40 H:kneel@60 X:item@80,60,sword noicons
-e045:1:ng BG H:pray@60 X:bones@100,92,4 X:skull@108,88 FX:dark
-e046:1:ok B H:kneel@84 X:book@84,92 X:girl@120,92,16
+e045:1:r  B H:listen@44 X:eyes@120,40,2 X:text@100,30,3
+e046:1:ok B H:kneel@84 X:item@84,72,amulet X:girl@120,92,16 noicons
 e046:1:ng BG X:girl@84,70,40 H:cower@40 FX:red
 e046:2:r  B H:stand@60 X:light@100,60,20
 e047:0:ok B H:stand@50 X:rays@50,40,6
@@ -401,9 +400,9 @@ e078:1:ok bg=flesh H:walk@84,96,30 X:stairs@84,99,3
 e078:1:ng B H:hurt@84 X:blood@84,98,30 FX:red
 e078:2:ok B H:walk@84,96,24 FX:quiet
 e078:2:ng B H:hurt@84,90,30 FX:mad1
-e079:0:r  B H:reach@60 X:light@84,40,34
-e079:1:r  B H:walk@60 X:stairs@120,98,5
-e079:2:r  B H:kneel@60 X:item@74,60,amulet noicons
+e079:0:r  B H:sit@60 X:light@84,40,30 X:text@84,40,2
+e079:1:r  B H:reach@64 X:sparkle@84,60,6
+e079:2:r  B H:walk@60 X:stairs@130,98,4
 ''')
 
 # ------------------------------------------------------------ tier 4
@@ -481,10 +480,10 @@ e091:1:ok bg=void X:cracks@84,40,6 X:door_open@84,72 H:slash@50+sword
 e091:1:ng B X:hands@84,99,10 H:hurt@84
 e091:2:ok B H:walk@84,96,30 X:rays@84,0,5
 e091:2:ng B H:stand@84 FX:mad4
-e092:0:r  B H:reach@40 X:item@84,30,sword noicons
+e092:0:r  B H:reach@40 X:light@84,40,40 X:item@84,30,sword noicons
 e092:1:ok BG X:light@84,20,60 X:sparkle@84,40,20 H:pray@50
 e092:1:ng B H:stand@40 FX:mad2
-e092:2:r  B H:listen@40 X:girl@140,92,14
+e092:2:r  B H:listen@40 X:eyes@84,30,3
 e093:0:r  B H:reach@40 X:light@40,50,24 FX:wound2
 e093:1:r  B H:reach@40 FX:mad2 FX:heal2
 e093:2:r  B H:reach@40 X:item@70,60,amulet FX:doom2 noicons

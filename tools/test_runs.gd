@@ -115,12 +115,36 @@ func _run() -> void:
 	assert(fin.call([], ["knight_truth"]) == ["release", "slay", "wish"])
 	fin.call([], ["heart_truth"])
 	var r2: Dictionary = G.resolve(G.event["c"][4])
-	assert(r2["end"] == "slay" and r2["text"].contains("斬るべきもの"))
+	assert(r2["end"] == "slay" and r2["text"].contains("届かなかった"))
 	fin.call([], [])
 	var r3: Dictionary = G.resolve(G.event["c"][4])
-	assert(not r3["text"].contains("斬るべきもの"))
+	assert(not r3["text"].contains("届かなかった"))
 	var sm3: Dictionary = G.end_run(true)
 	assert(G.save["endings"] == ["slay"] and sm3["cleared"])
+	# resting the girl at her grave: she leaves this run, endings change
+	G.reset_save()
+	G.start_run(false)
+	G.add_item("girl"); G.add_item("oath")
+	G.floor_n = 40
+	G.event = G.by_id["e046"]
+	G.resolve(G.event["c"][0])
+	assert(not G.flags.has("girl") and G.flags.has("_girl_rested"))
+	G.floor_n = 100
+	G.event = G.by_id["g100"]
+	var ends2 := []
+	for ch in G.visible_choices():
+		ends2.append(ch["c"]["r"]["end"])
+	assert(ends2 == ["oath", "slay", "wish"])
+	var ro: Dictionary = G.resolve(G.event["c"][2])
+	assert(ro["text"].contains("先に行ったのね"))
+	# letting the knight's ghost rest drops the oath
+	G.start_run(false)
+	G.add_item("oath")
+	G.save["meta"].append("met_knight")
+	G.floor_n = 30
+	G.event = G.by_id["e045"]
+	G.resolve(G.event["c"][2])
+	assert(not G.flags.has("oath") and G.item_count("amulet") == 1)
 	print("endings OK")
 	G.reset_save()
 	quit()

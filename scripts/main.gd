@@ -446,7 +446,7 @@ func show_title() -> void:
 			show_title()))
 	if sv["cleared"]:
 		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 596), Vector2(SW, 18), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.5.1　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "v1.6　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _start(is_endless: bool) -> void:
@@ -486,13 +486,41 @@ func _choose_start(is_endless: bool) -> void:
 func _begin_from(g: int) -> void:
 	if Game.start_from_checkpoint(g):
 		Game.save_run()
-		show_game(true)
+		_enter_game()
 
 
 func _begin(is_endless: bool) -> void:
 	Game.start_run(is_endless)
 	Game.save_run()
-	show_game(true)
+	_enter_game()
+
+
+## The prologue is shown once, before the very first descent.
+func _enter_game() -> void:
+	if not Game.save.get("prologue_seen", false):
+		Game.save["prologue_seen"] = true
+		Game.write_save()
+		show_prologue(func(): show_game(true))
+	else:
+		show_game(true)
+
+
+const PROLOGUE := "王都の地下に、底知れぬ迷宮がある。\nその百階の底では、どんな願いも叶うという。\n\n三年前、病で幼い王女を亡くした王妃が、ひとりで迷宮へ降りていった。王妃を追った騎士も、戻らなかった。\n\nそして今――夜ごと、王都の地下から、言葉のない子守唄が響く。\n\n老いた王は布告を出した。\n「迷宮の底の悲しみを終わらせた者に、望むものを与える」\n\nあなたにも、叶えたい願いがある。\nだから、降りる。"
+
+
+func show_prologue(then: Callable) -> void:
+	var s := _new_screen("Prologue")
+	_image(s, "title", Vector2(12, 24))
+	var r := _rich(s, Vector2(20, 240), Vector2(320, 320))
+	_set_fit(r, PROLOGUE)
+	r.visible_ratio = 0
+	var tw := create_tween()
+	tw.tween_property(r, "visible_ratio", 1.0, 6.0)
+	r.gui_input.connect(func(ev):
+		if ev is InputEventMouseButton and ev.pressed:
+			tw.kill()
+			r.visible_ratio = 1.0)
+	_button(s, "降りる", Vector2(90, 580), Vector2(180, 40), then)
 
 
 # ================================================================ help
@@ -501,6 +529,7 @@ func show_help(page := 0) -> void:
 	_label(s, "遊び方", Vector2(0, 12), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
 	var h := _hex(R)
 	var pages := [
+		"[color=%s]■ はじまり[/color]\n" % h + PROLOGUE,
 		"[color=%s]■ 目的[/color]\n地下百階の迷宮を一階ずつ降り、最深部を目指す。\n\n" % h +
 		"[color=%s]■ 三つの力[/color]\n[b]肉体[/b]…傷や戦いに耐える力\n[b]精神[/b]…恐怖や狂気に耐える力\n[b]運命[/b]…幸運と罠を避ける力\nどれか一つでも0になると力尽きる。\n\n" % h +
 		"[color=%s]■ 選択[/color]\n各階で出来事が起き、三つの選択肢から一つを選ぶ。［判定］のついた選択は、表示された確率で成否が決まる。確率は今の能力値と所持品で上下する。深く潜るほど出来事は苛烈になる。" % h,
@@ -921,7 +950,7 @@ func _show_result(res: Dictionary) -> void:
 	if not parts.is_empty():
 		t += "\n" + "　".join(parts)
 	if res.get("amulet", false):
-		t += "\n[color=%s]赤い護符が砕け散り、死を免れた！[/color]" % _hex(R)
+		t += "\n[color=%s]赤いお守りがほどけ、死を免れた！[/color]" % _hex(R)
 	if res.has("checkpoint"):
 		t += "\n[color=%s]◆ 次回から地下%d階から潜れるようになった[/color]" % [_hex(R), int(res["checkpoint"]) + 1]
 	_set_fit(g_desc, t)

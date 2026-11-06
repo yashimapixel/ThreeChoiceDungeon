@@ -20,7 +20,7 @@ const ITEMS := {
 	"dog": {"name": "黒い犬", "desc": "忠実な相棒。肉体判定+10%。", "unique": true},
 	"map": {"name": "古地図", "desc": "迷宮の抜け道が記された地図。"},
 	"sword": {"name": "銀の剣", "desc": "魔を断つ銀の刃。肉体判定+10%。強敵に有効。", "unique": true},
-	"amulet": {"name": "赤い護符", "desc": "死を免れる。1回ごとに1枚砕ける。"},
+	"amulet": {"name": "赤いお守り", "desc": "死を免れる。1回ごとに1つ壊れる。"},
 	"potion": {"name": "薬瓶", "desc": "タップで1つ使用。肉体を最大値の40%回復する。"},
 	"girl": {"name": "少女の霊", "desc": "母を探す少女の霊がついてくる。", "unique": true},
 	"oath": {"name": "騎士の誓い", "desc": "王女を救うと誓った証。", "unique": true},

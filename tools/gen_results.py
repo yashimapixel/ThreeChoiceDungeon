@@ -388,17 +388,32 @@ def _(c):
     c.drip(90, 80, 10); c.drip(104, 78, 14)
 
 
-@bespoke('e045:0:r', 'e045:2:r')
+@bespoke('e045:0:r')
 def _(c):
+    """The fading knight's ghost turns into light and enters the silver sword."""
     scene(c, 'crypt')
-    x, y = 70, 92
-    c.poly([(x - 14, y), (x - 10, y - 26), (x + 8, y - 28), (x + 14, y)], K, WH)
-    c.ell((x - 8, y - 40, x + 8, y - 24), K, WH)
-    c.line((x - 5, y - 32), (x + 5, y - 32), R)
-    c.drect((x - 30, y - 4, x + 40, y + 4), 0.6, R)
-    c.line((x + 14, y - 14), (x + 46, y - 30)); c.line((x + 14, y - 13), (x + 46, y - 29))
-    c.glow(x + 46, y - 30, 14, 0.5)
-    figure(c, 128, 92, 44, head='plain', body='legs', arms='out', eyes=None)
+    c.glow(84, 50, 40, 0.45)
+    figure(c, 112, 90, 44, head='helm', body='armor', arms='down', eyes=None, fill=K, out=WH)
+    c.fade(lambda x, y: 0.45 if x > 92 else 1)
+    for i in range(14):
+        t = i / 13
+        c.p(112 - t * 40 + c.r.randint(-2, 2), 60 - t * 10 + c.r.randint(-3, 3))
+    import scene_kit
+    scene_kit.hero(c, 60, 94, 42, 'fight', sword=True)
+    c.glow(66, 34, 14, 0.6)
+
+
+@bespoke('e045:2:r')
+def _(c):
+    """The knight takes off his helm and fades away, leaving a red charm."""
+    scene(c, 'crypt')
+    c.glow(100, 40, 34, 0.35)
+    figure(c, 100, 92, 44, head='plain', body='armor', arms='down', eyes=None, fill=K, out=WH)
+    c.fade(lambda x, y: 0.35 if 80 < x < 122 and y < 94 else 1)
+    c.ell((88, 86, 98, 94), K, WH)
+    c.poly([(108, 88), (112, 84), (116, 88), (112, 94)], R, WH)
+    import scene_kit
+    scene_kit.hero(c, 50, 94, 42, 'kneel')
 
 
 @bespoke('e046:0:r')
@@ -617,12 +632,18 @@ def _(c):
 
 @bespoke('g100:2:r')
 def _(c):
+    """Fulfilled oath: the eye is pierced, the queen falls free, the knight kneels."""
     ending_base(c)
-    c.glow(84, 50, 50, 0.4)
-    figure(c, 76, 96, 46, head='plain', body='legs', arms='out', eyes=None)
-    figure(c, 98, 96, 42, head='girl', body='dress', arms='down', eyes=None, fill=WH, out=WH)
-    c.poly([(92, 56), (94, 51), (97, 54), (100, 50), (103, 54), (106, 51), (108, 56)], R, R)
-    c.ell((20, 74, 38, 92), K, WH); c.line((24, 82), (34, 82), R)
+    c.ell((60, 8, 108, 38), WH, WH)
+    c.ell((74, 10, 94, 36), R, R)
+    c.line((84, 4), (84, 44), K, 2); c.line((76, 8), (92, 40), K, 2)
+    c.glow(84, 70, 36, 0.35)
+    figure(c, 70, 96, 44, head='plain', body='dress', arms='out', eyes=None)
+    figure(c, 108, 96, 38, head='helm', body='armor', arms='down', eyes=None)
+    c.fade(lambda x, y: 0.5 if 92 < x < 126 and y > 50 else 1)
+    c.line((120, 96), (122, 66))
+    import scene_kit
+    scene_kit.hero(c, 30, 98, 30, 'back')
 
 
 @bespoke('g100:4:r')
