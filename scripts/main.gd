@@ -159,7 +159,11 @@ class Sfx extends Node:
 		players["click"] = _make(_tone(880, 0.03, 0.25))
 		players["hurt"] = _make(_noise(0.18, 0.35))
 		players["good"] = _make(_sweep(440, 880, 0.12, 0.2))
-		players["step"] = _make(_sweep(220, 70, 0.35, 0.35))
+		var steps := AudioStreamPlayer.new()
+		steps.stream = load("res://audio/sfx_steps.ogg")
+		steps.volume_db = -2
+		add_child(steps)
+		players["step"] = steps
 		players["death"] = _make(_sweep(300, 40, 1.2, 0.4))
 		players["bell"] = _make(_bell(0.9))
 
@@ -516,7 +520,7 @@ func show_title() -> void:
 			show_title()))
 	if sv["cleared"]:
 		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 596), Vector2(SW, 18), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.7　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "v1.7.1　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _start(is_endless: bool) -> void:
@@ -575,7 +579,7 @@ func _enter_game() -> void:
 		show_game(true)
 
 
-const PROLOGUE := "王都の地下に、底知れぬ迷宮がある。\nその百階の底では、どんな願いも叶うという。\n\n三年前、病で幼い王女を亡くした王妃が、ひとりで迷宮へ降りていった。王妃を追った騎士も、戻らなかった。\n\nそして今――夜ごと、王都の地下から、言葉のない子守唄が響く。\n\n老いた王は布告を出した。\n「迷宮の底の悲しみを終わらせた者に、望むものを与える」\n\nあなたにも、叶えたい願いがある。\nだから、降りる。"
+const PROLOGUE := "王都の地下に、底知れぬ迷宮がある。\nその百階の底では、どんな願いも叶うという。\n\n三年前、病で幼い王女を亡くした王妃が、ひとりで迷宮へ降りて行ったが、二度と戻ることはなかった。\n\nそして今――夜ごと、王都の地下から、言葉のない子守唄が響く。\n\n孤独な王は布告を出した。\n「迷宮の底に潜り、真実を明らかにできる勇者を求む」\n\nそして、今日も一人の冒険者が深淵に挑んでゆく……"
 
 
 func show_prologue(then: Callable) -> void:

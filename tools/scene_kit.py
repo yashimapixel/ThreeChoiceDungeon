@@ -605,3 +605,11 @@ def _(c, x=84, y=40, n=6):
         tx, ty = x + c.r.randint(-50, 40), y + c.r.randint(-20, 20)
         for k in range(c.r.randint(3, 6)):
             c.line((tx + k * 3, ty + c.r.randint(-1, 1)), (tx + k * 3 + 2, ty + c.r.randint(-1, 1)), R if i % 3 == 0 else WH)
+
+
+@part('memo')
+def _(c, x=84, y=70, n=0):
+    c.poly([(x - 10, y - 2), (x + 10, y - 4), (x + 11, y + 1), (x - 9, y + 2)], WH, WH)
+    for k in range(2):
+        c.line((x - 6, y - 2 + k * 1.5), (x + 7, y - 3 + k * 1.5), K)
+    c.p(x + 9, y, R)

@@ -102,9 +102,9 @@ e019:1:ng B H:hurt@40
 e019:2:r  B H:walk@150,94,28 FX:doom1
 e020:1:ng BG H:hurt@60 X:blood@60,96,5 X:dog@140,88
 e020:2:r  BG X:dog@150,86 H:stand@50 FX:quiet
-e021:0:r  B H:stand@40 X:book@84,62
-e021:1:r  B H:carry@40 X:book@54,70
-e021:2:r  BG X:fire@84,96,4 X:book@84,84 H:stand@40 X:text@100,40,3
+e021:0:r  B H:stand@40 X:memo@84,62
+e021:1:r  B H:carry@40 X:memo@54,68
+e021:2:r  BG X:fire@84,96,4 X:memo@84,86 H:stand@40 X:text@100,40,3
 e022:0:ok B H:kneel@60
 e022:0:ng B H:hurt@60
 e022:1:ok B H:swim@84,82,34 X:coins@112,90,4
@@ -280,7 +280,7 @@ e055:0:ng B H:down@84,92 FX:mad2
 e055:1:r  B X:fire@84,96,8 H:stand@20 X:coins@84,90,6
 e055:2:ok B H:run@84
 e055:2:ng B H:cower@84 X:spiderlings@84,80,20 FX:mad2
-e056:0:r  B H:stand@40 X:book@84,62 X:girl@140,92,14
+e056:0:r  B H:stand@40 X:memo@60,66 X:text@110,40,2
 e056:1:r  B H:carry@40 X:light@40,50,20
 e056:2:r  B H:walk@150,94,26 X:text@84,50,3
 e057:0:r  BG X:door_open@84,72 H:walk@84,90,26
@@ -365,9 +365,9 @@ e071:0:r  B H:hurt@120f X:sparkle@120,50,6
 e071:1:r  B H:reach@120f X:item@100,60,potion noicons
 e071:2:ok B H:listen@120f X:stairs@150,98,3
 e071:2:ng B H:cower@120f X:text@90,50,6 FX:mad2
-e072:0:r  bg=ruins H:stand@40 X:book@84,80 X:light@84,60,20
-e072:1:r  bg=ruins H:carry@84 X:book@92,70 X:light@84,50,30
-e072:2:r  bg=ruins H:stand@40 X:text@100,40,10 X:book@100,90 FX:mad2
+e072:0:r  B H:stand@40 X:light@84,50,20
+e072:1:r  BG H:carry@84 X:memo@92,68 X:light@84,50,30
+e072:2:r  BG H:stand@40 X:text@100,40,10 X:memo@100,90 FX:mad2
 e073:0:ok B H:reach@40 X:item@60,60,map noicons
 e073:0:ng BG X:figure@30,94,36 X:figure@60,94,32 X:figure@108,94,32 X:figure@140,94,36 H:cower@84
 e073:1:ok BG H:carry@60 X:book@70,72 X:coins@84,94,6

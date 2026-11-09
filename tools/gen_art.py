@@ -1625,6 +1625,30 @@ def _(c):
     c.glow(84, 50, 30, 0.2)
 
 
+@prop('memo')
+def _(c):
+    c.rect((50, 66, 118, 70), K, WH)
+    c.line((56, 70), (56, 90)); c.line((112, 70), (112, 90))
+    c.glow(84, 60, 22, 0.3)
+    c.poly([(72, 64), (94, 62), (96, 66), (74, 67)], WH, WH)
+    for k in range(2):
+        c.line((76, 63 + k * 1.5), (91, 62 + k * 1.5), K)
+    c.p(93, 65, R)
+    candle(c, 112, 65)
+
+
+@prop('memowall')
+def _(c):
+    c.glow(84, 50, 26, 0.35)
+    c.poly([(70, 34), (98, 32), (100, 64), (72, 66)], WH, WH)
+    for k in range(5):
+        c.line((74, 38 + k * 5), (95 - k % 2 * 4, 37 + k * 5), K)
+    for x in (70, 100):
+        for y in range(34, 66, 4):
+            c.line((x, y), (x + (3 if x == 70 else -3), y + 2), R)
+    c.drip(80, 66, 8, R); c.drip(92, 64, 5, R)
+
+
 @prop('memory')
 def _(c):
     c.rect((24, 20, 64, 52), K, WH)

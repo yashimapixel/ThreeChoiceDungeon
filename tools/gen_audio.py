@@ -248,7 +248,23 @@ def track_gameover():
     return s
 
 
+def sfx_steps():
+    """Footsteps going down stone stairs: four steps, each a bit further and quieter."""
+    n = int(2.4 * SR)
+    s = np.zeros(n)
+    for i in range(4):
+        m = int(0.16 * SR)
+        t = np.arange(m) / SR
+        scuff = filtered_noise(m, 90, 1400 - i * 200, 0.6) * np.exp(-t * 38)
+        knock = np.sin(2 * np.pi * (78 - i * 4) * t) * np.exp(-t * 26) * 0.9
+        place(s, (scuff + knock) * (0.95 - i * 0.18), (0.05 + i * 0.36 + (0.03 if i % 2 else 0)) * SR)
+    s = norm(reverb(s, 1.4, 0.32), 0.85)
+    s[-int(0.4 * SR):] *= np.linspace(1, 0, int(0.4 * SR))
+    return s
+
+
 if __name__ == '__main__':
+    save('sfx_steps', sfx_steps())
     for name, fn in (('title', track_title), ('upper', track_upper), ('deep', track_deep), ('abyss', track_abyss),
                      ('gate', track_gate), ('lullaby', track_lullaby), ('ending', track_ending), ('gameover', track_gameover)):
         save(name, fn())
