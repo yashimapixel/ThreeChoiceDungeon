@@ -3,15 +3,26 @@ extends Control
 ## The window uses the "canvas_items" stretch mode so text renders at the
 ## device resolution (crisp at 14/16px) while the art stays nearest-filtered.
 
-const K := Color(0.055, 0.047, 0.055)
-const W := Color(0.91, 0.886, 0.83)
-const R := Color(0.77, 0.11, 0.157)
-const WD := Color(0.91, 0.886, 0.83, 0.38)
+# 6-colour palette: black / dark grey / light grey / white, bright red / dark red
+const K := Color8(14, 12, 14)
+const DG := Color8(74, 70, 70)
+const LG := Color8(152, 146, 136)
+const W := Color8(232, 226, 212)
+const R := Color8(206, 36, 46)
+const DR := Color8(110, 20, 28)
+const WD := DG   # disabled
+const G8 := 8    # layout grid
 const SW := 360
 const SH := 640
 const FS := 16      # body text size
 const FS_S := 14    # small text size
 const FS_L := 24    # headings
+
+# vertical layout (header / center / footer bands), see _layout()
+var view_h := 640.0
+var safe_top := 0.0
+var safe_bot := 0.0
+var bg_rect: ColorRect
 
 var font: FontFile
 var font_b: FontFile
@@ -81,13 +92,14 @@ class StatBar extends Control:
 		queue_redraw()
 
 	func _draw() -> void:
-		var wc := Color(0.91, 0.886, 0.83)
-		var rc := Color(0.77, 0.11, 0.157)
+		var wc := Color8(232, 226, 212)
+		var rc := Color8(206, 36, 46)
+		var lg := Color8(152, 146, 136)
 		var low: bool = value <= maxi(1, int(max_value * 0.3))
-		draw_string(fnt, Vector2(0, 14), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, wc)
+		draw_string(fnt, Vector2(0, 14), label, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, lg)
 		draw_string(fnt, Vector2(0, 14), "%d/%d" % [value, max_value], HORIZONTAL_ALIGNMENT_RIGHT, size.x, 16, rc if low else wc)
 		var by := 19.0
-		draw_rect(Rect2(0, by, size.x, 9), rc if low else wc, false, 1.0)
+		draw_rect(Rect2(0, by, size.x, 9), rc if low else lg, false, 1.0)
 		var inner := size.x - 4
 		var mxv := float(maxi(1, max_value))
 		var ws := floorf(inner * clampf(shown / mxv, 0, 1))
@@ -235,10 +247,10 @@ func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 	get_tree().set_quit_on_go_back(false)
 	_setup_theme()
-	var bg := ColorRect.new()
-	bg.color = K
-	bg.size = Vector2(SW, SH)
-	add_child(bg)
+	bg_rect = ColorRect.new()
+	bg_rect.color = K
+	bg_rect.size = Vector2(SW, SH)
+	add_child(bg_rect)
 	sfx = Sfx.new()
 	add_child(sfx)
 	music = Music.new()
@@ -269,8 +281,8 @@ func _setup_theme() -> void:
 	t.set_font("bold_font", "RichTextLabel", font_b)
 	t.set_constant("line_separation", "RichTextLabel", 3)
 	t.set_constant("line_spacing", "Label", 3)
-	t.set_stylebox("normal", "Button", _sb(K, W))
-	t.set_stylebox("hover", "Button", _sb(K, W))
+	t.set_stylebox("normal", "Button", _sb(K, LG))
+	t.set_stylebox("hover", "Button", _sb(K, LG))
 	t.set_stylebox("pressed", "Button", _sb(K, R, 2))
 	t.set_stylebox("hover_pressed", "Button", _sb(K, R, 2))
 	t.set_stylebox("disabled", "Button", _sb(K, WD))
@@ -281,7 +293,9 @@ func _setup_theme() -> void:
 	t.set_color("font_hover_pressed_color", "Button", R)
 	t.set_color("font_focus_color", "Button", W)
 	t.set_color("font_disabled_color", "Button", WD)
-	t.set_stylebox("panel", "PanelContainer", _sb(K, W))
+	var ps := _sb(K, LG)
+	ps.set_content_margin_all(0)
+	t.set_stylebox("panel", "PanelContainer", ps)
 	theme = t
 
 
@@ -312,14 +326,63 @@ func _on_back() -> void:
 		show_title()
 
 
+# ================================================================ layout
+## Logical screen is 360 wide; on screens taller than 9:16 it grows in height.
+## Safe-area insets (notch / rounded corners) are converted to logical units.
+func _metrics() -> void:
+	var vs := get_viewport().get_visible_rect().size
+	view_h = maxf(float(SH), vs.y)
+	position = Vector2(floorf(maxf(0.0, vs.x - SW) / 2.0), 0)
+	size = Vector2(SW, view_h)
+	bg_rect.position = Vector2(-position.x, 0)
+	bg_rect.size = Vector2(maxf(vs.x, SW), view_h)
+	flash.size = Vector2(SW, view_h)
+	safe_top = 0.0
+	safe_bot = 0.0
+	if OS.has_feature("mobile"):
+		var sa := DisplayServer.get_display_safe_area()
+		var ss := DisplayServer.screen_get_size()
+		var k := float(ss.x) / maxf(1.0, vs.x)
+		if k > 0.0:
+			safe_top = maxf(0.0, float(sa.position.y)) / k
+			safe_bot = maxf(0.0, float(ss.y - sa.end.y)) / k
+
+
+static func _snap(v: float) -> float:
+	return roundf(v / G8) * G8
+
+
+## Moves a screen built in the 360x640 base layout into header / center / footer bands:
+## children whose top is above header_h stick to the top of the safe area, children
+## below 640 - footer_h stick to the bottom, everything else is centred in between.
+func _layout(s: Control, header_h: int, footer_h: int) -> void:
+	var top := safe_top
+	var bottom := view_h - safe_bot
+	var base_center := float(SH - header_h - footer_h)
+	var avail := bottom - top - header_h - footer_h
+	var c_off := top + _snap((avail - base_center) / 2.0)
+	var f_off := bottom - SH
+	for ch in s.get_children():
+		if not ch is Control:
+			continue
+		var y: float = ch.position.y
+		if y < header_h:
+			ch.position.y = y + top
+		elif y >= SH - footer_h:
+			ch.position.y = y + f_off
+		else:
+			ch.position.y = y + c_off
+
+
 # ================================================================ helpers
 func _new_screen(nm: String) -> Control:
 	_close_overlay()
+	_metrics()
 	if screen:
 		screen.queue_free()
 	screen = Control.new()
 	screen.name = nm
-	screen.size = Vector2(SW, SH)
+	screen.size = Vector2(SW, view_h)
 	add_child(screen)
 	move_child(flash, -1)
 	screen.modulate = Color(1, 1, 1, 0)
@@ -363,16 +426,17 @@ func _button(parent: Node, text: String, pos: Vector2, sz: Vector2, cb: Callable
 	return b
 
 
+## Grid-aligned 344x208 frame at pos; the 336x200 still sits 4px inside it.
 func _image(parent: Node, id: String, pos: Vector2) -> TextureRect:
 	var frame := Panel.new()
-	frame.position = pos - Vector2(1, 1)
-	frame.size = Vector2(338, 202)
-	frame.add_theme_stylebox_override("panel", _sb(K, W))
+	frame.position = pos
+	frame.size = Vector2(344, 208)
+	frame.add_theme_stylebox_override("panel", _sb(K, DG))
 	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	parent.add_child(frame)
 	var tr := TextureRect.new()
 	tr.texture = _tex(id)
-	tr.position = Vector2(1, 1)
+	tr.position = Vector2(4, 4)
 	tr.size = Vector2(336, 200)
 	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	tr.stretch_mode = TextureRect.STRETCH_SCALE
@@ -412,18 +476,18 @@ func _shake() -> void:
 func _overlay_panel(h: int, w := 328) -> PanelContainer:
 	_close_overlay()
 	overlay = Control.new()
-	overlay.size = Vector2(SW, SH)
+	overlay.size = Vector2(SW, view_h)
 	overlay.z_index = 50
 	add_child(overlay)
 	var dim := ColorRect.new()
-	dim.color = Color(K, 0.85)
-	dim.size = Vector2(SW, SH)
+	dim.color = K
+	dim.size = Vector2(SW, view_h)
 	dim.gui_input.connect(func(ev):
 		if ev is InputEventMouseButton and ev.pressed:
 			_close_overlay())
 	overlay.add_child(dim)
 	var p := PanelContainer.new()
-	p.position = Vector2((SW - w) / 2, (SH - h) / 2)
+	p.position = Vector2(_snap((SW - w) / 2.0), _snap((view_h - h) / 2.0))
 	p.size = Vector2(w, h)
 	overlay.add_child(p)
 	return p
@@ -439,11 +503,11 @@ func _confirm(msg: String, yes: Callable) -> void:
 	var p := _overlay_panel(176)
 	var c := Control.new()
 	p.add_child(c)
-	_label(c, msg, Vector2(8, 8), Vector2(304, 100))
-	_button(c, "はい", Vector2(8, 124), Vector2(144, 38), func():
+	_label(c, msg, Vector2(8, 8), Vector2(312, 104))
+	_button(c, "はい", Vector2(8, 128), Vector2(152, 40), func():
 		_close_overlay()
 		yes.call())
-	_button(c, "いいえ", Vector2(168, 124), Vector2(144, 38), func(): _close_overlay())
+	_button(c, "いいえ", Vector2(168, 128), Vector2(152, 40), func(): _close_overlay())
 
 
 func _rich(parent: Node, pos: Vector2, sz: Vector2, size := FS) -> RichTextLabel:
@@ -486,41 +550,40 @@ func _music_menu() -> void:
 func show_title() -> void:
 	var s := _new_screen("Title")
 	_music_menu()
-	var snd := _button(s, "", Vector2(282, 2), Vector2(74, 22), func():
+	var snd := _button(s, "", Vector2(272, 8), Vector2(80, 24), func():
 		Game.save["sound"] = not Game.save.get("sound", true)
 		Game.write_save()
 		AudioServer.set_bus_mute(0, not Game.save["sound"])
 		show_title(), FS_S)
 	snd.text = "♪ 音 ON" if Game.save.get("sound", true) else "♪ 音 OFF"
-	_image(s, "title", Vector2(12, 24))
-	_label(s, "三択ダンジョン", Vector2(0, 234), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
-	_label(s, "― 地下百階を目指せ ―", Vector2(0, 266), Vector2(SW, 20), FS, R, HORIZONTAL_ALIGNMENT_CENTER)
+	_image(s, "title", Vector2(8, 40))
+	_label(s, "三択ダンジョン", Vector2(0, 256), Vector2(SW, 32), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
 	var sv: Dictionary = Game.save
-	_label(s, "最高到達 B%dF　探索 %d回" % [sv["best"], sv["runs"]], Vector2(0, 294), Vector2(SW, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "累計 %d階　魂の欠片 %d" % [sv["total"], sv["coins"]], Vector2(0, 314), Vector2(SW, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
-	var y := 344
+	_label(s, "最高到達 B%dF　魂の欠片 %d" % [sv["best"], sv["coins"]], Vector2(0, 296), Vector2(SW, 24), FS, LG, HORIZONTAL_ALIGNMENT_CENTER)
+	var y := 336
 	if Game.has_run():
 		var r: Dictionary = sv["run"]
-		_button(s, "続きから（%sB%dF）" % ["無限 " if r["endless"] else "", r["floor"]], Vector2(50, y), Vector2(260, 38), func():
+		_button(s, "続きから（%sB%dF）" % ["無限 " if r["endless"] else "", r["floor"]], Vector2(48, y), Vector2(264, 40), func():
 			Game.resume_run()
 			show_game(true))
-		y += 44
-	_button(s, "迷宮へ潜る", Vector2(50, y), Vector2(260, 38), func(): _start(false))
-	y += 44
+		y += 48
+	_button(s, "迷宮へ潜る", Vector2(48, y), Vector2(264, 40), func(): _start(false))
+	y += 48
 	if sv["cleared"]:
-		_button(s, "無限迷宮（エンドレス）", Vector2(50, y), Vector2(260, 38), func(): _start(true))
-		y += 44
-	_button(s, "強化", Vector2(50, y), Vector2(126, 38), show_shop)
-	_button(s, "図鑑", Vector2(184, y), Vector2(126, 38), show_collection)
-	y += 44
-	_button(s, "遊び方", Vector2(50, y), Vector2(126, 38), show_help)
-	_button(s, "データ消去", Vector2(184, y), Vector2(126, 38), func():
+		_button(s, "無限迷宮（エンドレス）", Vector2(48, y), Vector2(264, 40), func(): _start(true))
+		y += 48
+	_button(s, "強化", Vector2(48, y), Vector2(128, 40), show_shop)
+	_button(s, "図鑑", Vector2(184, y), Vector2(128, 40), show_collection)
+	y += 48
+	_button(s, "遊び方", Vector2(48, y), Vector2(128, 40), show_help)
+	_button(s, "データ消去", Vector2(184, y), Vector2(128, 40), func():
 		_confirm("全てのセーブデータを消去しますか？\nこの操作は取り消せません。", func():
 			Game.reset_save()
 			show_title()))
 	if sv["cleared"]:
-		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 596), Vector2(SW, 18), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.7.1　Font: PixelMplus (M+ FONTS)", Vector2(0, 618), Vector2(SW, 16), 12, WD, HORIZONTAL_ALIGNMENT_CENTER)
+		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 576), Vector2(SW, 16), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "v1.8　Font: PixelMplus (M+ FONTS)", Vector2(0, 608), Vector2(SW, 24), 12, DG, HORIZONTAL_ALIGNMENT_CENTER)
+	_layout(s, 32, 40)
 
 
 func _start(is_endless: bool) -> void:
@@ -536,25 +599,25 @@ func _choose_start(is_endless: bool) -> void:
 	if is_endless or cps.is_empty():
 		_begin(is_endless)
 		return
-	var h := 150 + cps.size() * 46
+	var h := 160 + cps.size() * 48
 	var p := _overlay_panel(h)
 	var c := Control.new()
 	p.add_child(c)
-	_label(c, "どこから潜る？", Vector2(8, 8), Vector2(304, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER, true)
-	_label(c, "魂の欠片 %d" % Game.save["coins"], Vector2(8, 30), Vector2(304, 20), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	var y := 56
-	_button(c, "地下1階から", Vector2(8, y), Vector2(304, 38), func():
+	_label(c, "どこから潜る？", Vector2(8, 8), Vector2(312, 24), FS, W, HORIZONTAL_ALIGNMENT_CENTER, true)
+	_label(c, "魂の欠片 %d" % Game.save["coins"], Vector2(8, 32), Vector2(312, 24), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
+	var y := 64
+	_button(c, "地下1階から", Vector2(8, y), Vector2(312, 40), func():
 		_close_overlay()
 		_begin_from(1))
 	for g in cps:
-		y += 46
+		y += 48
 		var cost := Game.checkpoint_cost(g)
-		var b := _button(c, "地下%d階から（魂の欠片 %d）" % [g + 1, cost], Vector2(8, y), Vector2(304, 38), func():
+		var b := _button(c, "地下%d階から（魂の欠片 %d）" % [g + 1, cost], Vector2(8, y), Vector2(312, 40), func():
 			_close_overlay()
 			_begin_from(g))
 		b.disabled = int(Game.save["coins"]) < cost
-	y += 46
-	_label(c, "途中から始めると、深さの報酬は開始した階より先の分だけになる。", Vector2(8, y), Vector2(304, 40), 12, WD, HORIZONTAL_ALIGNMENT_LEFT)
+	y += 48
+	_label(c, "途中から始めると、深さの報酬は開始した階より先の分だけになる。", Vector2(8, y), Vector2(312, 40), 12, LG, HORIZONTAL_ALIGNMENT_LEFT)
 
 
 func _begin_from(g: int) -> void:
@@ -584,8 +647,8 @@ const PROLOGUE := "王都の地下に、底知れぬ迷宮がある。\nその�
 
 func show_prologue(then: Callable) -> void:
 	var s := _new_screen("Prologue")
-	_image(s, "title", Vector2(12, 24))
-	var r := _rich(s, Vector2(20, 240), Vector2(320, 320))
+	_image(s, "title", Vector2(8, 24))
+	var r := _rich(s, Vector2(16, 240), Vector2(328, 328))
 	_set_fit(r, PROLOGUE)
 	r.visible_ratio = 0
 	var tw := create_tween()
@@ -594,14 +657,15 @@ func show_prologue(then: Callable) -> void:
 		if ev is InputEventMouseButton and ev.pressed:
 			tw.kill()
 			r.visible_ratio = 1.0)
-	_button(s, "降りる", Vector2(90, 580), Vector2(180, 40), then)
+	_button(s, "降りる", Vector2(88, 592), Vector2(184, 40), then)
+	_layout(s, 0, 64)
 
 
 # ================================================================ help
 func show_help(page := 0) -> void:
 	var s := _new_screen("Help")
 	_music_menu()
-	_label(s, "遊び方", Vector2(0, 12), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
+	_label(s, "遊び方", Vector2(0, 16), Vector2(SW, 32), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
 	var h := _hex(R)
 	var pages := [
 		"[color=%s]■ はじまり[/color]\n" % h + PROLOGUE,
@@ -613,37 +677,38 @@ func show_help(page := 0) -> void:
 		"[color=%s]■ 死と継承[/color]\n探索中に拾う金貨は、その探索の中での支払いに使う。力尽きると、到達した深さと残った金貨が「魂の欠片」に換わる。魂の欠片で初期能力を強化できる。累計で潜った階数が増えるほど、新たな出来事が解放される。\n\n" % h +
 		"[color=%s]■ 門番[/color]\n地下25・50・75階には門番が待つ。門番を越えると、次からは魂の欠片を払ってその先の階から潜れる。そして地下100階には――。" % h,
 	]
-	var r := _rich(s, Vector2(16, 52), Vector2(328, 470))
+	var r := _rich(s, Vector2(16, 56), Vector2(328, 464))
 	_set_fit(r, pages[page])
-	_label(s, "%d / %d" % [page + 1, pages.size()], Vector2(0, 538), Vector2(SW, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
-	var prev := _button(s, "◀ 前", Vector2(16, 532), Vector2(100, 34), func(): show_help(page - 1))
+	_label(s, "%d / %d" % [page + 1, pages.size()], Vector2(0, 536), Vector2(SW, 24), FS, LG, HORIZONTAL_ALIGNMENT_CENTER)
+	var prev := _button(s, "◀ 前", Vector2(8, 528), Vector2(96, 40), func(): show_help(page - 1))
 	prev.disabled = page == 0
-	var nxt := _button(s, "次 ▶", Vector2(244, 532), Vector2(100, 34), func(): show_help(page + 1))
+	var nxt := _button(s, "次 ▶", Vector2(256, 528), Vector2(96, 40), func(): show_help(page + 1))
 	nxt.disabled = page >= pages.size() - 1
-	_button(s, "戻る", Vector2(90, 584), Vector2(180, 38), show_title)
+	_button(s, "戻る", Vector2(88, 584), Vector2(184, 40), show_title)
+	_layout(s, 56, 112)
 
 
 # ================================================================ shop
 func show_shop() -> void:
 	var s := _new_screen("Shop")
 	_music_menu()
-	_label(s, "強化", Vector2(0, 10), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
-	_label(s, "魂の欠片 %d" % Game.save["coins"], Vector2(0, 44), Vector2(SW, 20), FS, R, HORIZONTAL_ALIGNMENT_CENTER, true)
+	_label(s, "強化", Vector2(0, 8), Vector2(SW, 32), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
+	_label(s, "魂の欠片 %d" % Game.save["coins"], Vector2(0, 40), Vector2(SW, 24), FS, R, HORIZONTAL_ALIGNMENT_CENTER, true)
 	var desc := {"b": "傷や戦いに耐える力。", "m": "恐怖や狂気に耐える力。", "f": "幸運と、罠を避ける力。"}
 	var y := 72
 	for st in Game.STATS:
 		var box := Panel.new()
-		box.position = Vector2(12, y)
-		box.size = Vector2(336, 120)
-		box.add_theme_stylebox_override("panel", _sb(K, W))
+		box.position = Vector2(8, y)
+		box.size = Vector2(344, 120)
+		box.add_theme_stylebox_override("panel", _sb(K, DG))
 		s.add_child(box)
 		var lv: int = Game.save["lv"][st]
-		_label(box, "%s　Lv.%d" % [Game.STAT_NAME[st], lv], Vector2(10, 6), Vector2(316, 20), FS, W, HORIZONTAL_ALIGNMENT_LEFT, true)
-		_label(box, desc[st], Vector2(10, 28), Vector2(316, 20))
+		_label(box, "%s　Lv.%d" % [Game.STAT_NAME[st], lv], Vector2(8, 8), Vector2(328, 24), FS, W, HORIZONTAL_ALIGNMENT_LEFT, true)
+		_label(box, desc[st], Vector2(8, 32), Vector2(328, 24), FS, LG)
 		var now := Game.stat_max_base(st)
-		_label(box, "初期値 %d → %d" % [now, now + int(Game.B["stat_per_level"])], Vector2(10, 50), Vector2(316, 20))
+		_label(box, "初期値 %d → %d" % [now, now + int(Game.B["stat_per_level"])], Vector2(8, 56), Vector2(328, 24))
 		var cost := Game.upgrade_cost(st)
-		var b := _button(box, "強化する（魂の欠片 %d）" % cost, Vector2(10, 76), Vector2(316, 36), func():
+		var b := _button(box, "強化する（魂の欠片 %d）" % cost, Vector2(8, 80), Vector2(328, 32), func():
 			if Game.buy_upgrade(st):
 				sfx.play("good")
 				show_shop())
@@ -651,48 +716,50 @@ func show_shop() -> void:
 		y += 128
 	var nxt := Game.next_unlock_total()
 	var hint := "累計 %d階 潜ると新たな出来事が解放される（現在 %d階）" % [nxt, Game.save["total"]] if nxt > 0 else "全ての出来事が解放されている"
-	_label(s, hint, Vector2(16, 460), Vector2(328, 40), FS_S, W, HORIZONTAL_ALIGNMENT_CENTER)
-	_button(s, "迷宮へ潜る", Vector2(50, 512), Vector2(260, 38), func(): _start(false))
-	_button(s, "戻る", Vector2(50, 560), Vector2(260, 38), show_title)
+	_label(s, hint, Vector2(16, 456), Vector2(328, 40), FS_S, LG, HORIZONTAL_ALIGNMENT_CENTER)
+	_button(s, "迷宮へ潜る", Vector2(48, 512), Vector2(264, 40), func(): _start(false))
+	_button(s, "戻る", Vector2(48, 560), Vector2(264, 40), show_title)
+	_layout(s, 72, 136)
 
 
 # ================================================================ game
 func show_game(intro := false) -> void:
 	var s := _new_screen("Game")
-	g_floor = _label(s, "", Vector2(12, 2), Vector2(200, 28), FS_L, W, HORIZONTAL_ALIGNMENT_LEFT, true)
-	g_gold = _label(s, "", Vector2(160, 8), Vector2(188, 20), FS, W, HORIZONTAL_ALIGNMENT_RIGHT)
+	g_floor = _label(s, "", Vector2(8, 8), Vector2(200, 24), FS_L, W, HORIZONTAL_ALIGNMENT_LEFT, true)
+	g_gold = _label(s, "", Vector2(176, 8), Vector2(176, 24), FS, LG, HORIZONTAL_ALIGNMENT_RIGHT)
 	g_bars.clear()
 	for i in 3:
 		var st: String = Game.STATS[i]
 		var b := StatBar.new()
 		b.fnt = font
 		b.label = Game.STAT_NAME[st]
-		b.position = Vector2(12 + i * 116, 32)
-		b.size = Vector2(104, 30)
+		b.position = Vector2(8 + i * 120, 32)
+		b.size = Vector2(104, 32)
 		b.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		s.add_child(b)
 		g_bars[st] = b
-	g_img = _image(s, Game.event["id"], Vector2(12, 67))
+	g_img = _image(s, Game.event["id"], Vector2(8, 64))
 	g_res = g_img.duplicate()
 	g_res.texture = null
 	g_res.modulate.a = 0.0
 	g_img.get_parent().add_child(g_res)
-	g_title = _label(s, "", Vector2(12, 271), Vector2(336, 20), FS, W, HORIZONTAL_ALIGNMENT_LEFT, true)
-	g_desc = _rich(s, Vector2(12, 292), Vector2(336, 120))
+	g_title = _label(s, "", Vector2(8, 280), Vector2(344, 24), FS, W, HORIZONTAL_ALIGNMENT_LEFT, true)
+	g_desc = _rich(s, Vector2(8, 304), Vector2(344, 104))
 	g_desc.gui_input.connect(func(ev):
 		if ev is InputEventMouseButton and ev.pressed:
 			g_desc.visible_ratio = 1.0)
 	g_items = Control.new()
-	g_items.position = Vector2(12, 414)
-	g_items.size = Vector2(336, 22)
+	g_items.position = Vector2(8, 416)
+	g_items.size = Vector2(344, 24)
 	g_items.clip_contents = true
 	s.add_child(g_items)
 	item_scroll = 0
 	g_choices = VBoxContainer.new()
-	g_choices.position = Vector2(12, 440)
-	g_choices.size = Vector2(336, 194)
-	g_choices.add_theme_constant_override("separation", 4)
+	g_choices.position = Vector2(8, 448)
+	g_choices.size = Vector2(344, 184)
+	g_choices.add_theme_constant_override("separation", 8)
 	s.add_child(g_choices)
+	_layout(s, 64, 0)
 	_refresh_hud(false)
 	if intro:
 		_floor_card(func(): _present_event())
@@ -738,7 +805,7 @@ func _build_items() -> void:
 		b.text = it["name"] + ("×%d" % n if n > 1 else "")
 		b.add_theme_font_size_override("font_size", FS_S)
 		var bad: bool = it.get("bad", false)
-		var st := _item_style(R if bad else W)
+		var st := _item_style(R if bad else LG)
 		b.add_theme_stylebox_override("normal", st)
 		b.add_theme_stylebox_override("hover", st)
 		b.add_theme_stylebox_override("pressed", st)
@@ -783,7 +850,7 @@ func _item_arrow(t: String, x: float, enabled: bool, step: int) -> Button:
 	b.position = Vector2(x, 0)
 	b.size = Vector2(ARW, g_items.size.y)
 	b.add_theme_font_size_override("font_size", FS_S)
-	var st := _item_style(W)
+	var st := _item_style(LG)
 	st.set_content_margin_all(0)
 	b.add_theme_stylebox_override("normal", st)
 	b.add_theme_stylebox_override("hover", st)
@@ -801,14 +868,14 @@ func _item_arrow(t: String, x: float, enabled: bool, step: int) -> Button:
 func _item_popup(f: String) -> void:
 	sfx.play("click")
 	var it: Dictionary = Game.ITEMS[f]
-	var p := _overlay_panel(170)
+	var p := _overlay_panel(176)
 	var c := Control.new()
 	p.add_child(c)
 	var cnt := Game.item_count(f)
-	_label(c, it["name"] + ("　×%d" % cnt if cnt > 1 else ""), Vector2(8, 8), Vector2(304, 20), FS, R if it.get("bad", false) else W, HORIZONTAL_ALIGNMENT_LEFT, true)
-	_label(c, it["desc"], Vector2(8, 34), Vector2(304, 76))
+	_label(c, it["name"] + ("　×%d" % cnt if cnt > 1 else ""), Vector2(8, 8), Vector2(312, 24), FS, R if it.get("bad", false) else W, HORIZONTAL_ALIGNMENT_LEFT, true)
+	_label(c, it["desc"], Vector2(8, 40), Vector2(312, 80), FS, LG)
 	if f == "potion" and not busy:
-		_button(c, "使う", Vector2(8, 120), Vector2(144, 36), func():
+		_button(c, "使う", Vector2(8, 128), Vector2(152, 40), func():
 			var h := Game.use_potion()
 			_close_overlay()
 			sfx.play("good")
@@ -816,9 +883,9 @@ func _item_popup(f: String) -> void:
 			_refresh_hud()
 			Game.save_run()
 			g_desc.text += "\n[color=%s]薬瓶を飲んだ。肉体 +%d[/color]" % [_hex(W), h])
-		_button(c, "閉じる", Vector2(168, 120), Vector2(144, 36), func(): _close_overlay())
+		_button(c, "閉じる", Vector2(168, 128), Vector2(152, 40), func(): _close_overlay())
 	else:
-		_button(c, "閉じる", Vector2(88, 120), Vector2(144, 36), func(): _close_overlay())
+		_button(c, "閉じる", Vector2(88, 128), Vector2(152, 40), func(): _close_overlay())
 
 
 ## Black floor card ("地下 N 階"). The next event's image is swapped in while the
@@ -827,14 +894,15 @@ func _floor_card(then: Callable) -> void:
 	busy = true
 	var card := ColorRect.new()
 	card.color = K
-	card.size = Vector2(SW, SH)
+	card.size = Vector2(SW, view_h)
 	card.z_index = 40
 	add_child(card)
 	_clear_event_view()
 	var gate: bool = Game.event.has("fixed")
-	var l := _label(card, "地下 %d 階" % Game.floor_n, Vector2(0, 290), Vector2(SW, 30), FS_L, R if gate else W, HORIZONTAL_ALIGNMENT_CENTER, true)
+	var cy := _snap(view_h / 2.0) - 24
+	var l := _label(card, "地下 %d 階" % Game.floor_n, Vector2(0, cy), Vector2(SW, 32), FS_L, R if gate else W, HORIZONTAL_ALIGNMENT_CENTER, true)
 	if gate:
-		_label(card, "― 門 ―" if Game.floor_n < 100 or Game.endless else "― 最深部 ―", Vector2(0, 328), Vector2(SW, 20), FS, R, HORIZONTAL_ALIGNMENT_CENTER)
+		_label(card, "― 門 ―" if Game.floor_n < 100 or Game.endless else "― 最深部 ―", Vector2(0, cy + 40), Vector2(SW, 24), FS, DR, HORIZONTAL_ALIGNMENT_CENTER)
 		sfx.play("bell")
 	else:
 		sfx.play("step")
@@ -943,16 +1011,16 @@ func _build_choices() -> void:
 	for info in Game.visible_choices():
 		var c: Dictionary = info["c"]
 		var b := Button.new()
-		b.custom_minimum_size = Vector2(336, 62)
+		b.custom_minimum_size = Vector2(344, 56)
 		b.clip_contents = true
 		b.disabled = not info["enabled"]
 		g_choices.add_child(b)
 		var en: bool = info["enabled"]
 		var col: Color = W if en else WD
-		var l1 := _label(b, c["t"], Vector2(8, 5), Vector2(322, 20), FS, col, HORIZONTAL_ALIGNMENT_LEFT, true)
+		var l1 := _label(b, c["t"], Vector2(8, 3), Vector2(328, 20), FS, col, HORIZONTAL_ALIGNMENT_LEFT, true)
 		l1.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		var tag := ""
-		var tagcol := W
+		var tagcol := LG
 		if info["chance"] >= 0:
 			tag = "［%s判定 成功率 %d%%］" % [Game.STAT_NAME[c["chk"]], roundi(info["chance"] * 100)]
 			if info["chance"] < 0.35:
@@ -962,11 +1030,11 @@ func _build_choices() -> void:
 			if info["locked"]:
 				tag = info["tag"] + " が必要"
 			tagcol = R
-		var y := 25
+		var y := 22
 		if tag != "":
-			var l2 := _label(b, tag, Vector2(8, y), Vector2(0, 18), FS_S, tagcol if en else Color(tagcol, 0.45))
+			var l2 := _label(b, tag, Vector2(8, y), Vector2(0, 16), FS_S, tagcol if en else DG)
 			l2.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			y += 17
+			y += 15
 		var pv := _preview(c) if not info["locked"] else ""
 		if pv != "":
 			var r := RichTextLabel.new()
@@ -974,7 +1042,7 @@ func _build_choices() -> void:
 			r.autowrap_mode = TextServer.AUTOWRAP_OFF
 			r.scroll_active = false
 			r.position = Vector2(8, y)
-			r.size = Vector2(322, 18)
+			r.size = Vector2(328, 16)
 			r.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			_rich_size(r, FS_S)
 			r.text = pv
@@ -1076,7 +1144,7 @@ func _show_result(res: Dictionary) -> void:
 	elif res.get("dead", false):
 		label = "力尽きた……"
 	var b := Button.new()
-	b.custom_minimum_size = Vector2(336, 62)
+	b.custom_minimum_size = Vector2(344, 56)
 	b.text = label
 	b.add_theme_font_override("font", font_b)
 	g_choices.add_child(b)
@@ -1105,21 +1173,21 @@ func show_gameover(sum: Dictionary, _res := {}) -> void:
 	music.lullaby(false)
 	music.play("ending" if sum["cleared"] else ("title" if sum.get("retired", false) else "gameover"), 0.8)
 	if sum["cleared"]:
-		_image(s, "clear", Vector2(12, 20))
-		_label(s, "迷宮踏破", Vector2(0, 228), Vector2(SW, 30), FS_L, R, HORIZONTAL_ALIGNMENT_CENTER, true)
+		_image(s, "clear", Vector2(8, 16))
+		_label(s, "迷宮踏破", Vector2(0, 232), Vector2(SW, 32), FS_L, R, HORIZONTAL_ALIGNMENT_CENTER, true)
 	elif sum.get("retired", false):
-		_image(s, "clear", Vector2(12, 20))
-		_label(s, "地下 %d 階から帰還した" % sum["score"], Vector2(0, 228), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
+		_image(s, "clear", Vector2(8, 16))
+		_label(s, "地下 %d 階から帰還した" % sum["score"], Vector2(0, 232), Vector2(SW, 32), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
 	else:
-		_image(s, "gameover", Vector2(12, 20))
-		_label(s, "地下 %d 階で力尽きた" % sum["score"], Vector2(0, 228), Vector2(SW, 30), FS_L, R, HORIZONTAL_ALIGNMENT_CENTER, true)
+		_image(s, "gameover", Vector2(8, 16))
+		_label(s, "地下 %d 階で力尽きた" % sum["score"], Vector2(0, 232), Vector2(SW, 32), FS_L, R, HORIZONTAL_ALIGNMENT_CENTER, true)
 	var cause := ""
 	if not sum["cleared"] and not sum.get("retired", false):
 		for st in Game.STATS:
 			if int(Game.cur[st]) <= 0:
 				cause = {"b": "肉体が限界を迎えた", "m": "精神が闇に呑まれた", "f": "運命に見放された"}[st]
 				break
-	_label(s, cause, Vector2(0, 262), Vector2(SW, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, cause, Vector2(0, 264), Vector2(SW, 24), FS, LG, HORIZONTAL_ALIGNMENT_CENTER)
 	var rows := [["深さの報酬", str(sum["depth_coins"]), W], ["残った金貨", str(sum["gold"]), W]]
 	if sum["bonus"] > 0:
 		rows.append(["踏破ボーナス", str(sum["bonus"]), W])
@@ -1129,16 +1197,16 @@ func show_gameover(sum: Dictionary, _res := {}) -> void:
 		rows.append(["広告ボーナス", "+%d" % sum["ad_bonus"], W])
 	rows.append(["得た魂の欠片", "+%d" % (int(sum["coins"]) + int(sum.get("ad_bonus", 0))), R])
 	rows.append(["魂の欠片 合計", str(Game.save["coins"]), W])
-	var y := 286
+	var y := 288
 	for row in rows:
-		_label(s, row[0], Vector2(60, y), Vector2(150, 20), FS, row[2], HORIZONTAL_ALIGNMENT_LEFT, row[2] == R)
-		_label(s, row[1], Vector2(190, y), Vector2(110, 20), FS, row[2], HORIZONTAL_ALIGNMENT_RIGHT, row[2] == R)
-		y += 20
+		_label(s, row[0], Vector2(56, y), Vector2(152, 24), FS, row[2] if row[2] == R else LG, HORIZONTAL_ALIGNMENT_LEFT, row[2] == R)
+		_label(s, row[1], Vector2(192, y), Vector2(112, 24), FS, row[2], HORIZONTAL_ALIGNMENT_RIGHT, row[2] == R)
+		y += 24
 	var ad_ok: bool = int(sum["coins"]) > 0 and not sum.get("ad_used", false)
-	var bottom := 496 if ad_ok else 540
-	var r := _rich(s, Vector2(24, y + 4), Vector2(312, bottom - y - 4))
+	var bottom := 488 if ad_ok else 536
+	var r := _rich(s, Vector2(16, y + 8), Vector2(328, bottom - y - 8))
 	if ad_ok:
-		var ab := _button(s, "▶ 広告を見て魂の欠片を2倍（+%d）" % int(sum["coins"]), Vector2(12, 500), Vector2(336, 40), func():
+		var ab := _button(s, "▶ 広告を見て魂の欠片を2倍（+%d）" % int(sum["coins"]), Vector2(8, 496), Vector2(344, 40), func():
 			Ads.show_rewarded(self, func():
 				Game.grant_ad_bonus(int(sum["coins"]))
 				sum["ad_bonus"] = int(sum["coins"])
@@ -1164,11 +1232,12 @@ func show_gameover(sum: Dictionary, _res := {}) -> void:
 		if nxt > 0:
 			t += "[center]次の解放まで あと累計 %d 階[/center]" % (nxt - int(Game.save["total"]))
 	_set_fit(r, t)
-	_button(s, "強化", Vector2(12, 548), Vector2(108, 40), show_shop)
-	_button(s, "再び潜る", Vector2(126, 548), Vector2(108, 40), func(): _start(Game.endless))
-	_button(s, "タイトル", Vector2(240, 548), Vector2(108, 40), show_title)
+	_button(s, "強化", Vector2(8, 552), Vector2(104, 40), show_shop)
+	_button(s, "再び潜る", Vector2(128, 552), Vector2(104, 40), func(): _start(Game.endless))
+	_button(s, "タイトル", Vector2(248, 552), Vector2(104, 40), show_title)
 	if sum["first_clear"]:
-		_label(s, "無限迷宮（エンドレス）が解放された！", Vector2(0, 600), Vector2(SW, 20), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER, true)
+		_label(s, "無限迷宮（エンドレス）が解放された！", Vector2(0, 600), Vector2(SW, 24), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER, true)
+	_layout(s, 0, 96)
 
 
 func _tease(title: String) -> String:
@@ -1184,23 +1253,24 @@ func show_ending(res: Dictionary, sum: Dictionary) -> void:
 	music.lullaby(false)
 	music.play("ending", 2.0)
 	sfx.play("bell")
-	var still := _image(s, "clear", Vector2(12, 20))
+	var still := _image(s, "clear", Vector2(8, 16))
 	var et := _res_tex(res.get("key", ""))
 	if et:
 		still.texture = et
 	var nm: String = Game.ENDINGS.get(res["end"], "")
-	_label(s, "ENDING", Vector2(0, 228), Vector2(SW, 20), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "「%s」" % nm, Vector2(0, 248), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
-	var r := _rich(s, Vector2(16, 290), Vector2(328, 260))
+	_label(s, "ENDING", Vector2(0, 232), Vector2(SW, 24), FS_S, DR, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "「%s」" % nm, Vector2(0, 256), Vector2(SW, 32), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
+	var r := _rich(s, Vector2(16, 296), Vector2(328, 264))
 	_set_fit(r, res["text"] + "\n\n[color=%s]エンディング %d / %d[/color]" % [_hex(R), Game.save["endings"].size(), Game.ENDINGS.size()])
 	r.visible_ratio = 0
 	create_tween().tween_property(r, "visible_ratio", 1.0, 3.0)
-	_button(s, "次へ", Vector2(90, 576), Vector2(180, 40), func(): show_gameover(sum, res))
+	_button(s, "次へ", Vector2(88, 584), Vector2(184, 40), func(): show_gameover(sum, res))
+	_layout(s, 0, 64)
 
 
 # ================================================================ collection
 var coll_page := 0
-const PER_PAGE := 20
+const PER_PAGE := 18
 
 
 func show_collection(page := -1) -> void:
@@ -1210,21 +1280,21 @@ func show_collection(page := -1) -> void:
 	_music_menu()
 	var seen: Array = Game.save["seen"]
 	var unl := Game.unlocked_ids()
-	_label(s, "図鑑", Vector2(0, 6), Vector2(SW, 30), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
+	_label(s, "図鑑", Vector2(0, 8), Vector2(SW, 32), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
 	_label(s, "発見 %d / %d　解放 %d / %d" % [seen.size(), Game.events.size(), unl.size(), Game.events.size()],
-		Vector2(0, 38), Vector2(SW, 20), FS, R, HORIZONTAL_ALIGNMENT_CENTER)
+		Vector2(0, 40), Vector2(SW, 24), FS, R, HORIZONTAL_ALIGNMENT_CENTER)
 	var list: Array = Game.events.duplicate()
 	list.sort_custom(func(a, b): return _sort_key(a) < _sort_key(b))
 	var pages := int(ceil(list.size() / float(PER_PAGE)))
 	coll_page = clampi(coll_page, 0, pages - 1)
-	var y := 62
+	var y := 64
 	for i in range(coll_page * PER_PAGE, mini(list.size(), (coll_page + 1) * PER_PAGE)):
 		var e: Dictionary = list[i]
 		var b := Button.new()
-		b.position = Vector2(12, y)
-		b.size = Vector2(336, 22)
+		b.position = Vector2(8, y)
+		b.size = Vector2(344, 24)
 		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
-		var st := _sb(K, W)
+		var st := _sb(K, DG)
 		st.content_margin_top = 1
 		st.content_margin_bottom = 1
 		b.add_theme_stylebox_override("normal", st)
@@ -1243,27 +1313,28 @@ func show_collection(page := -1) -> void:
 			b.text = no + "―― 未解放 ――"
 			b.disabled = true
 		s.add_child(b)
-		y += 23
-	_label(s, "%d / %d" % [coll_page + 1, pages], Vector2(0, 538), Vector2(SW, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
-	var prev := _button(s, "◀ 前", Vector2(12, 532), Vector2(100, 34), func(): show_collection(coll_page - 1))
+		y += 24
+	_label(s, "%d / %d" % [coll_page + 1, pages], Vector2(0, 536), Vector2(SW, 24), FS, LG, HORIZONTAL_ALIGNMENT_CENTER)
+	var prev := _button(s, "◀ 前", Vector2(8, 528), Vector2(96, 40), func(): show_collection(coll_page - 1))
 	prev.disabled = coll_page == 0
-	var nxt := _button(s, "次 ▶", Vector2(248, 532), Vector2(100, 34), func(): show_collection(coll_page + 1))
+	var nxt := _button(s, "次 ▶", Vector2(256, 528), Vector2(96, 40), func(): show_collection(coll_page + 1))
 	nxt.disabled = coll_page >= pages - 1
-	_button(s, "結末 %d/%d" % [Game.save["endings"].size(), Game.ENDINGS.size()], Vector2(12, 584), Vector2(162, 40), _endings_popup)
-	_button(s, "戻る", Vector2(186, 584), Vector2(162, 40), show_title)
+	_button(s, "結末 %d/%d" % [Game.save["endings"].size(), Game.ENDINGS.size()], Vector2(8, 584), Vector2(168, 40), _endings_popup)
+	_button(s, "戻る", Vector2(184, 584), Vector2(168, 40), show_title)
+	_layout(s, 64, 112)
 
 
 func _endings_popup() -> void:
-	var p := _overlay_panel(220)
+	var p := _overlay_panel(264)
 	var c := Control.new()
 	p.add_child(c)
-	_label(c, "到達した結末", Vector2(8, 8), Vector2(304, 20), FS, R, HORIZONTAL_ALIGNMENT_LEFT, true)
-	var y := 34
+	_label(c, "到達した結末", Vector2(8, 8), Vector2(312, 24), FS, R, HORIZONTAL_ALIGNMENT_LEFT, true)
+	var y := 40
 	for en in Game.ENDINGS:
 		var got: bool = Game.save["endings"].has(en)
-		_label(c, ("「%s」" % Game.ENDINGS[en]) if got else "「？？？？」", Vector2(8, y), Vector2(304, 20), FS, W if got else WD)
-		y += 23
-	_button(c, "閉じる", Vector2(88, 166), Vector2(144, 36), func(): _close_overlay())
+		_label(c, ("「%s」" % Game.ENDINGS[en]) if got else "「？？？？」", Vector2(8, y), Vector2(312, 24), FS, W if got else DG)
+		y += 24
+	_button(c, "閉じる", Vector2(88, 216), Vector2(152, 40), func(): _close_overlay())
 
 
 func _sort_key(e: Dictionary) -> float:
@@ -1284,27 +1355,27 @@ func _collection_detail(e: Dictionary, page := 0) -> void:
 				pages.append({"tex": _res_tex("%s_%d_%s" % [e["id"], ci, br]), "title": "▶ " + ch["t"] + tag, "text": ch[br]["d"]})
 	page = clampi(page, 0, pages.size() - 1)
 	var pg: Dictionary = pages[page]
-	var p := _overlay_panel(480, 344)
+	var p := _overlay_panel(496, 344)
 	var c := Control.new()
 	p.add_child(c)
 	var tr := TextureRect.new()
 	tr.texture = pg["tex"]
-	tr.position = Vector2(0, 0)
+	tr.position = Vector2(4, 4)
 	tr.size = Vector2(336, 200)
 	tr.stretch_mode = TextureRect.STRETCH_SCALE
 	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	c.add_child(tr)
-	var tl := _label(c, pg["title"], Vector2(4, 206), Vector2(328, 20), FS, R if e.has("fixed") or page > 0 else W, HORIZONTAL_ALIGNMENT_LEFT, true)
+	var tl := _label(c, pg["title"], Vector2(8, 216), Vector2(328, 24), FS, R if e.has("fixed") or page > 0 else W, HORIZONTAL_ALIGNMENT_LEFT, true)
 	tl.clip_text = true
-	var r := _rich(c, Vector2(4, 230), Vector2(328, 150))
+	var r := _rich(c, Vector2(8, 240), Vector2(328, 152))
 	_set_fit(r, pg["text"])
 	if pages.size() > 1:
-		_label(c, "%d / %d" % [page + 1, pages.size()], Vector2(118, 394), Vector2(100, 20), FS, W, HORIZONTAL_ALIGNMENT_CENTER)
-		var pv := _button(c, "◀", Vector2(4, 388), Vector2(70, 32), func(): _collection_detail(e, page - 1))
+		_label(c, "%d / %d" % [page + 1, pages.size()], Vector2(120, 408), Vector2(104, 24), FS, LG, HORIZONTAL_ALIGNMENT_CENTER)
+		var pv := _button(c, "◀", Vector2(8, 400), Vector2(72, 40), func(): _collection_detail(e, page - 1))
 		pv.disabled = page == 0
-		var nx := _button(c, "▶", Vector2(262, 388), Vector2(70, 32), func(): _collection_detail(e, page + 1))
+		var nx := _button(c, "▶", Vector2(264, 400), Vector2(72, 40), func(): _collection_detail(e, page + 1))
 		nx.disabled = page >= pages.size() - 1
 	else:
-		_label(c, "結果はまだ見ていない", Vector2(4, 394), Vector2(328, 20), FS_S, WD, HORIZONTAL_ALIGNMENT_CENTER)
-	_button(c, "閉じる", Vector2(94, 428), Vector2(148, 36), func(): _close_overlay())
+		_label(c, "結果はまだ見ていない", Vector2(8, 408), Vector2(328, 24), FS_S, DG, HORIZONTAL_ALIGNMENT_CENTER)
+	_button(c, "閉じる", Vector2(96, 448), Vector2(152, 40), func(): _close_overlay())

@@ -557,6 +557,7 @@ def compose(spec, event, seed, base_img, bg_img):
             if name != 'black':
                 G.BGS[name](c)
                 c.fade(lambda x, y, n=name: G.BG_DIM.get(n, 0.5))
+                G.ambient(c, name)
         elif tok.startswith('P:'):
             name, nums, flags = _args(tok[2:])
             dx = nums[0] if len(nums) > 0 else 0

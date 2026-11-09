@@ -26,20 +26,21 @@ func show_rewarded(host: Control, on_reward: Callable, on_closed: Callable) -> v
 
 
 func _show_dummy(host: Control, on_reward: Callable, on_closed: Callable) -> void:
-	var W := Color(0.91, 0.886, 0.83)
-	var R := Color(0.77, 0.11, 0.157)
+	var W := Color8(232, 226, 212)
+	var R := Color8(206, 36, 46)
 	var root := ColorRect.new()
-	root.color = Color(0.055, 0.047, 0.055)
-	root.size = Vector2(360, 640)
+	root.color = Color8(14, 12, 14)
+	root.size = host.size
+	var top := roundf(((host.size.y - 264.0) / 2.0 - 40.0) / 8.0) * 8.0
 	root.z_index = 90
 	root.mouse_filter = Control.MOUSE_FILTER_STOP
 	host.add_child(root)
 	var frame := Panel.new()
-	frame.position = Vector2(24, 150)
-	frame.size = Vector2(312, 260)
+	frame.position = Vector2(24, top)
+	frame.size = Vector2(312, 264)
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = Color(0.055, 0.047, 0.055)
-	sb.border_color = W
+	sb.bg_color = Color8(14, 12, 14)
+	sb.border_color = Color8(152, 146, 136)
 	sb.set_border_width_all(1)
 	frame.add_theme_stylebox_override("panel", sb)
 	root.add_child(frame)
@@ -47,12 +48,12 @@ func _show_dummy(host: Control, on_reward: Callable, on_closed: Callable) -> voi
 	tag.size.x = 312
 	var body := _label(frame, "ここに本物の広告が\n表示されます", Vector2(0, 80), 24, W)
 	body.size.x = 312
-	var cnt := _label(root, "", Vector2(0, 430), 16, W)
+	var cnt := _label(root, "", Vector2(0, top + 280), 16, W)
 	cnt.size.x = 360
 	var close := Button.new()
 	close.text = "報酬を受け取って閉じる"
-	close.position = Vector2(60, 470)
-	close.size = Vector2(240, 40)
+	close.position = Vector2(56, top + 320)
+	close.size = Vector2(248, 40)
 	close.disabled = true
 	root.add_child(close)
 	var left := [DUMMY_SECONDS]

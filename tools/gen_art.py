@@ -10,8 +10,32 @@ from PIL import Image, ImageDraw
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 W, H = 168, 100
 K = (14, 12, 14)
+DG = (74, 70, 70)       # dark grey
+LG = (152, 146, 136)    # light grey
 WH = (232, 226, 212)
-R = (196, 28, 40)
+R = (206, 36, 46)       # bright red
+DR = (110, 20, 28)      # dark red
+PALETTE = [K, DG, LG, WH, R, DR]
+GRAY = [K, DG, LG, WH]
+RED = [K, DR, R]
+
+
+def ramp_of(col):
+    """(ramp, level) of a palette colour."""
+    if col in RED[1:]:
+        return RED, RED.index(col)
+    if col in GRAY:
+        return GRAY, GRAY.index(col)
+    return GRAY, 0
+
+
+def tone(ramp, x, X, Y):
+    """Ordered-dithered colour at fractional level x (0 .. len(ramp)-1)."""
+    x = max(0.0, min(len(ramp) - 1.0, x))
+    base = int(x)
+    if base < len(ramp) - 1 and dith(X, Y, x - base):
+        base += 1
+    return ramp[base]
 B4 = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]]
 
 
@@ -127,6 +151,20 @@ class C:
         m = s.mask(lambda d: d.ellipse(box, fill=255))
         s.dmask(m, lv, c)
 
+    def _paint(s, ip, X, Y, l, c):
+        """Tonal paint: K darkens (as before); grey/red colours raise the pixel
+        toward that colour's ramp at level l (0..1 of the ramp)."""
+        if c == K:
+            if dith(X, Y, l):
+                ip[X, Y] = K
+            return
+        ramp = RED if c in (R, DR) else GRAY
+        top = ramp.index(c) if c in ramp else len(ramp) - 1
+        new = tone(ramp, l * top, X, Y)
+        cr, cl = ramp_of(ip[X, Y])
+        if new != K and (cr is not ramp or ramp.index(new) > cl):
+            ip[X, Y] = new
+
     def dmask(s, m, lv, c=WH, fn=None):
         mp = m.load()
         ip = s.im.load()
@@ -134,8 +172,7 @@ class C:
             for X in range(PW):
                 if mp[X, Y]:
                     l = fn(X / S, Y / S) if fn else lv
-                    if dith(X, Y, l):
-                        ip[X, Y] = c
+                    s._paint(ip, X, Y, l, c)
 
     def drect(s, box, lv, c=WH, fn=None):
         x0, y0, x1, y1 = box
@@ -143,8 +180,7 @@ class C:
         for Y in range(max(0, int(y0 * S)), min(PH, int(y1 * S) + S)):
             for X in range(max(0, int(x0 * S)), min(PW, int(x1 * S) + S)):
                 l = fn(X / S, Y / S) if fn else lv
-                if dith(X, Y, l):
-                    ip[X, Y] = c
+                s._paint(ip, X, Y, l, c)
 
     def glow(s, cx, cy, r, lv, c=WH, only_black=True):
         ip = s.im.load()
@@ -153,8 +189,11 @@ class C:
                 dd = math.hypot(X / S - cx, (Y / S - cy) * 1.2)
                 if dd < r:
                     l = lv * (1 - dd / r) ** 1.4
-                    if dith(X, Y, l) and (not only_black or ip[X, Y] == K):
-                        ip[X, Y] = c
+                    if not only_black or ip[X, Y] == K:
+                        ramp = RED if c in (R, DR) else GRAY
+                        col = tone(ramp, l * 2.2 * (len(ramp) - 1) / 3 * 1.5, X, Y)
+                        if ip[X, Y] == K or ramp_of(ip[X, Y])[1] < ramp.index(col):
+                            ip[X, Y] = col
 
     def speck(s, box, n, c=WH):
         x0, y0, x1, y1 = box
@@ -162,12 +201,26 @@ class C:
             s.px1(s.r.uniform(x0, x1), s.r.uniform(y0, y1), c)
 
     def fade(s, fn):
-        """Darkness: keep a non-black pixel only where dither < visibility."""
+        """Darkness: lower each pixel along its colour ramp by the visibility factor."""
         ip = s.im.load()
         for Y in range(PH):
             for X in range(PW):
-                if ip[X, Y] != K and not dith(X, Y, fn(X / S, Y / S)):
-                    ip[X, Y] = K
+                col = ip[X, Y]
+                if col != K:
+                    v = max(0.0, min(1.0, fn(X / S, Y / S)))
+                    if v >= 1.0:
+                        continue
+                    ramp, lv = ramp_of(col)
+                    ip[X, Y] = tone(ramp, lv * v, X, Y)
+
+    def quantize(s):
+        """Snap every pixel to the 6-colour palette."""
+        ip = s.im.load()
+        for Y in range(PH):
+            for X in range(PW):
+                col = ip[X, Y]
+                if col not in PALETTE:
+                    ip[X, Y] = min(PALETTE, key=lambda p: sum((a - b) ** 2 for a, b in zip(p, col)))
 
     def vignette(s, k=1.0):
         s.fade(lambda x, y: 1.6 - k * 1.25 * max(abs(x - W / 2) / (W / 2), abs(y - H / 2) / (H / 2)) ** 3)
@@ -178,6 +231,8 @@ class C:
 
     def drip(s, x, y, n, c=R):
         s.line((x, y), (x, y + n), c, 2)
+        if c == R:
+            s.line((x + 1, y + 1), (x + 1, y + n), DR, 1)
         s.p(x, y + n, c)
 
 
@@ -1716,6 +1771,24 @@ BG_DIM = dict(corridor=0.5, room=0.45, cave=0.6, stairs=0.6, lake=0.6, chasm=0.6
 SPECIAL = {('void', 'well'): void_well, ('void', 'mirror'): void_mirror}
 
 
+AMBIENT = dict(corridor=0.32, room=0.3, cave=0.26, stairs=0.3, lake=0.24, chasm=0.2, library=0.28, crypt=0.28,
+               shrine=0.3, fungus=0.26, ruins=0.26, prison=0.28, flesh=0.22, void=0.12)
+
+
+def ambient(c, bg):
+    """Faint light from the viewer's lantern: black areas fade up through dark grey."""
+    lv = AMBIENT.get(bg, 0.25)
+    ip = c.im.load()
+    for Y in range(PH):
+        for X in range(PW):
+            if ip[X, Y] == K:
+                x, y = X / S, Y / S
+                d = math.hypot((x - 84) / 110, (y - 112) / 70)
+                l = lv * max(0.0, 1 - d) ** 1.3
+                if l > 0:
+                    ip[X, Y] = tone(GRAY, l * 3, X, Y)
+
+
 def frame(c):
     c.rect((0, 0, W - 1, H - 1), None, WH) if False else None
 
@@ -1730,12 +1803,14 @@ def render(art, seed):
     if pr == 'flooded':
         bg_corridor(c)
     c.fade(lambda x, y: BG_DIM.get(bg, 0.5))
+    ambient(c, bg)
     fn = SPECIAL.get((bg, pr)) or P.get(pr)
     if fn:
         fn(c)
     else:
         print('missing prop', pr, file=sys.stderr)
     c.vignette(0.9)
+    c.quantize()
     return c.im
 
 

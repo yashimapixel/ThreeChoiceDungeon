@@ -28,6 +28,7 @@ def scene(c, bg):
     """Background only (dimmed), for bespoke drawings."""
     G.BGS[bg](c)
     c.fade(lambda x, y: G.BG_DIM.get(bg, 0.5))
+    G.ambient(c, bg)
 
 
 # ------------------------------------------------------------------ item icons
@@ -746,6 +747,7 @@ def render_result(e, ci, br, base, bg_only):
         c = C(sd)
         BESPOKE[key](c)
         c.vignette(0.9)
+        c.quantize()
         return c.im, 'bespoke'
     spec = result_scenes.SCENES.get(key)
     if spec:
@@ -762,6 +764,7 @@ def render_result(e, ci, br, base, bg_only):
         if icons:
             corner_icons(c, r)
         c.vignette(0.9)
+        c.quantize()
         return c.im, 'scene'
     return generic(base, r, sd), 'generic'
 
@@ -774,6 +777,7 @@ def bg_only_img(e):
     else:
         G.BGS[bg](c)
     c.fade(lambda x, y: G.BG_DIM.get(bg, 0.5))
+    G.ambient(c, bg)
     return c.im
 
 

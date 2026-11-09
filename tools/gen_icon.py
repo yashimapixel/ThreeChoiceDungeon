@@ -2,7 +2,7 @@
 import os
 from PIL import Image, ImageDraw
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-K, W, R = (14, 12, 14), (232, 226, 212), (196, 28, 40)
+K, W, R = (14, 12, 14), (232, 226, 212), (206, 36, 46)
 
 def doors(size=48):
     im = Image.new('RGB', (size, size), K)
