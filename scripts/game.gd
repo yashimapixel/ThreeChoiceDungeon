@@ -425,17 +425,18 @@ func resolve(c: Dictionary) -> Dictionary:
 			res["text"] += "\n" + x["d"]
 	var fx: bool = r.get("fixed", false)
 	var deltas := {}
+	var success := branch == "ok"   # a successful check never lowers stats
 	for s in STATS:
 		var before: int = cur[s]
 		var mk: String = "m" + s
-		if r.has(mk):
+		if r.has(mk) and not (success and int(r[mk]) < 0):
 			var inc := int(r[mk])
 			mx[s] = maxi(1, int(mx[s]) + inc)
 			res["max_" + s] = inc
 			if inc > 0:
 				cur[s] = mini(int(mx[s]), int(cur[s]) + inc)
 			cur[s] = mini(int(cur[s]), int(mx[s]))
-		if r.has(s):
+		if r.has(s) and not (success and int(r[s]) < 0):
 			cur[s] = mini(int(mx[s]), int(cur[s]) + sv(int(r[s]), fx))
 		if int(cur[s]) != before:
 			deltas[s] = int(cur[s]) - before

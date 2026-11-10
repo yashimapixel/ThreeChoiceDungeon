@@ -2,8 +2,8 @@
  "base_stat": 10,
  "stat_per_level": 2,
  "cost_base": 10,
- "cost_lin": 8,
- "cost_quad": 1.5,
+ "cost_lin": 11,
+ "cost_quad": 2.75,
  "depth_div": 20,
  "chk_per": 0.03,
  "chk_ref": 10,
@@ -39,7 +39,7 @@
    "m": 0.1
   }
  },
- "neg_mult": 2.3,
+ "neg_mult": 2.4,
  "pos_mult": 0.9,
  "checkpoint_cost": {
   "25": 20,

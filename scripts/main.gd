@@ -281,22 +281,73 @@ func _setup_theme() -> void:
 	t.set_font("bold_font", "RichTextLabel", font_b)
 	t.set_constant("line_separation", "RichTextLabel", 3)
 	t.set_constant("line_spacing", "Label", 3)
-	t.set_stylebox("normal", "Button", _sb(K, LG))
-	t.set_stylebox("hover", "Button", _sb(K, LG))
-	t.set_stylebox("pressed", "Button", _sb(K, R, 2))
-	t.set_stylebox("hover_pressed", "Button", _sb(K, R, 2))
-	t.set_stylebox("disabled", "Button", _sb(K, WD))
+	t.set_stylebox("normal", "Button", _skin("btn_normal", 4, 6))
+	t.set_stylebox("hover", "Button", _skin("btn_normal", 4, 6))
+	t.set_stylebox("pressed", "Button", _skin("btn_pressed", 6, 4))
+	t.set_stylebox("hover_pressed", "Button", _skin("btn_pressed", 6, 4))
+	t.set_stylebox("disabled", "Button", _skin("btn_disabled", 5, 5))
 	t.set_stylebox("focus", "Button", StyleBoxEmpty.new())
 	t.set_color("font_color", "Button", W)
 	t.set_color("font_hover_color", "Button", W)
-	t.set_color("font_pressed_color", "Button", R)
-	t.set_color("font_hover_pressed_color", "Button", R)
+	t.set_color("font_pressed_color", "Button", LG)
+	t.set_color("font_hover_pressed_color", "Button", LG)
 	t.set_color("font_focus_color", "Button", W)
 	t.set_color("font_disabled_color", "Button", WD)
 	var ps := _sb(K, LG)
 	ps.set_content_margin_all(0)
 	t.set_stylebox("panel", "PanelContainer", ps)
 	theme = t
+
+
+## 9-patch pixel button skin from art/ui (12x12, patch margins 3/3/3/4).
+## top/bottom are the content margins: the pressed skin sinks the label by 2px.
+func _skin(name: String, top := 4, bottom := 6, patch := Vector4(3, 3, 3, 4)) -> StyleBoxTexture:
+	var t := StyleBoxTexture.new()
+	t.texture = load("res://art/ui/%s.png" % name)
+	t.texture_margin_left = patch.x
+	t.texture_margin_top = patch.y
+	t.texture_margin_right = patch.z
+	t.texture_margin_bottom = patch.w
+	t.content_margin_left = 8
+	t.content_margin_right = 8
+	t.content_margin_top = top
+	t.content_margin_bottom = bottom
+	return t
+
+
+## Overlay backdrop: the screen behind stays visible, every pixel one palette step darker
+## (white > light grey > dark grey > black, bright red > dark red > black).
+const DIM_SHADER := """
+shader_type canvas_item;
+uniform sampler2D screen_tex : hint_screen_texture, filter_nearest;
+void fragment() {
+	vec3 c = texture(screen_tex, SCREEN_UV).rgb;
+	vec3 pk = vec3(14.0, 12.0, 14.0) / 255.0;
+	vec3 pdg = vec3(74.0, 70.0, 70.0) / 255.0;
+	vec3 plg = vec3(152.0, 146.0, 136.0) / 255.0;
+	vec3 pw = vec3(232.0, 226.0, 212.0) / 255.0;
+	vec3 pr = vec3(206.0, 36.0, 46.0) / 255.0;
+	vec3 pdr = vec3(110.0, 20.0, 28.0) / 255.0;
+	vec3 o = pk;
+	float bd = distance(c, pk);
+	float d = distance(c, pdg); if (d < bd) { bd = d; o = pk; }
+	d = distance(c, plg); if (d < bd) { bd = d; o = pdg; }
+	d = distance(c, pw); if (d < bd) { bd = d; o = plg; }
+	d = distance(c, pr); if (d < bd) { bd = d; o = pdr; }
+	d = distance(c, pdr); if (d < bd) { bd = d; o = pk; }
+	COLOR = vec4(o, 1.0);
+}
+"""
+var _dim_mat: ShaderMaterial
+
+
+func _dim_material() -> ShaderMaterial:
+	if _dim_mat == null:
+		var sh := Shader.new()
+		sh.code = DIM_SHADER
+		_dim_mat = ShaderMaterial.new()
+		_dim_mat.shader = sh
+	return _dim_mat
 
 
 func _sb(bg: Color, border: Color, bw := 1) -> StyleBoxFlat:
@@ -481,7 +532,9 @@ func _overlay_panel(h: int, w := 328) -> PanelContainer:
 	add_child(overlay)
 	var dim := ColorRect.new()
 	dim.color = K
-	dim.size = Vector2(SW, view_h)
+	dim.material = _dim_material()
+	dim.position = Vector2(-position.x, 0)
+	dim.size = Vector2(maxf(SW, get_viewport().get_visible_rect().size.x), view_h)
 	dim.gui_input.connect(func(ev):
 		if ev is InputEventMouseButton and ev.pressed:
 			_close_overlay())
@@ -584,7 +637,7 @@ func show_title() -> void:
 			show_title()), 12)
 	if sv["cleared"]:
 		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 576), Vector2(SW, 16), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.9　Font: PixelMplus (M+ FONTS)", Vector2(112, 608), Vector2(240, 24), 12, DG, HORIZONTAL_ALIGNMENT_RIGHT)
+	_label(s, "v1.10　Font: PixelMplus (M+ FONTS)", Vector2(112, 608), Vector2(240, 24), 12, DG, HORIZONTAL_ALIGNMENT_RIGHT)
 	_layout(s, 32, 40)
 
 
@@ -790,7 +843,7 @@ func _item_style(col: Color) -> StyleBoxFlat:
 	return st
 
 
-## One-line item row. When the items don't fit, ◀ ▶ buttons page through them.
+## One-line item row of 24x24 icon buttons. When they don't fit, ◀ ▶ page through them.
 func _build_items() -> void:
 	for c in g_items.get_children():
 		g_items.remove_child(c)
@@ -798,52 +851,42 @@ func _build_items() -> void:
 	var names: Array = Game.item_list()
 	if names.is_empty():
 		return
-	var btns := []
-	var widths := []
-	for f in names:
-		var it: Dictionary = Game.ITEMS[f]
-		var b := Button.new()
-		var n := Game.item_count(f)
-		b.text = it["name"] + ("×%d" % n if n > 1 else "")
-		b.add_theme_font_size_override("font_size", FS_S)
-		var bad: bool = it.get("bad", false)
-		var st := _item_style(R if bad else LG)
-		b.add_theme_stylebox_override("normal", st)
-		b.add_theme_stylebox_override("hover", st)
-		b.add_theme_stylebox_override("pressed", st)
-		if bad:
-			b.add_theme_color_override("font_color", R)
-			b.add_theme_color_override("font_hover_color", R)
-		b.pressed.connect(func(): _item_popup(f))
-		g_items.add_child(b)
-		btns.append(b)
-		widths.append(b.get_combined_minimum_size().x)
-	var gap := 4.0
-	var total := -gap
-	for w in widths:
-		total += w + gap
+	var gap := 8.0
+	var cell := 24.0
+	var total := names.size() * (cell + gap) - gap
 	var arrows: bool = total > g_items.size.x
-	item_scroll = clampi(item_scroll, 0, btns.size() - 1) if arrows else 0
 	var x0 := (ARW + gap) if arrows else 0.0
 	var x1 := g_items.size.x - ((ARW + gap) if arrows else 0.0)
+	var per := int(floor((x1 - x0 + gap) / (cell + gap)))
+	item_scroll = clampi(item_scroll, 0, maxi(0, names.size() - per)) if arrows else 0
 	var x := x0
-	var last := item_scroll - 1
-	for i in btns.size():
-		var b: Button = btns[i]
-		if i >= item_scroll and x + widths[i] <= x1 + 0.5:
-			b.position = Vector2(x, 0)
-			b.size = Vector2(widths[i], g_items.size.y)
-			x += widths[i] + gap
-			last = i
-		else:
-			b.visible = false
-			if i > last and last >= item_scroll:
-				x = x1 + 1   # stop placing after the first item that does not fit
+	for i in range(item_scroll, mini(names.size(), item_scroll + per)):
+		var f: String = names[i]
+		var it: Dictionary = Game.ITEMS[f]
+		var b := Button.new()
+		b.icon = load("res://art/items/%s.png" % f)
+		b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		b.position = Vector2(x, 0)
+		b.size = Vector2(cell, cell)
+		var bad: bool = it.get("bad", false)
+		var frame := _skin("item_frame_bad" if bad else "item_frame", 2, 2, Vector4(2, 2, 2, 2))
+		frame.content_margin_left = 2
+		frame.content_margin_right = 2
+		b.add_theme_stylebox_override("normal", frame)
+		b.add_theme_stylebox_override("hover", frame)
+		b.add_theme_stylebox_override("pressed", _skin("item_frame_down", 2, 2, Vector4(2, 2, 2, 2)))
+		b.pressed.connect(func(): _item_popup(f))
+		g_items.add_child(b)
+		var n := Game.item_count(f)
+		if n > 1:
+			var l := _label(b, str(n), Vector2(12, 10), Vector2(14, 14), 12, W, HORIZONTAL_ALIGNMENT_RIGHT)
+			l.add_theme_constant_override("outline_size", 3)
+			l.add_theme_color_override("font_outline_color", K)
+			l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		x += cell + gap
 	if arrows:
-		var lb := _item_arrow("◀", 0, item_scroll > 0, -1)
-		var rb := _item_arrow("▶", g_items.size.x - ARW, last < btns.size() - 1, 1)
-		lb.tooltip_text = ""
-		rb.tooltip_text = ""
+		_item_arrow("◀", 0, item_scroll > 0, -1)
+		_item_arrow("▶", g_items.size.x - ARW, item_scroll + per < names.size(), 1)
 
 
 func _item_arrow(t: String, x: float, enabled: bool, step: int) -> Button:
@@ -852,12 +895,13 @@ func _item_arrow(t: String, x: float, enabled: bool, step: int) -> Button:
 	b.position = Vector2(x, 0)
 	b.size = Vector2(ARW, g_items.size.y)
 	b.add_theme_font_size_override("font_size", FS_S)
-	var st := _item_style(LG)
-	st.set_content_margin_all(0)
-	b.add_theme_stylebox_override("normal", st)
-	b.add_theme_stylebox_override("hover", st)
-	b.add_theme_stylebox_override("pressed", _item_style(R))
-	b.add_theme_stylebox_override("disabled", _item_style(WD))
+	for k in ["normal", "hover", "pressed", "disabled"]:
+		var sk: StyleBoxTexture = theme.get_stylebox(k, "Button").duplicate()
+		sk.content_margin_left = 0
+		sk.content_margin_right = 0
+		sk.content_margin_top = 0
+		sk.content_margin_bottom = 2
+		b.add_theme_stylebox_override(k, sk)
 	b.disabled = not enabled
 	b.pressed.connect(func():
 		sfx.play("click")
@@ -874,7 +918,13 @@ func _item_popup(f: String) -> void:
 	var c := Control.new()
 	p.add_child(c)
 	var cnt := Game.item_count(f)
-	_label(c, it["name"] + ("　×%d" % cnt if cnt > 1 else ""), Vector2(8, 8), Vector2(312, 24), FS, R if it.get("bad", false) else W, HORIZONTAL_ALIGNMENT_LEFT, true)
+	var ic := TextureRect.new()
+	ic.texture = load("res://art/items/%s.png" % f)
+	ic.position = Vector2(8, 8)
+	ic.size = Vector2(24, 24)
+	ic.stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+	c.add_child(ic)
+	_label(c, it["name"] + ("　×%d" % cnt if cnt > 1 else ""), Vector2(40, 8), Vector2(280, 24), FS, R if it.get("bad", false) else W, HORIZONTAL_ALIGNMENT_LEFT, true)
 	_label(c, it["desc"], Vector2(8, 40), Vector2(312, 80), FS, LG)
 	if f == "potion" and not busy:
 		_button(c, "使う", Vector2(8, 128), Vector2(152, 40), func():
@@ -1342,8 +1392,11 @@ func show_collection(page := -1) -> void:
 		var st := _sb(K, DG)
 		st.content_margin_top = 1
 		st.content_margin_bottom = 1
-		b.add_theme_stylebox_override("normal", st)
-		b.add_theme_stylebox_override("hover", st)
+		b.add_theme_stylebox_override("disabled", st)
+		var sk := _skin("btn_normal", 2, 3)
+		b.add_theme_stylebox_override("normal", sk)
+		b.add_theme_stylebox_override("hover", sk)
+		b.add_theme_stylebox_override("pressed", _skin("btn_pressed", 3, 2))
 		var no := "%03d " % (i + 1)
 		if seen.has(e["id"]):
 			b.text = no + e["t"]
