@@ -637,7 +637,7 @@ func show_title() -> void:
 			show_title()), 12)
 	if sv["cleared"]:
 		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 576), Vector2(SW, 16), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.10　Font: PixelMplus (M+ FONTS)", Vector2(112, 608), Vector2(240, 24), 12, DG, HORIZONTAL_ALIGNMENT_RIGHT)
+	_label(s, "v1.10.1　Font: PixelMplus (M+ FONTS)", Vector2(112, 608), Vector2(240, 24), 12, DG, HORIZONTAL_ALIGNMENT_RIGHT)
 	_layout(s, 32, 40)
 
 
@@ -877,6 +877,8 @@ func _build_items() -> void:
 		b.add_theme_stylebox_override("pressed", _skin("item_frame_down", 2, 2, Vector4(2, 2, 2, 2)))
 		b.pressed.connect(func(): _item_popup(f))
 		g_items.add_child(b)
+		b.position = Vector2(x, 0)
+		b.size = Vector2(cell, cell)
 		var n := Game.item_count(f)
 		if n > 1:
 			var l := _label(b, str(n), Vector2(12, 10), Vector2(14, 14), 12, W, HORIZONTAL_ALIGNMENT_RIGHT)
@@ -908,6 +910,8 @@ func _item_arrow(t: String, x: float, enabled: bool, step: int) -> Button:
 		item_scroll += step
 		_build_items())
 	g_items.add_child(b)
+	b.position = Vector2(x, 0)
+	b.size = Vector2(ARW, g_items.size.y)
 	return b
 
 
@@ -1019,7 +1023,7 @@ func _typewrite() -> void:
 
 
 ## Compact bbcode summary of a result, scaled to the current floor (for previews).
-func _effect_text(r: Dictionary) -> String:
+func _effect_text(r: Dictionary, tint := "") -> String:
 	var parts := []
 	var fx: bool = r.get("fixed", false)
 	for st in Game.STATS:
@@ -1044,8 +1048,14 @@ func _effect_text(r: Dictionary) -> String:
 	elif sk < 0:
 		parts.append("[color=%s]後退[/color]" % _hex(R))
 	if parts.is_empty():
-		return "変化なし"
-	return " ".join(parts)
+		parts = ["変化なし"]
+	var t := " ".join(parts)
+	if tint != "":
+		# one colour for the whole outcome: strip per-value colours
+		var re := RegEx.new()
+		re.compile("\\[/?color[^\\]]*\\]")
+		t = "[color=%s]%s[/color]" % [tint, re.sub(t, "", true)]
+	return t
 
 
 ## Preview of already-seen outcomes for a choice ("" if none seen yet).
@@ -1055,7 +1065,9 @@ func _preview(c: Dictionary) -> String:
 		var ng := Game.is_known(c, "ng")
 		if not ok and not ng:
 			return ""
-		return "成功→%s／失敗→%s" % [_effect_text(c["ok"]) if ok else "？", _effect_text(c["ng"]) if ng else "？"]
+		var a := "[color=%s]成功→[/color]%s" % [_hex(W), _effect_text(c["ok"], _hex(W)) if ok else "[color=%s]？[/color]" % _hex(W)]
+		var b := "[color=%s]失敗→[/color]%s" % [_hex(R), _effect_text(c["ng"], _hex(R)) if ng else "[color=%s]？[/color]" % _hex(R)]
+		return a + "　　" + b
 	if Game.is_known(c, "r"):
 		return "結果→" + _effect_text(c["r"])
 	return ""

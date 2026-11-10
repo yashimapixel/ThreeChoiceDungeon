@@ -11,7 +11,7 @@ Godot 4.7 / 論理解像度 360×640（縦画面）/ Android 対応。
 
 ## APK
 
-`release/ThreeChoiceDungeon-v1.10.0.apk`（arm64-v8a / armeabi-v7a, 署名済み）
+`release/ThreeChoiceDungeon-v1.10.1.apk`（arm64-v8a / armeabi-v7a, 署名済み）
 
 ## ゲームの仕組み
 
