@@ -39,7 +39,7 @@
    "m": 0.1
   }
  },
- "neg_mult": 2.1,
+ "neg_mult": 2.3,
  "pos_mult": 0.9,
  "checkpoint_cost": {
   "25": 20,
@@ -49,5 +49,6 @@
  "recent_mult": [
   0.1,
   0.35
- ]
+ ],
+ "beat_mult": 2.5
 }

@@ -499,8 +499,8 @@ e095:1:ok B H:sleep@84,96 X:light@84,50,30
 e095:1:ng B H:sleep@84,96 FX:mad2 FX:dark
 e095:2:ok B H:slash@60+sword X:cracks@110,50,5
 e095:2:ng B H:hurt@60 X:tentacles@84,99,3
-e096:0:ok B H:reach@60 X:light@44,36,24
-e096:0:ng B H:reach@60 X:text@60,64,6 FX:mad2
+e096:0:ok B H:sit@66,92,28 X:light@60,40,30
+e096:0:ng B H:cower@66 X:text@84,40,6 FX:mad2
 e096:1:ok B H:sleep@124,64,30 X:light@124,60,30
 e096:1:ng B H:sleep@124,64,30 X:hands@44,52,3 FX:mad2
 e096:2:r  BG X:door_open@84,70 H:back@84,94,40
@@ -565,4 +565,32 @@ x07:3:r  BG H:walk@84 FX:dark
 x08:0:r  bg=stairs H:back@84,92,34 X:rays@84,0,9 X:light@84,0,60
 x08:1:r  B H:stand@30 X:light@84,40,30
 x08:2:r  B H:reach@40 X:item@60,60,potion X:item@84,60,holy noicons
+''')
+
+
+# ------------------------------------------------------------ story beats (chapters)
+add('''
+n06:0:ok B H:back@60,96,36 X:light@60,46,20
+n06:0:ng B H:cower@40 X:eyes@60,46,1 FX:mad2
+n06:1:r  B H:listen@24 X:text@30,48,3
+n06:2:r  B H:reach@96 X:flame@106,50,4
+n01:0:ok B H:back@40,96,36 X:light@84,50,30
+n01:0:ng B H:back@40,96,36 X:text@84,40,10 FX:mad2
+n01:1:r  B H:reach@40 X:coins@40,94,4
+n01:2:r  B H:slash@40 X:text@100,30,8 X:cracks@84,50,3
+n02:0:r  B X:girl@120,94,22 H:kneel@96f FX:quiet
+n02:1:r  B H:back@40,96,38 X:text@88,58,6
+n02:2:r  B H:kneel@40 X:light@88,60,24
+n02:3:r  B H:walk@150,96,26
+n03:0:r  B H:listen@40 X:text@100,40,4 FX:quiet
+n03:1:ok B H:stand@40 X:light@84,50,36
+n03:1:ng B H:stand@40 FX:dark
+n03:2:r  B H:back@60,96,36 X:sparkle@84,40,4
+n04:0:r  B H:reach@40 X:memo@60,70 X:light@84,60,30
+n04:1:r  B H:carry@40 X:memo@50,68 X:memo@54,72
+n04:2:r  B H:stand@30 X:memo@84,40
+n05:0:r  B H:stand@124f X:text@84,40,4
+n05:1:ok B H:listen@124f X:light@84,60,30
+n05:1:ng B H:stand@124f FX:dark
+n05:2:r  B H:reach@124f X:item@108,60,rope X:item@132,60,potion noicons
 ''')

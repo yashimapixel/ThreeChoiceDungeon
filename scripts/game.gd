@@ -30,6 +30,31 @@ const ITEMS := {
 	"eye": {"name": "第三の眼", "desc": "見えないものが見える。運命判定+15%。", "bad": true, "unique": true},
 }
 
+## Four chapters (起承転結), one per depth band; gates sit at the chapter ends.
+const CHAPTERS := {1: "第一章　降下", 26: "第二章　弔い", 51: "第三章　引き離された夜", 76: "第四章　子守唄"}
+
+## Journal: truth fragments, unlocked by meta flags (written as the adventurer's notes).
+const JOURNAL := [
+	{"ch": 1, "meta": "replica_rule", "t": "迷宮は、呑み込んだ場所と、誰かの記憶を写し取るらしい。写しは、どこか少しだけ間違っている。"},
+	{"ch": 1, "meta": "girl_met", "t": "影のない、白い服の少女。胸元に王家の紋章。「お母さまのところに連れてって」"},
+	{"ch": 1, "meta": "diary1", "t": "封蝋の跡のあるメモ。『病で逝ったあの子に、もう一度会いたい』"},
+	{"ch": 1, "meta": "met_knight", "t": "錆びた甲冑の亡霊。「……三年。まだ、底へは届かぬ。あの方々を、お救いせねば」"},
+	{"ch": 2, "meta": "diary2", "t": "二枚目のメモ。追ってくる鎧の音。降りるほどに聞こえる、子どもの泣き声。"},
+	{"ch": 2, "meta": "grave_seen", "t": "作り物めいた小さな墓。王家の紋章。隣には、何も刻まれていない空の墓。"},
+	{"ch": 2, "meta": "witch_truth", "t": "魔女の話。三年前、泣き腫らした目の女が底へ降りた。「喰らって、形にして返した。この迷宮が、その形さ」"},
+	{"ch": 2, "meta": "knight_truth", "t": "騎士の最後の戦い。底のものに敗れた。「あの眼を潰さねば」"},
+	{"ch": 3, "meta": "decree_truth", "t": "滲んだ命令書。罹患者は隔離塔へ。例外は認めない。余白に一言、『……娘も』。"},
+	{"ch": 3, "meta": "tower_truth", "t": "沈んだ隔離塔。壁いっぱいの落書き。『おかあさまに あいたい』"},
+	{"ch": 3, "meta": "knight_guilt", "t": "騎士の告白。熱に浮かされた姫を母の腕から引き剥がし、塔へ運んだのは、自分だった。"},
+	{"ch": 3, "meta": "king_letters", "t": "毎晩、迷宮に投げ入れられる王の手紙。『あの子に最後の子守唄を歌わせてやれなかった』"},
+	{"ch": 3, "meta": "diary3", "t": "最後のメモ。底のものに願った。『もう二度と、離れたくない』"},
+	{"ch": 3, "meta": "loop_truth", "t": "死ぬたび、あの子守唄が自分を入口へ連れ戻している。歌の主は、挑む者を手放せない。"},
+	{"ch": 4, "meta": "heart_truth", "t": "迷宮の心臓。内側を歩く小さな足音を、愛おしむような鼓動。"},
+	{"ch": 4, "meta": "sickroom", "t": "あの夜の部屋。白い寝台、窓辺の花、枕元の椅子。甲冑の足音。"},
+]
+
+const EPI_KNOWN := ["decree_truth", "king_letters", "knight_guilt", "tower_truth"]
+
 const ENDINGS := {
 	"slay": "闇を斬る者",
 	"wish": "生還",
@@ -254,7 +279,15 @@ func pick_event() -> void:
 		event = fixed[[25, 50, 75][(floor_n / 25) % 3]]
 	else:
 		var cands := []
+		# guarantee: in the last 4 floors of a chapter, an unseen beat of that chapter comes first
+		var ch := chapter_of(floor_n)
+		if not endless and floor_n >= ch * 25 - 4 and floor_n < ch * 25:
+			for e in _candidates(false, false):
+				if int(e.get("beat", 0)) == ch:
+					cands.append(e)
 		for mode in [[false, false], [true, false], [false, true], [true, true]]:
+			if not cands.is_empty():
+				break
 			cands = _candidates(mode[0], mode[1])
 			if not cands.is_empty():
 				break
@@ -273,9 +306,16 @@ func pick_event() -> void:
 		save["seen"].append(event["id"])
 
 
+static func chapter_of(f: int) -> int:
+	return 1 if f <= 25 else (2 if f <= 50 else (3 if f <= 75 else 4))
+
+
 ## Event weight, lowered for events seen in the last two runs (less early repetition).
+## Story beats are boosted and exempt from the recency penalty.
 func _weight(e: Dictionary) -> float:
 	var w := float(e.get("w", 5))
+	if e.has("beat"):
+		return w * float(B["beat_mult"])
 	if save["recent1"].has(e["id"]):
 		w *= float(B["recent_mult"][0])
 	elif save["recent2"].has(e["id"]):
@@ -303,7 +343,7 @@ func _candidates(relax_seen: bool, relax_max: bool) -> Array:
 
 
 func event_text() -> String:
-	var t: String = event["d"]
+	var t: String = String(event["d"]).replace("{runs}", str(int(save["runs"]) + 1))
 	for x in event.get("dx", []):
 		if _flags_ok(x):
 			t += "\n" + x["d"]
@@ -590,6 +630,33 @@ func resume_run() -> void:
 		meta_new[f] = true
 	event = by_id.get(r["event"], events[0])
 	last_ending = ""
+
+
+func knows(m: String) -> bool:
+	return save["meta"].has(m) or meta_new.has(m)
+
+
+## Epilogue after an ending: what the king hears (depends on the truths you learned).
+func epilogue(end_id: String) -> String:
+	var known := false
+	for m in EPI_KNOWN:
+		if knows(m):
+			known = true
+	if end_id == "wish":
+		return "あなたは地上へ戻った。王の問いに、あなたは答えられなかった。\n今夜も、王都の地下には、言葉のない子守唄が響いている。"
+	if end_id == "throne":
+		return "あなたは、地上へ戻らなかった。\n王都の地下の子守唄は、いつしか、二つの声で歌われるようになったという。"
+	if known:
+		return "地上に戻ったあなたは、玉座の間ですべてを話した。隔離塔のこと。命令書の一行のこと。底で見たもののこと。\n孤独な王は長いあいだ黙って聞き、やがて、三年ぶりに二人の名を呼んで泣いた。\nその夜から、王都の地下に子守唄は響かなくなった。王は、三年ぶりに静かな眠りについた。"
+	return "地上に戻ったあなたの報告を、王は黙って聞いた。迷宮の底に何があったのか、あなたにもすべてはわからない。\nただ、その夜から、王都の地下に子守唄は響かなくなった。"
+
+
+func journal_count() -> Array:
+	var n := 0
+	for j in JOURNAL:
+		if save["meta"].has(j["meta"]):
+			n += 1
+	return [n, JOURNAL.size()]
 
 
 func item_list() -> Array:

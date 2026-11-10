@@ -169,5 +169,25 @@ func _run() -> void:
 	var smr: Dictionary = G.end_run(false, true)
 	assert(smr["retired"] and smr["score"] == 120)
 	print("endless OK")
+	# chapter beats: in the last floors of a chapter an unseen beat is guaranteed
+	G.reset_save()
+	G.start_run(false)
+	G.floor_n = 22
+	G.pick_event()
+	assert(int(G.event.get("beat", 0)) == 1)
+	G.start_run(false)
+	G.floor_n = 72
+	G.pick_event()
+	assert(int(G.event.get("beat", 0)) == 3)
+	# death count in dialogue, epilogue variants, journal
+	G.save["runs"] = 6
+	G.event = G.by_id["n05"]
+	assert(G.event_text().contains("7度目"))
+	G.meta_new = {}
+	assert(not G.epilogue("true").contains("隔離塔"))
+	G.save["meta"].append("decree_truth")
+	assert(G.epilogue("true").contains("隔離塔"))
+	assert(G.journal_count()[0] == 1)
+	print("story OK")
 	G.reset_save()
 	quit()

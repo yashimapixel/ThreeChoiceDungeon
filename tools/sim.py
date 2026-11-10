@@ -34,6 +34,8 @@ def ok_flags(o, flags, meta=None):
 
 def weight(e, meta):
     w = e.get('w', 5)
+    if 'beat' in e:
+        return w * B['beat_mult']
     if e['id'] in meta.get('recent1', ()):
         w *= B['recent_mult'][0]
     elif e['id'] in meta.get('recent2', ()):
@@ -54,9 +56,13 @@ def pick_event(F, st, meta, rng):
             if e['id'] in st['seen'] and (not relax_seen or e.get('once')): continue
             out.append(e)
         return out
+    ch = 1 if F <= 25 else 2 if F <= 50 else 3 if F <= 75 else 4
+    c = []
+    if not st['endless'] and ch * 25 - 4 <= F < ch * 25:
+        c = [e for e in cands(False, False) if e.get('beat') == ch]
     for rs, rm in [(False, False), (True, False), (False, True), (True, True)]:
-        c = cands(rs, rm)
         if c: break
+        c = cands(rs, rm)
     tot = sum(weight(e, meta) for e in c); x = rng.random() * tot
     for e in c:
         x -= weight(e, meta)

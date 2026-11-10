@@ -575,14 +575,16 @@ func show_title() -> void:
 	_button(s, "強化", Vector2(48, y), Vector2(128, 40), show_shop)
 	_button(s, "図鑑", Vector2(184, y), Vector2(128, 40), show_collection)
 	y += 48
-	_button(s, "遊び方", Vector2(48, y), Vector2(128, 40), show_help)
-	_button(s, "データ消去", Vector2(184, y), Vector2(128, 40), func():
+	var jc: Array = Game.journal_count()
+	_button(s, "手記 %d/%d" % [jc[0], jc[1]], Vector2(48, y), Vector2(128, 40), show_journal)
+	_button(s, "遊び方", Vector2(184, y), Vector2(128, 40), show_help)
+	_button(s, "データ消去", Vector2(8, 608), Vector2(96, 24), func():
 		_confirm("全てのセーブデータを消去しますか？\nこの操作は取り消せません。", func():
 			Game.reset_save()
-			show_title()))
+			show_title()), 12)
 	if sv["cleared"]:
 		_label(s, "★ 踏破済み　無限迷宮 最高 B%dF" % sv["best_endless"], Vector2(0, 576), Vector2(SW, 16), FS_S, R, HORIZONTAL_ALIGNMENT_CENTER)
-	_label(s, "v1.8　Font: PixelMplus (M+ FONTS)", Vector2(0, 608), Vector2(SW, 24), 12, DG, HORIZONTAL_ALIGNMENT_CENTER)
+	_label(s, "v1.9　Font: PixelMplus (M+ FONTS)", Vector2(112, 608), Vector2(240, 24), 12, DG, HORIZONTAL_ALIGNMENT_RIGHT)
 	_layout(s, 32, 40)
 
 
@@ -901,6 +903,10 @@ func _floor_card(then: Callable) -> void:
 	var gate: bool = Game.event.has("fixed")
 	var cy := _snap(view_h / 2.0) - 24
 	var l := _label(card, "地下 %d 階" % Game.floor_n, Vector2(0, cy), Vector2(SW, 32), FS_L, R if gate else W, HORIZONTAL_ALIGNMENT_CENTER, true)
+	var chapter := ""
+	if not Game.endless and Game.CHAPTERS.has(Game.floor_n):
+		chapter = Game.CHAPTERS[Game.floor_n]
+		_label(card, chapter, Vector2(0, cy - 48), Vector2(SW, 24), FS, LG, HORIZONTAL_ALIGNMENT_CENTER)
 	if gate:
 		_label(card, "― 門 ―" if Game.floor_n < 100 or Game.endless else "― 最深部 ―", Vector2(0, cy + 40), Vector2(SW, 24), FS, DR, HORIZONTAL_ALIGNMENT_CENTER)
 		sfx.play("bell")
@@ -909,7 +915,7 @@ func _floor_card(then: Callable) -> void:
 	l.modulate.a = 0
 	var tw := create_tween()
 	tw.tween_property(l, "modulate:a", 1.0, 0.25)
-	tw.tween_interval(0.55 if not gate else 1.1)
+	tw.tween_interval(1.1 if gate else (1.5 if chapter != "" else 0.55))
 	tw.tween_property(card, "modulate:a", 0.0, 0.3)
 	tw.tween_callback(func():
 		card.queue_free()
@@ -1264,8 +1270,47 @@ func show_ending(res: Dictionary, sum: Dictionary) -> void:
 	_set_fit(r, res["text"] + "\n\n[color=%s]エンディング %d / %d[/color]" % [_hex(R), Game.save["endings"].size(), Game.ENDINGS.size()])
 	r.visible_ratio = 0
 	create_tween().tween_property(r, "visible_ratio", 1.0, 3.0)
-	_button(s, "次へ", Vector2(88, 584), Vector2(184, 40), func(): show_gameover(sum, res))
+	_button(s, "次へ", Vector2(88, 584), Vector2(184, 40), func():
+		show_epilogue(Game.epilogue(res["end"]), func(): show_gameover(sum, res)))
 	_layout(s, 0, 64)
+
+
+func show_epilogue(text: String, then: Callable) -> void:
+	var s := _new_screen("Epilogue")
+	_label(s, "後日談", Vector2(0, 16), Vector2(SW, 32), FS_L, LG, HORIZONTAL_ALIGNMENT_CENTER, true)
+	var r := _rich(s, Vector2(24, 160), Vector2(312, 336))
+	_set_fit(r, text)
+	r.visible_ratio = 0
+	create_tween().tween_property(r, "visible_ratio", 1.0, 4.0)
+	_button(s, "次へ", Vector2(88, 584), Vector2(184, 40), then)
+	_layout(s, 56, 64)
+
+
+# ================================================================ journal
+func show_journal(ch := 1) -> void:
+	var s := _new_screen("Journal")
+	_music_menu()
+	var jc: Array = Game.journal_count()
+	_label(s, "手記", Vector2(0, 8), Vector2(SW, 32), FS_L, W, HORIZONTAL_ALIGNMENT_CENTER, true)
+	_label(s, "真相の断片 %d / %d" % [jc[0], jc[1]], Vector2(0, 40), Vector2(SW, 24), FS, R, HORIZONTAL_ALIGNMENT_CENTER)
+	var names := {1: "第一章　降下", 2: "第二章　弔い", 3: "第三章　引き離された夜", 4: "第四章　子守唄"}
+	var t := "[color=%s]%s[/color]\n\n" % [_hex(LG), names[ch]]
+	for j in Game.JOURNAL:
+		if int(j["ch"]) != ch:
+			continue
+		if Game.save["meta"].has(j["meta"]):
+			t += "・%s\n\n" % j["t"]
+		else:
+			t += "[color=%s]・……………………[/color]\n\n" % _hex(DG)
+	var r := _rich(s, Vector2(16, 72), Vector2(328, 448))
+	_set_fit(r, t)
+	_label(s, "%d / 4" % ch, Vector2(0, 536), Vector2(SW, 24), FS, LG, HORIZONTAL_ALIGNMENT_CENTER)
+	var prev := _button(s, "◀ 前", Vector2(8, 528), Vector2(96, 40), func(): show_journal(ch - 1))
+	prev.disabled = ch == 1
+	var nxt := _button(s, "次 ▶", Vector2(256, 528), Vector2(96, 40), func(): show_journal(ch + 1))
+	nxt.disabled = ch == 4
+	_button(s, "戻る", Vector2(88, 584), Vector2(184, 40), show_title)
+	_layout(s, 64, 112)
 
 
 # ================================================================ collection

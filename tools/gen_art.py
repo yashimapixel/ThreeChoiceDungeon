@@ -1704,6 +1704,92 @@ def _(c):
     c.drip(80, 66, 8, R); c.drip(92, 64, 5, R)
 
 
+@prop('streetcorner')
+def _(c):
+    c.rect((40, 30, 84, 80), K, WH)
+    for wx in (48, 66):
+        c.rect((wx, 40, wx + 10, 54), K, WH)
+        c.drect((wx + 1, 41, wx + 9, 53), 0.6, LG)
+    door(c, 50, 58, 64, 80, bands=False)
+    c.line((112, 82), (112, 40)); c.line((106, 40), (118, 40))
+    c.rect((108, 32, 116, 40), K, WH)
+    c.glow(112, 36, 22, 0.55)
+    c.p(112, 36, WH)
+    for y in range(84, 100, 4):
+        for x in range(30 - (y - 84), 140 + (y - 84), 8):
+            c.line((x + (y % 8), y), (x + 5 + (y % 8), y), DG)
+    c.line((20, 50), (34, 46), R); c.line((22, 54), (34, 52), WH)
+
+
+@prop('decree')
+def _(c):
+    c.glow(84, 50, 34, 0.35)
+    c.poly([(62, 18), (106, 16), (108, 82), (60, 84)], LG, WH)
+    for k in range(9):
+        y = 24 + k * 6
+        if k == 5:
+            c.line((66, y), (102, y), R, 2)
+        else:
+            c.drect((66, y, 102 - (k % 3) * 6, y), 0.5, DG)
+    c.ell((92, 70, 102, 80), R, DR)
+    c.line((70, 76), (86, 77), DG)
+
+
+@prop('tower')
+def _(c):
+    c.poly([(66, 96), (72, 14), (104, 18), (110, 96)], K, WH)
+    c.poly([(72, 14), (88, 2), (104, 18)], K, WH)
+    c.rect((82, 30, 94, 44), K, WH)
+    for x in range(84, 94, 3):
+        c.line((x, 30), (x, 44))
+    door(c, 80, 70, 96, 96, bands=False)
+    c.line((84, 78), (92, 86), R); c.line((92, 78), (84, 86), R)
+    for _ in range(14):
+        x, y = c.r.randint(70, 104), c.r.randint(48, 68)
+        c.line((x, y), (x + 3, y + c.r.randint(-1, 1)), LG)
+    c.glow(88, 37, 10, 0.3)
+
+
+@prop('letters')
+def _(c):
+    for _ in range(46):
+        x, y = c.r.randint(52, 118), c.r.randint(80, 98)
+        c.poly([(x, y), (x + 8, y - 1), (x + 9, y + 4), (x + 1, y + 5)], WH if c.r.random() < 0.7 else LG, DG)
+        if c.r.random() < 0.3:
+            c.p(x + 4, y + 2, R)
+    for k in range(8):
+        x, y = 60 + k * 7 + c.r.randint(-3, 3), 10 + k * 8
+        c.poly([(x, y), (x + 7, y + 1), (x + 6, y + 5), (x - 1, y + 4)], WH, DG)
+    c.glow(84, 88, 26, 0.3)
+
+
+@prop('loopghost')
+def _(c):
+    c.glow(84, 70, 30, 0.25)
+    c.ell((70, 50, 98, 92), K, LG)
+    c.ell((76, 40, 92, 56), K, LG)
+    c.p(81, 47, WH); c.p(87, 47, WH)
+    c.line((70, 80), (58, 92), LG); c.line((98, 80), (110, 92), LG)
+    c.line((104, 92), (120, 60), DG)
+    c.fade(lambda x, y: 0.55 if 56 < x < 112 and 38 < y < 94 else 1)
+    for i in range(5):
+        c.line((40 + i * 4, 96), (42 + i * 4, 88), DG)
+
+
+@prop('sickroom')
+def _(c):
+    c.rect((26, 18, 60, 52), K, WH)
+    c.line((43, 18), (43, 52)); c.line((26, 35), (60, 35))
+    c.ell((64, 30, 72, 38), WH, LG); c.line((68, 38), (68, 48), LG)
+    c.rect((62, 48, 74, 54), K, LG)
+    c.rect((84, 60, 148, 76), K, WH)
+    c.rect((84, 54, 98, 60), WH, WH)
+    c.drect((98, 60, 146, 66), 0.5, LG)
+    c.line((86, 76), (86, 92)); c.line((146, 76), (146, 92))
+    c.rect((60, 66, 74, 72), K, WH); c.line((62, 72), (62, 86)); c.line((72, 72), (72, 86)); c.line((60, 66), (60, 52))
+    c.glow(110, 58, 30, 0.3)
+
+
 @prop('memory')
 def _(c):
     c.rect((24, 20, 64, 52), K, WH)
