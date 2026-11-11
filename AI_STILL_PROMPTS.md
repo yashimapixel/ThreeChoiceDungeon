@@ -16,7 +16,7 @@
 
 ---
 
-## バッチ1（生成済み）
+## バッチ1（生成済み。n02 だけ作り直し）
 
 ### e008：迷子の少女
 
@@ -44,14 +44,14 @@ Characters (keep them consistent across images):
 - the hooded adventurer: a lone adventurer in a long dark hooded cloak; the face is completely hidden in black shadow inside the hood except for two tiny white glowing dots for eyes; carries a small lantern and a short sword; slim, ordinary human size
 ```
 
-### n02：隔離塔
+### n02：隔離塔（作り直し：扉の印が現代のバイオハザードマークになったため、プロンプトを修正済み）
 
 保存名：`n02.png`
 
 ```
 Dark fantasy horror illustration for a retro game, wide landscape composition. Strictly monochrome: pure black, charcoal grey, light grey and off-white only, plus blood red used ONLY on the elements listed as red. No other colours, no blue, brown, sepia or warm tint anywhere. Strong chiaroscuro: mostly deep black darkness, one dim light source, very high contrast. Large, simple, clearly readable shapes and silhouettes with minimal fine texture and no tiny details, because the image will be shrunk to 336x200 pixels. Flat graphic shading in three or four tones, like a woodcut or ink wash, crisp edges. Keep every important subject inside the central horizontal band; the top and bottom 6% will be cropped. No text, no letters, no runes, no logo, no frame, no border, no UI, no signature, no watermark. Not pixel art and no pixel grid (it will be pixelized afterwards).
 
-Scene: An old round stone tower that has sunk into the ground and leans to one side, standing alone in darkness. A small iron-barred window. A plague mark is painted on its heavy wooden door, which stands half open, and inside a small empty bed is visible. No people. Red only: the painted plague mark on the door.
+Scene: An old round stone tower that has sunk into the ground and leans to one side, standing alone in darkness. A small iron-barred window. A crude medieval plague cross is daubed in paint on its heavy wooden door (a simple rough cross, NOT a biohazard symbol, nothing modern), which stands half open, and inside a small empty bed is visible. No people. Red only: the painted cross on the door.
 ```
 
 ### e020_0_r：黒い犬→干し肉をやる：犬が隣を歩く
