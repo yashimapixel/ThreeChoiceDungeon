@@ -3,7 +3,7 @@
 python3 tools/ai_stills/gen_images.py --batch N [--only NAME ...] [--force]
 python3 tools/ai_stills/gen_images.py --print --batch N       # just print the full prompts
 Needs OPENAI_API_KEY. Model: $IMAGE_MODEL (default gpt-image-1).
-Writes art_ai/test/raw/<name>.jpg (1536x1024).
+Writes art_ai/test/raw/<name>.png (1536x1024). Never JPEG.
 """
 import argparse, base64, io, json, os, sys, time
 from PIL import Image
@@ -37,15 +37,15 @@ def main():
                     and (not a.only or j['name'] in a.only)]
     if a.print:
         for job in spec['jobs']:
-            print('=== %s -> art_ai/test/raw/%s.jpg\n%s\n' % (job['name'], job['name'], build_prompt(spec, job)))
+            print('=== %s -> art_ai/test/raw/%s.png\n%s\n' % (job['name'], job['name'], build_prompt(spec, job)))
         return
     from openai import OpenAI
     client = OpenAI()
     model = os.environ.get('IMAGE_MODEL', 'gpt-image-1')
     os.makedirs(RAW, exist_ok=True)
     for job in spec['jobs']:
-        dst = os.path.join(RAW, job['name'] + '.jpg')
-        done = any(os.path.exists(os.path.join(RAW, job['name'] + e)) for e in ('.jpg', '.png', '.webp'))
+        dst = os.path.join(RAW, job['name'] + '.png')
+        done = any(os.path.exists(os.path.join(RAW, job['name'] + e)) for e in ('.png', '.webp'))
         if done and not a.force:
             print('skip', job['name']); continue
         for attempt in range(4):
@@ -53,7 +53,7 @@ def main():
                 r = client.images.generate(model=model, prompt=build_prompt(spec, job),
                                            size='1536x1024', quality='high', n=1)
                 im = Image.open(io.BytesIO(base64.b64decode(r.data[0].b64_json))).convert('RGB')
-                im.save(dst, quality=92)
+                im.save(dst)
                 print('wrote', dst); break
             except Exception as e:  # rate limits, transient errors
                 print('retry', job['name'], e, file=sys.stderr)

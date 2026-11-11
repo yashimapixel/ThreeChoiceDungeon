@@ -1,7 +1,7 @@
 """Pixelize every raw image (two densities) and build a comparison sheet.
 
 python3 tools/ai_stills/preview.py [--dither 0.6] [--red-sat 0.42]
-Reads  every art_ai/test/raw/<name>.jpg|png that exists so far (all batches)
+Reads  every art_ai/test/raw/<name>.png that exists so far (all batches). JPEG is refused.
 Writes art_ai/test/px1/<out>, art_ai/test/px2/<out>, art_ai/test/preview.png
 """
 import argparse, json, os, sys
@@ -16,7 +16,10 @@ TEST = os.path.join(ROOT, 'art_ai', 'test')
 
 
 def find_raw(name):
-    for ext in ('.jpg', '.png', '.webp'):
+    for ext in ('.jpg', '.jpeg'):
+        if os.path.exists(os.path.join(TEST, 'raw', name + ext)):
+            sys.exit('JPEG is not allowed (lossy): use the original PNG for %s' % name)
+    for ext in ('.png', '.webp'):
         p = os.path.join(TEST, 'raw', name + ext)
         if os.path.exists(p):
             return p
