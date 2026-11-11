@@ -1,5 +1,5 @@
 {
- "style": "Dark fantasy horror illustration for a retro game, wide landscape composition. Strictly monochrome: pure black, charcoal grey, light grey and off-white only, plus blood red used ONLY on the elements listed as red. No other colours, no blue, brown, sepia or warm tint anywhere. Strong chiaroscuro: mostly deep black darkness, one dim light source, very high contrast. Large, simple, clearly readable shapes and silhouettes with minimal fine texture and no tiny details, because the image will be shrunk to 336x200 pixels. Flat graphic shading in three or four tones, like a woodcut or ink wash, crisp edges. Keep every important subject inside the central horizontal band; the top and bottom 6% will be cropped. No text, no letters, no runes, no logo, no frame, no border, no UI, no signature, no watermark. Not anime or manga style: no big eyes, no cute or stylised faces; realistic human proportions and restrained, naturalistic faces, like a classic dark fantasy book illustration or etching. Not pixel art and no pixel grid (it will be pixelized afterwards).",
+ "style": "Dark fantasy horror illustration for a retro game, wide landscape composition. Strictly monochrome: pure black, charcoal grey, light grey and off-white only, plus blood red used ONLY on the elements listed as red. No other colours, no blue, brown, sepia or warm tint anywhere. Strong chiaroscuro: mostly deep black darkness, one dim light source, very high contrast. Large, simple, clearly readable shapes and silhouettes with minimal fine texture and no tiny details, because the image will be shrunk to 336x200 pixels. Flat graphic shading in three or four tones, like a woodcut or ink wash, crisp edges. Every element listed as red must be large, bold and clearly visible, because small red details disappear when shrunk. Main characters should be large in the frame unless the scene says they are small. Keep every important subject inside the central horizontal band; the top and bottom 6% will be cropped. No text, no letters, no runes, no logo, no frame, no border, no UI, no signature, no watermark. Not anime or manga style: no big eyes, no cute or stylised faces; realistic human proportions and restrained, naturalistic faces, like a classic dark fantasy book illustration or etching. Not pixel art and no pixel grid (it will be pixelized afterwards).",
  "characters": {
   "HERO": {
    "name": "the hooded adventurer",
@@ -158,6 +158,216 @@
    "out": "results/g075_1_r.png",
    "ja": "深淵の竜→騎士を呼ぶ：騎士の亡霊が竜に斬りかかる",
    "prompt": "{KNIGHT} leaps from beside the adventurer at a huge skeletal dragon above a chasm, sword raised high, glowing ghostly white. {HERO} stands in the foreground watching. Red only: the fire in the dragon's eye sockets."
+  },
+  {
+   "batch": 5,
+   "name": "e002",
+   "out": "events/e002.png",
+   "ja": "ネズミの群れ",
+   "prompt": "A narrow stone corridor whose floor is flooded by a river of hundreds of grey rats flowing toward the viewer. {HERO} stands at the right with the lantern raised as the rats part around their boots. Red only: the eyes of the rats, drawn as many bold bright dots all turned toward the viewer."
+  },
+  {
+   "batch": 5,
+   "name": "e003",
+   "out": "events/e003.png",
+   "ja": "先客の亡骸",
+   "prompt": "The skeleton of a dead adventurer sits slumped against a dungeon wall, still wearing a rusted helmet and a tattered cloak, a broken sword and a pack beside it. One bony finger points down at a particular floor stone. Lantern light from the left. No living people. Red only: a large red smear on the floor stone the finger points at."
+  },
+  {
+   "batch": 5,
+   "name": "e004",
+   "out": "events/e004.png",
+   "ja": "宝箱",
+   "prompt": "A bare, empty stone room. In the very centre stands a magnificent ornate treasure chest, far too splendid for such a place, lit by a single shaft of light, with heavy iron bands and a big lock. No people. Red only: a large gem set into the lock of the chest."
+  },
+  {
+   "batch": 5,
+   "name": "e005",
+   "out": "events/e005.png",
+   "ja": "囁く井戸",
+   "prompt": "An old round stone well in the middle of a dark room, its rim cracked and mossy, a rope and bucket hanging above it. Pale mist rises from the black depth. {HERO} leans over the rim, looking down into it. Red only: a red glow deep inside the well."
+  },
+  {
+   "batch": 5,
+   "name": "e006",
+   "out": "events/e006.png",
+   "ja": "ゴブリンの見張り",
+   "prompt": "A fork in a cave with two dark tunnels. A gaunt, grotesque goblin with long ears and a hooked nose sleeps sitting against the rock, hugging a crude spear. Stolen goods are scattered at its feet: coins, a boot, a helmet and a large sack. Not cute. Red only: the large stolen sack at its feet."
+  },
+  {
+   "batch": 5,
+   "name": "e007",
+   "out": "events/e007.png",
+   "ja": "古い祭壇",
+   "prompt": "Moss-covered pillars surround an old black stone altar in a ruined shrine, with a few candle stubs. The altar top is covered in layers of dried stains running down its sides. No people. Red only: the dried blood stains on the altar, large and dripping down its sides."
+  },
+  {
+   "batch": 5,
+   "name": "e009",
+   "out": "events/e009.png",
+   "ja": "燃え残りの焚き火",
+   "prompt": "A small campfire still smouldering in a cave: glowing embers, a thin trail of smoke, a log seat and an abandoned bedroll beside it, and nobody around. The firelight is the only light. Red only: the glowing embers and the small flames."
+  },
+  {
+   "batch": 5,
+   "name": "e010",
+   "out": "events/e010.png",
+   "ja": "闇の行商人",
+   "prompt": "A tall hooded peddler with no visible face, only darkness under the hood, holds up a lantern and beckons with a long bony hand. A huge pack of strange goods is strapped to their back: bottles, bundles and hanging trinkets. Dark stone room. Large in the frame. Red only: the light of the peddler's lantern."
+  },
+  {
+   "batch": 5,
+   "name": "e012",
+   "out": "events/e012.png",
+   "ja": "蜘蛛の巣",
+   "prompt": "A stone corridor blocked by a huge, thick white spider web. Several silk-wrapped cocoons hang in it, and one bulges as if something is moving inside. In the darkness of the ceiling, the long hairy legs of a giant spider are barely visible. {HERO} stands small in the foreground, facing the web. Red only: a cluster of eight large glowing spider eyes in the ceiling darkness."
+  },
+  {
+   "batch": 5,
+   "name": "e013",
+   "out": "events/e013.png",
+   "ja": "鏡の間",
+   "prompt": "A hall lined with tall mirrors. {HERO} stands in the centre, exhausted. In the largest mirror the reflection is slightly out of step: its hand is raised while the real adventurer's hand is down, and its head is tilted differently. Red only: the two eye dots of the reflection glow red instead of white."
+  },
+  {
+   "batch": 5,
+   "name": "e020",
+   "out": "events/e020.png",
+   "ja": "黒い犬",
+   "prompt": "A thin, gaunt black dog emerges from the darkness of a stone corridor and stands still, staring straight at the viewer without growling. Low camera, the dog large in the frame. Red only: one of the dog's eyes glows red; the other eye is dark and normal."
+  },
+  {
+   "batch": 5,
+   "name": "e021",
+   "out": "events/e021.png",
+   "ja": "走り書きのメモ",
+   "prompt": "A rotting wooden desk in a dark abandoned room, with a single sheet of note paper on it, lit by a candle stub. The writing on the paper is only blurred, illegible scribbles with no readable letters. A broken wax seal is stuck at the corner of the paper. No people. Red only: the broken wax seal, large."
+  },
+  {
+   "batch": 5,
+   "name": "e031",
+   "out": "events/e031.png",
+   "ja": "弔いの鐘",
+   "prompt": "A ruined bell tower. A huge bell hangs from a cracked wooden beam, and countless names are engraved all around its rim, shown as rows of illegible marks. {HERO} stands below, looking up at it. Red only: one single engraved name on the rim glows red."
+  },
+  {
+   "batch": 5,
+   "name": "e037",
+   "out": "events/e037.png",
+   "ja": "渡し守",
+   "prompt": "The shore of a black underground lake. A tall hooded ferryman stands beside a small wooden boat moored at the water's edge, holding a long oar and holding out an open bony hand toward the viewer to ask for payment. Mist on the water. Red only: a small lantern hanging at the boat's bow."
+  },
+  {
+   "batch": 5,
+   "name": "e039",
+   "out": "events/e039.png",
+   "ja": "沼の魔女",
+   "prompt": "A swamp witch in a cave hut: a hunched old crone with wild grey hair and a crooked toothy grin stirs a big bubbling cauldron, with herbs and bones hanging from the low ceiling. Realistic and grotesque, not cartoonish. Large in the frame. Red only: the glowing liquid in the cauldron."
+  },
+  {
+   "batch": 5,
+   "name": "e045",
+   "out": "events/e045.png",
+   "ja": "薄れゆく亡霊",
+   "prompt": "{KNIGHT}, now very faint and flickering, far more transparent than before, leans against a dungeon wall with one hand on the stone and his head lowered; the edges of the armour dissolve into mist. Large in the frame. Red only: the crown crest on the tabard."
+  },
+  {
+   "batch": 5,
+   "name": "e046",
+   "out": "events/e046.png",
+   "ja": "少女の墓",
+   "prompt": "A small, crude gravestone carved with a crown crest stands in a dark crypt; it looks artificial, like a stage prop. {GIRL} stands before it, looking down at the darkness at her feet. {HERO} stands a little behind her. Red only: the crest carved on the gravestone, large."
+  },
+  {
+   "batch": 5,
+   "name": "g050",
+   "out": "events/g050.png",
+   "ja": "都市の番人（地下50階の門番）",
+   "prompt": "Before the broken great gate of a ruined underground city stands a colossal guardian built of stone blocks and iron plates, towering over everything. In the middle of its chest a furnace core glows through an iron grille. {HERO} is tiny at its feet, seen from behind. Red only: the glowing furnace core in its chest."
+  },
+  {
+   "batch": 5,
+   "name": "e060",
+   "out": "events/e060.png",
+   "ja": "王の亡骸",
+   "prompt": "A crumbled throne room with dust and fallen pillars. On a broken throne sits a dried, mummified king, head slightly bowed, and on his head a crown still shines, untarnished. Large in the frame. Red only: the jewels set in the crown."
+  },
+  {
+   "batch": 5,
+   "name": "n01",
+   "out": "events/n01.png",
+   "ja": "王の命令書",
+   "prompt": "The cracked wall of a collapsed government hall. A single large proclamation is pasted on it, faded and torn, its text blurred into illegible grey smudges with no readable letters, and a royal seal at the bottom. {HERO} holds up the lantern to read it. Red only: the wax royal seal at the bottom of the proclamation, large."
+  },
+  {
+   "batch": 5,
+   "name": "n03",
+   "out": "events/n03.png",
+   "ja": "騎士の告白",
+   "prompt": "In a corner of a ruin, {KNIGHT} has taken off his helmet and holds it in both hands against his chest. Above the neck of the armour there is no head at all, only empty darkness. Side view, quiet and sorrowful, large in the frame. Red only: the crown crest on the tabard."
+  },
+  {
+   "batch": 5,
+   "name": "n04",
+   "out": "events/n04.png",
+   "ja": "王の手紙",
+   "prompt": "The bottom of a deep crevice, where thousands of sealed envelopes lie piled like snow while more flutter down one by one from the darkness above. {HERO} stands knee-deep among them, holding one envelope. Red only: the wax seals on the envelopes nearest the viewer, all the same seal, drawn large."
+  },
+  {
+   "batch": 5,
+   "name": "e082",
+   "out": "events/e082.png",
+   "ja": "心臓の間",
+   "prompt": "A chamber made of organic flesh. In its centre a gigantic heart beats, its veins spreading across the walls and floor. A large glowing crystal is embedded in the heart's surface. {HERO} stands small before it. Red only: the glowing crystal and the veins closest to it."
+  },
+  {
+   "batch": 5,
+   "name": "e095",
+   "out": "events/e095.png",
+   "ja": "胎動する闇",
+   "prompt": "Pure darkness that seems to pulse like the inside of a living body, with faint curved membranes. In the centre the darkness bulges as if something small is moving inside, and faint small bare footprints on the floor lead into it. {HERO} stands at the edge with the lantern lowered. Red only: a red heartbeat glow at the centre of the darkness."
+  },
+  {
+   "batch": 5,
+   "name": "clear",
+   "out": "events/clear.png",
+   "ja": "クリア画面：地上の光",
+   "prompt": "A wide shaft of pale light pours down from far above into the darkness. {HERO} stands in the light with both arms raised, seen from behind, looking up toward the surface, dust drifting in the light. Red only: a single small red flower blooming at the adventurer's feet, drawn large enough to see."
+  },
+  {
+   "batch": 5,
+   "name": "e012_2_ng",
+   "out": "results/e012_2_ng.png",
+   "ja": "蜘蛛の巣→繭を切り開く（失敗）：子蜘蛛があふれ出す",
+   "prompt": "Close-up: a silk cocoon has burst open and a flood of countless small spiders pours out over {HERO}, who recoils and slashes with the short sword. Red only: the eyes of the spiders, shown as many bold red dots."
+  },
+  {
+   "batch": 5,
+   "name": "e045_0_r",
+   "out": "results/e045_0_r.png",
+   "ja": "薄れゆく亡霊→剣を受け継ぐ：騎士が剣に宿る",
+   "prompt": "{KNIGHT} dissolves into streams of light that flow into a sword held up by {HERO}; the blade begins to glow. Light trails run from the fading armour into the blade. Red only: the crown crest on the tabard of the fading knight."
+  },
+  {
+   "batch": 5,
+   "name": "e027_2_r",
+   "out": "results/e027_2_r.png",
+   "ja": "子守唄→少女の霊に任せる：少女が揺りかごに歌う",
+   "prompt": "{GIRL} leans over an ornate wooden cradle and sings softly to it, both hands on its edge, a faint glow around her. {HERO} stands back in the shadows, watching. Red only: the crown crest carved on the cradle's headboard, large."
+  },
+  {
+   "batch": 5,
+   "name": "g100_1_r",
+   "out": "results/g100_1_r.png",
+   "ja": "迷宮の底→少女を母のもとへ還す：母と娘",
+   "prompt": "In a dark chamber of flesh, {QUEEN} emerges from the flesh wall, her body unravelling free of it, and embraces {GIRL}; both sing with their eyes closed and begin to rise as motes of light. Their faces are clearly lit and readable. Behind them the giant eye withers and shrivels. Red only: the iris of the withering giant eye."
+  },
+  {
+   "batch": 5,
+   "name": "g100_4_r",
+   "out": "results/g100_4_r.png",
+   "ja": "迷宮の底→闇そのものを討つ：地上の光の中で目覚める",
+   "prompt": "{HERO} lies collapsed on grass just outside the dark mouth of the labyrinth, under the bright light of the surface, the sword still in hand, dust drifting in the air. Red only: a red wildflower blooming next to the adventurer's hand, drawn large."
   }
  ]
 }
