@@ -1,14 +1,14 @@
-# Codex 向け作業指示：イベントスチル画像のテスト生成（20枚）
+# Codex 向け作業指示：イベントスチル画像のテスト生成（5枚）
 
 あなた（Codex）への依頼です。このリポジトリは縦画面のスマホゲーム「三択ダンジョン」（Godot 4）です。
-ゲーム内のイベント画像は今、プログラムで描いた仮画像です。画像生成AIで描き直す前に、**テストとして20枚**を作ってください。
+ゲーム内のイベント画像は今、プログラムで描いた仮画像です。画像生成AIで描き直す前に、**テストとして5枚**を作ってください。
 画像生成 → 6色への減色 → ピクセルアート化（縮小）まで、すべてこの文書の手順どおりに行ってください。
 
 ---
 
 ## 1. 完成条件
 
-- 下の「4. 画像リスト」にある20枚すべてについて、次のファイルがそろっている。
+- 下の「4. 画像リスト」にある5枚すべてについて、次のファイルがそろっている。
   - `art_ai/test/raw/<name>.jpg`：生成した元画像（横長、1536×1024 前後）
   - `art_ai/test/px1/<out>`：336×200 ピクセルの完成画像（細かいドット）
   - `art_ai/test/px2/<out>`：168×100 で作って2倍に拡大した 336×200 の完成画像（粗いドット）
@@ -43,18 +43,20 @@
 
 ### 3.1 準備
 1. 付録のファイルを、書いてあるパスにそのまま作る（内容を変えない）。
-   - `tools/ai_stills/jobs.json`（20枚の指定とプロンプト）
+   - `tools/ai_stills/jobs.json`（5枚の指定とプロンプト）
    - `tools/ai_stills/pixelize.py`（減色・縮小）
    - `tools/ai_stills/gen_images.py`（OpenAI Images API で生成。プロンプトの表示もできる）
    - `tools/ai_stills/preview.py`（全画像の減色・縮小と比較表づくり）
 2. 空のファイル `art_ai/.gdignore` を作る（Godot がこのフォルダを読み込まないようにするため。アプリの容量が増えない）。
 3. Pillow が必要：`pip install pillow`（API で生成する場合は `pip install openai` も）。
 
-### 3.2 元画像の生成（20枚）
+### 3.2 元画像の生成（5枚）
 次のどちらかの方法で、各画像を `art_ai/test/raw/<name>.jpg` に保存する（PNG なら `<name>.png` でもよい）。
 
+**タイムアウト対策**：1枚生成したらすぐ保存し、次の1枚に進む（まとめて生成しない）。途中で接続が切れても、`art_ai/test/raw/` に既にある画像は作り直さず、残りの画像から続ける。
+
 - **方法A：あなたが画像生成ツールを使える場合**
-  1. `python3 tools/ai_stills/gen_images.py --print` で、20枚分の完成プロンプト（共通の画風指定＋場面＋登場人物）が表示される。
+  1. `python3 tools/ai_stills/gen_images.py --print` で、5枚分の完成プロンプト（共通の画風指定＋場面＋登場人物）が表示される。
   2. 各プロンプトを**一字一句そのまま**使って、横長（1536×1024 などの 3:2 か、それより横長）で1枚ずつ生成する。
   3. 表示された保存先に保存する。
 - **方法B：画像生成ツールがない場合**
@@ -84,36 +86,22 @@ python3 tools/ai_stills/preview.py
 - コミットするもの：`tools/ai_stills/` の4ファイル、`art_ai/.gdignore`、`art_ai/test/` の中身すべて（raw・px1・px2・preview.png）。
 - `art/` の仮画像は上書きしない（採用するかどうかは、比較表を見て人間が決める）。
 - 作業ブランチやプルリクエストについて別の指示があれば、それに従う。
+- **ゲームのリポジトリが作業環境に無い場合**：確認の質問はせずにそのまま進める。比較表の「今の仮画像」の列は空欄でよい。コミットの代わりに `art_ai/` と `tools/ai_stills/` をまとめた zip をダウンロードできる形で出力する。
 - 最後に次の内容を報告する：
   1. 使った生成方法（A／B）とモデル名
   2. 減色の値（dither、red-sat）
-  3. 20枚それぞれの結果（問題なし／作り直した回数／気になる点）を表で
+  3. 5枚それぞれの結果（問題なし／作り直した回数／気になる点）を表で
   4. px1 と px2 のどちらがゲームに合いそうか、あなたの意見
 
-## 4. 画像リスト（20枚）
+## 4. 画像リスト（5枚）
 
 | # | name | 保存先（px1/px2 の下） | 内容 |
 | --- | --- | --- | --- |
-| 1 | `title` | `events/title.png` | タイトル画面：深淵へ続く螺旋階段と赤い眼 |
-| 2 | `e001` | `events/e001.png` | 錆びた扉 |
-| 3 | `e008` | `events/e008.png` | 迷子の少女 |
-| 4 | `e023` | `events/e023.png` | 甲冑の亡霊 |
-| 5 | `e027` | `events/e027.png` | 子守唄（ひとりでに揺れる揺りかご） |
-| 6 | `g025` | `events/g025.png` | 骨の門番（地下25階の門番） |
-| 7 | `n02` | `events/n02.png` | 隔離塔 |
-| 8 | `g075` | `events/g075.png` | 深淵の竜（地下75階の門番） |
-| 9 | `e096` | `events/e096.png` | あの夜の部屋（記憶の病室） |
-| 10 | `g100` | `events/g100.png` | 迷宮の底（地下100階） |
-| 11 | `e001_2_ng` | `results/e001_2_ng.png` | 錆びた扉→耳を当てる（失敗）：扉の向こうから「開けて」 |
-| 12 | `e011_1_ng` | `results/e011_1_ng.png` | 落とし穴→跳ぶ（失敗）：縁にしがみつく |
-| 13 | `e020_0_r` | `results/e020_0_r.png` | 黒い犬→干し肉をやる：犬が隣を歩く |
-| 14 | `e008_0_r` | `results/e008_0_r.png` | 迷子の少女→手を差し伸べる：少女が手を握る |
-| 15 | `e037_0_r` | `results/e037_0_r.png` | 渡し守→金貨を払う：舟で地底湖を渡る |
-| 16 | `e046_0_r` | `results/e046_0_r.png` | 少女の墓→花を手向ける：少女が光に溶ける |
-| 17 | `n02_1_r` | `results/n02_1_r.png` | 隔離塔→落書きを読む |
-| 18 | `g075_1_r` | `results/g075_1_r.png` | 深淵の竜→騎士を呼ぶ：騎士の亡霊が竜に斬りかかる |
-| 19 | `g100_0_r` | `results/g100_0_r.png` | 迷宮の底→真の結末：母と娘の再会 |
-| 20 | `gameover` | `events/gameover.png` | ゲームオーバー：髑髏 |
+| 1 | `e008` | `events/e008.png` | 迷子の少女 |
+| 2 | `g025` | `events/g025.png` | 骨の門番（地下25階の門番） |
+| 3 | `n02` | `events/n02.png` | 隔離塔 |
+| 4 | `e020_0_r` | `results/e020_0_r.png` | 黒い犬→干し肉をやる：犬が隣を歩く |
+| 5 | `g100_0_r` | `results/g100_0_r.png` | 迷宮の底→真の結末：母と娘の再会 |
 
 各画像の詳しい場面指定（英語のプロンプト）は付録の `jobs.json` にあります。全画像に共通の画風指定（`style`）と登場人物の設定（`characters`）が自動で付け足されます。
 
@@ -146,34 +134,10 @@ python3 tools/ai_stills/preview.py
  },
  "jobs": [
   {
-   "name": "title",
-   "out": "events/title.png",
-   "ja": "タイトル画面：深淵へ続く螺旋階段と赤い眼",
-   "prompt": "A worn stone staircase spiralling down into a bottomless black abyss, seen from above at a steep angle; the steps fade into darkness. Far above the depth, a single huge eye opens in the dark. No people. Red only: the iris of the eye and its faint glow."
-  },
-  {
-   "name": "e001",
-   "out": "events/e001.png",
-   "ja": "錆びた扉",
-   "prompt": "{HERO} stands small at the left of a narrow stone corridor, facing a massive iron door at the dead end. The door is heavy, studded, slightly ajar with a thin black gap. Light from the adventurer's lantern. Red only: the rust streaks on the door."
-  },
-  {
    "name": "e008",
    "out": "events/e008.png",
    "ja": "迷子の少女",
    "prompt": "In a dark stone corridor, {GIRL} stands facing the wall, crying with her hands over her face. Her small body glows faintly white against the darkness, and the floor beneath her shows no shadow at all. Red only: the tiny crest pendant on her chest."
-  },
-  {
-   "name": "e023",
-   "out": "events/e023.png",
-   "ja": "甲冑の亡霊",
-   "prompt": "{KNIGHT} stands motionless in a ruined corridor with his head bowed, both hands resting on the pommel of a longsword planted point-down. {HERO} is small in the left foreground, seen from behind, looking at him. Red only: the crown crest on the knight's tabard."
-  },
-  {
-   "name": "e027",
-   "out": "events/e027.png",
-   "ja": "子守唄（ひとりでに揺れる揺りかご）",
-   "prompt": "A dark, empty stone room. In the corner an ornate wooden baby cradle rocks by itself, surrounded by a faint pale glow. The wood grain of the cradle looks subtly alive, like veins. A crown crest is carved on the headboard. Nobody is there. Red only: the carved crest on the cradle."
   },
   {
    "name": "g025",
@@ -188,82 +152,16 @@ python3 tools/ai_stills/preview.py
    "prompt": "An old round stone tower that has sunk into the ground and leans to one side, standing alone in darkness. A small iron-barred window. A plague mark is painted on its heavy wooden door, which stands half open, and inside a small empty bed is visible. No people. Red only: the painted plague mark on the door."
   },
   {
-   "name": "g075",
-   "out": "events/g075.png",
-   "ja": "深淵の竜（地下75階の門番）",
-   "prompt": "A huge dragon made of bones and rotting flesh spreads its tattered wings over a bottomless chasm. {HERO} is tiny on a rock ledge at the bottom, facing it. Red only: the fire burning in the dragon's eye sockets and a faint glow inside its ribcage."
-  },
-  {
-   "name": "e096",
-   "out": "events/e096.png",
-   "ja": "あの夜の部屋（記憶の病室）",
-   "prompt": "A small quiet sickroom remembered from long ago: a child's white bed with rumpled sheets, a single flower in a vase on the windowsill, and a wooden chair beside the pillow. The window shows only pure black nothingness. Soft light falls only on the bed. No people. Red only: the flower."
-  },
-  {
-   "name": "g100",
-   "out": "events/g100.png",
-   "ja": "迷宮の底（地下100階）",
-   "prompt": "The bottom of the labyrinth: a gigantic single eye opens at the centre of the darkness. The surrounding walls are made of organic flesh, and set into the flesh above is one large serene face of a sleeping woman with her eyes closed. {HERO} stands small at the bottom centre, seen from behind. Red only: the iris of the giant eye and the veins around it."
-  },
-  {
-   "name": "e001_2_ng",
-   "out": "results/e001_2_ng.png",
-   "ja": "錆びた扉→耳を当てる（失敗）：扉の向こうから「開けて」",
-   "prompt": "Close-up: {HERO} had pressed an ear to a rusted iron door and is now recoiling in fear. From the thin black gap of the door, long pale thin fingers are reaching out of the darkness. Red only: the rust on the door."
-  },
-  {
-   "name": "e011_1_ng",
-   "out": "results/e011_1_ng.png",
-   "ja": "落とし穴→跳ぶ（失敗）：縁にしがみつく",
-   "prompt": "{HERO} clings to the crumbling edge of a black pit in a stone corridor floor, hanging by the hands with legs dangling over bottomless darkness, small pieces of stone falling. Red only: blood on one knee."
-  },
-  {
    "name": "e020_0_r",
    "out": "results/e020_0_r.png",
    "ja": "黒い犬→干し肉をやる：犬が隣を歩く",
    "prompt": "Side view: {HERO} walks to the right down a dark corridor with a thin black dog trotting at their side. The dog has one glowing eye. Red only: the dog's one eye."
   },
   {
-   "name": "e008_0_r",
-   "out": "results/e008_0_r.png",
-   "ja": "迷子の少女→手を差し伸べる：少女が手を握る",
-   "prompt": "{HERO} kneels in a dark corridor holding the small hand of {GIRL}, who looks up at the adventurer. A gentle faint glow surrounds the girl. Red only: the tiny crest pendant on her chest."
-  },
-  {
-   "name": "e037_0_r",
-   "out": "results/e037_0_r.png",
-   "ja": "渡し守→金貨を払う：舟で地底湖を渡る",
-   "prompt": "A small wooden boat on a still black underground lake. A tall hooded ferryman stands at the stern rowing with a long oar, and {HERO} sits in the boat. Thin mist on the water, distant cave walls. Red only: a small lantern hanging at the bow."
-  },
-  {
-   "name": "e046_0_r",
-   "out": "results/e046_0_r.png",
-   "ja": "少女の墓→花を手向ける：少女が光に溶ける",
-   "prompt": "A small crude gravestone carved with a crown crest in a dark crypt. {GIRL} stands before it holding a small flower to her chest and smiling, her body dissolving upward into motes of light. {HERO} kneels nearby. Red only: the flower."
-  },
-  {
-   "name": "n02_1_r",
-   "out": "results/n02_1_r.png",
-   "ja": "隔離塔→落書きを読む",
-   "prompt": "Inside a cramped round stone tower cell, the walls are covered with a small child's simple chalk drawings: a mother and child holding hands, a house, a moon, stars (no letters, no writing). A small empty bed. {HERO} holds up a lantern, looking at the wall. Red only: the drawing of the mother and child."
-  },
-  {
-   "name": "g075_1_r",
-   "out": "results/g075_1_r.png",
-   "ja": "深淵の竜→騎士を呼ぶ：騎士の亡霊が竜に斬りかかる",
-   "prompt": "{KNIGHT} leaps from beside the adventurer at a huge skeletal dragon above a chasm, sword raised high, glowing ghostly white. {HERO} stands in the foreground watching. Red only: the fire in the dragon's eye sockets."
-  },
-  {
    "name": "g100_0_r",
    "out": "results/g100_0_r.png",
    "ja": "迷宮の底→真の結末：母と娘の再会",
    "prompt": "In a column of soft light rising out of darkness, {QUEEN} kneels and embraces {GIRL} tightly; both have their eyes closed, peaceful. Behind them {KNIGHT} kneels with his sword planted, head bowed. In the background the giant eye is cracked and crumbling into dust. Red only: the cracks of the broken eye."
-  },
-  {
-   "name": "gameover",
-   "out": "events/gameover.png",
-   "ja": "ゲームオーバー：髑髏",
-   "prompt": "A large human skull lying on a dark crypt floor, lit from above, dust and darkness all around, blood dripping from the jaw. Red only: two tiny lights deep in the eye sockets and the dripping blood."
   }
  ]
 }
