@@ -1,5 +1,5 @@
 {
- "style": "Dark fantasy horror illustration for a retro game, wide landscape composition. Strictly monochrome: pure black, charcoal grey, light grey and off-white only, plus blood red used ONLY on the elements listed as red. No other colours, no blue, brown, sepia or warm tint anywhere. Strong chiaroscuro: mostly deep black darkness, one dim light source, very high contrast. Large, simple, clearly readable shapes and silhouettes with minimal fine texture and no tiny details, because the image will be shrunk to 336x200 pixels. Flat graphic shading in three or four tones, like a woodcut or ink wash, crisp edges. Every element listed as red must be large, bold and clearly visible, because small red details disappear when shrunk. Main characters should be large in the frame unless the scene says they are small. Keep every important subject inside the central horizontal band; the top and bottom 6% will be cropped. No text, no letters, no runes, no logo, no frame, no border, no UI, no signature, no watermark. Not anime or manga style: no big eyes, no cute or stylised faces; realistic human proportions and restrained, naturalistic faces, like a classic dark fantasy book illustration or etching. Not pixel art and no pixel grid (it will be pixelized afterwards).",
+ "style": "Dark fantasy horror illustration for a retro game, wide landscape composition. Strictly monochrome: pure black, charcoal grey, light grey and off-white only, plus blood red used ONLY on the elements listed as red. No other colours, no blue, brown, sepia or warm tint anywhere. Strong chiaroscuro: mostly deep black darkness, one dim light source, very high contrast. Large, simple, clearly readable shapes and silhouettes with minimal fine texture and no tiny details, because the image will be shrunk to 336x200 pixels. Flat graphic shading in three or four tones, like a woodcut or ink wash, crisp edges. Every element listed as red must be bold and clearly visible, because tiny red details disappear when shrunk, but red should cover only a small part of the image unless the scene says otherwise. Main characters should be large in the frame unless the scene says they are small. Keep every important subject inside the central horizontal band; the top and bottom 6% will be cropped. No text, no letters, no runes, no logo, no frame, no border, no UI, no signature, no watermark. Not anime or manga style: no big eyes, no cute or stylised faces; realistic human proportions and restrained, naturalistic faces, like a classic dark fantasy book illustration or etching. Not pixel art and no pixel grid (it will be pixelized afterwards).",
  "characters": {
   "HERO": {
    "name": "the hooded adventurer",
@@ -368,6 +368,356 @@
    "out": "results/g100_4_r.png",
    "ja": "迷宮の底→闇そのものを討つ：地上の光の中で目覚める",
    "prompt": "{HERO} lies collapsed on grass just outside the dark mouth of the labyrinth, under the bright light of the surface, the sword still in hand, dust drifting in the air. Red only: a red wildflower blooming next to the adventurer's hand, drawn large."
+  },
+  {
+   "batch": 6,
+   "name": "e011",
+   "out": "events/e011.png",
+   "ja": "落とし穴",
+   "prompt": "A stone corridor where the floor has collapsed into a wide black pit with no visible bottom. The far edge looks reachable with a running jump. {HERO} stands at the near edge, looking across. Red only: a faint red glow deep down in the pit."
+  },
+  {
+   "batch": 6,
+   "name": "e014",
+   "out": "events/e014.png",
+   "ja": "這い寄る粘液",
+   "prompt": "Black slime drips from the cave ceiling and gathers into one glistening, oozing mass on the floor. Half-dissolved bones and pieces of armour float inside it. {HERO} steps back at the left. Red only: a glowing core inside the slime."
+  },
+  {
+   "batch": 6,
+   "name": "e015",
+   "out": "events/e015.png",
+   "ja": "祈る修道士",
+   "prompt": "A collapsed chapel with broken pews. A monk in a ragged hooded habit kneels in prayer before a cracked altar and has just turned his head toward the viewer; his eyes are clouded milky white. Large in the frame. Red only: a small votive candle flame on the altar."
+  },
+  {
+   "batch": 6,
+   "name": "e016",
+   "out": "events/e016.png",
+   "ja": "崩れた階段",
+   "prompt": "A stone staircase leading down breaks off halfway, collapsed into rubble. Through the gaps between the fallen blocks an even deeper darkness is visible. {HERO} stands at the top of the remaining steps. Red only: a faint red glow far below in the gaps."
+  },
+  {
+   "batch": 6,
+   "name": "e017",
+   "out": "events/e017.png",
+   "ja": "壁の顔",
+   "prompt": "A human face pushes out of a stone wall, as if part of the stone itself; not a carving. Its eyelids twitch and its lips move, pleading. {HERO} holds up the lantern toward it. The face is large in the frame. Red only: a thin trickle of blood from the corner of the face's mouth."
+  },
+  {
+   "batch": 6,
+   "name": "e018",
+   "out": "events/e018.png",
+   "ja": "光るキノコ",
+   "prompt": "A cave floor covered with a cluster of glowing pale mushrooms of many sizes, their light the brightest thing in the scene, with sweet-looking spores drifting up. {HERO} crouches nearby, reaching toward one. Red only: the spotted cap of the single largest mushroom."
+  },
+  {
+   "batch": 6,
+   "name": "e019",
+   "out": "events/e019.png",
+   "ja": "吊るされた檻",
+   "prompt": "An iron cage hangs from the ceiling of a dark stone room on a heavy chain. Inside, a gaunt, starving man crouches, reaching a bony hand through the bars toward the viewer. {HERO} stands below. Red only: the rusted padlock on the cage door."
+  },
+  {
+   "batch": 6,
+   "name": "e022",
+   "out": "events/e022.png",
+   "ja": "地下水脈",
+   "prompt": "Cold water flows from a crack in the rock and forms a small clear pool in a cave. On the bottom of the pool something glows white. {HERO} kneels at the edge, looking in. Red only: a small red stone glinting next to the white glow at the bottom of the pool."
+  },
+  {
+   "batch": 6,
+   "name": "e024",
+   "out": "events/e024.png",
+   "ja": "コウモリの嵐",
+   "prompt": "A cave ceiling covered by thousands of bats; at the moment one takes flight, the whole swarm erupts into the air like a storm of black wings. {HERO} shields their face below. Red only: the eyes of the nearest bats, a few bold dots."
+  },
+  {
+   "batch": 6,
+   "name": "e025",
+   "out": "events/e025.png",
+   "ja": "骸骨の賭博師",
+   "prompt": "Across a small wooden table, a grinning skeleton in a battered tricorn hat throws dice from a bony hand, coins piled before it, inviting the viewer to play. A single candle lights the table. Large in the frame. Red only: the dice, mid-roll."
+  },
+  {
+   "batch": 6,
+   "name": "e026",
+   "out": "events/e026.png",
+   "ja": "赤い扉",
+   "prompt": "A long grey stone corridor, entirely grey, and in its wall a single door painted a vivid, unnaturally bright red. The door seems to pulse slightly. {HERO} stands before it, hand raised to touch it. Red only: the door; this is the one scene where the red element may be large."
+  },
+  {
+   "batch": 6,
+   "name": "e028",
+   "out": "events/e028.png",
+   "ja": "泣く石像",
+   "prompt": "A stone statue of a goddess with a serene face in a ruined shrine; tears flow continuously from both of her eyes and run down her cheeks and robes onto a plinth. The plinth has a carved inscription shown only as worn, illegible marks. Large in the frame. Red only: the tears running from her eyes."
+  },
+  {
+   "batch": 6,
+   "name": "e029",
+   "out": "events/e029.png",
+   "ja": "盗賊の待ち伏せ",
+   "prompt": "From behind a boulder in a cave, a rough bandit with a scarf over the lower half of his face steps out, pointing a dagger at the viewer, with a menacing stance. Large in the frame. Red only: the scarf over his face."
+  },
+  {
+   "batch": 6,
+   "name": "e030",
+   "out": "events/e030.png",
+   "ja": "水晶玉",
+   "prompt": "A crystal ball glows faintly on a stone pedestal in a dark room. Inside the ball a tiny image can be seen: a hooded figure lying dead on the ground. {HERO} leans over it, the glow lighting the edge of the hood. Red only: a small pool of blood beside the tiny dead figure inside the ball."
+  },
+  {
+   "batch": 6,
+   "name": "e032",
+   "out": "events/e032.png",
+   "ja": "岩に刺さった剣",
+   "prompt": "In the centre of a room, a shining silver sword is stuck in a large rock, lit from above. Around the rock lie several skeletons, still reaching toward the sword's hilt. No living people. Red only: a gem in the sword's pommel."
+  },
+  {
+   "batch": 6,
+   "name": "n06",
+   "out": "events/n06.png",
+   "ja": "迷宮の中の街角",
+   "prompt": "In the middle of a stone dungeon passage there is suddenly a city street corner: cobblestones, an iron street lamp and shuttered windows of a royal capital, as if cut out and placed here. The edges of the street fade into dungeon rock. On a wall there is a scrawled message shown only as illegible scratches. {HERO} stands under the street lamp. Red only: the flame of the street lamp."
+  },
+  {
+   "batch": 6,
+   "name": "e033",
+   "out": "events/e033.png",
+   "ja": "納骨堂",
+   "prompt": "An ossuary whose walls are stacked from floor to ceiling with skulls, every one with its jaw wide open as if screaming. A narrow passage runs between them. {HERO} walks through, small. Red only: the eye sockets of a single skull in the centre glow faintly red."
+  },
+  {
+   "batch": 6,
+   "name": "e034",
+   "out": "events/e034.png",
+   "ja": "さまよう亡霊",
+   "prompt": "A pale, drifting ghost in a long tattered shroud wanders down a crypt corridor. It has no face, only a smooth blank surface where the face should be, and it tilts its head slowly toward the viewer. Large in the frame. Red only: a red ribbon tied around the ghost's wrist."
+  },
+  {
+   "batch": 6,
+   "name": "e035",
+   "out": "events/e035.png",
+   "ja": "釘打たれた棺",
+   "prompt": "A black coffin on a stone slab in a crypt, nailed shut with dozens of nails driven in at all angles. Scratch marks are visible at its edges, as if from inside. On its lid a warning is smeared in blood, shown only as a rough illegible smear, not letters. Red only: the blood smear on the lid."
+  },
+  {
+   "batch": 6,
+   "name": "e036",
+   "out": "events/e036.png",
+   "ja": "水没した回廊",
+   "prompt": "A vaulted corridor flooded with black water up to chest height. Just beneath the surface a long, thin, serpent-like shape glides past. {HERO} wades through, lantern held high. Red only: a single eye of the shape under the water."
+  },
+  {
+   "batch": 6,
+   "name": "e038",
+   "out": "events/e038.png",
+   "ja": "屍喰らい",
+   "prompt": "A thin, emaciated ghoul crouches on all fours in a crypt, devouring a carcass, and slowly turns its head to grin at the viewer with a dripping mouth. Grotesque and realistic. Large in the frame. Red only: the blood on its mouth and hands."
+  },
+  {
+   "batch": 6,
+   "name": "e040",
+   "out": "events/e040.png",
+   "ja": "囁く人形",
+   "prompt": "A porcelain doll in an old-fashioned dress sits on a small wooden chair in an empty dark room, its head turned toward the viewer, cracked face, glass eyes. Lit by a single beam. Large in the frame. Red only: the doll's painted lips."
+  },
+  {
+   "batch": 6,
+   "name": "e041",
+   "out": "events/e041.png",
+   "ja": "肖像画の回廊",
+   "prompt": "A long gallery lined with portraits in ornate frames. At the end hangs a final portrait showing a hooded figure, the same as the adventurer but very old and withered. {HERO} stands before it, looking up. Red only: the eyes of the old figure in the last portrait."
+  },
+  {
+   "batch": 6,
+   "name": "e042",
+   "out": "events/e042.png",
+   "ja": "朽ちた吊り橋",
+   "prompt": "A rotting rope bridge spans a bottomless chasm, swaying though there is no wind, as if something below is shaking it. Pale hands reach up from the darkness below toward the planks. {HERO} stands at the near end. Red only: a red cloth tied to the near post of the bridge."
+  },
+  {
+   "batch": 6,
+   "name": "e043",
+   "out": "events/e043.png",
+   "ja": "錬金術師の工房",
+   "prompt": "An abandoned alchemist's workshop: shelves crowded with bottles of many shapes, glass tubes and a cold furnace. On the empty desk stand three bottles side by side next to a note whose writing is only illegible scratches. No people. Red only: the liquid in one of the three bottles on the desk."
+  },
+  {
+   "batch": 6,
+   "name": "e044",
+   "out": "events/e044.png",
+   "ja": "死者の宴",
+   "prompt": "A long banquet table laden with a lavish feast, with skeletons seated in every chair, some raising goblets. One chair is empty and turned toward the viewer, with a name card on the plate in front of it (no readable letters). Candelabras. Red only: the wine in the goblets."
+  },
+  {
+   "batch": 6,
+   "name": "e047",
+   "out": "events/e047.png",
+   "ja": "鎖の囚人",
+   "prompt": "Deep inside a dungeon cell, a man chained to the wall hangs his head; he has just raised his face, and where his eyes should be there are only empty dark hollows. Large in the frame. Red only: the rusted shackles on his wrists."
+  },
+  {
+   "batch": 6,
+   "name": "e048",
+   "out": "events/e048.png",
+   "ja": "牢番",
+   "prompt": "A huge jailer patrols in front of iron bars, a giant ring of keys hanging from his belt. Above his shoulders there is nothing: he has no head. He carries a lantern. Large in the frame. Red only: the light of his lantern."
+  },
+  {
+   "batch": 6,
+   "name": "e049",
+   "out": "events/e049.png",
+   "ja": "蝋燭の道",
+   "prompt": "A corridor lined on both sides with countless lit candles of all sizes stretching into the distance, wax dripping onto the floor. A few candles have just gone out, trailing smoke. {HERO} walks down the middle, small. Red only: the flames of the candles nearest to the viewer."
+  },
+  {
+   "batch": 6,
+   "name": "e050",
+   "out": "events/e050.png",
+   "ja": "闇の中の目",
+   "prompt": "In the darkness at the back of a cave, a gigantic eye the size of a house has opened, its pupil slowly focusing on the viewer. {HERO} stands tiny before it, seen from behind. Red only: the veins around the eye."
+  },
+  {
+   "batch": 6,
+   "name": "e051",
+   "out": "events/e051.png",
+   "ja": "地図職人の亡骸",
+   "prompt": "Between tall bookshelves, a dried, mummified man still gripping a pen sits slumped over a desk. On the desk lies an unfinished map of the labyrinth drawn as maze-like lines, no writing. No living people. Red only: the last line of the map, drawn in blood."
+  },
+  {
+   "batch": 6,
+   "name": "e052",
+   "out": "events/e052.png",
+   "ja": "禁書庫",
+   "prompt": "A forbidden library where books are bound to the shelves with chains. One book thrashes violently against its chains, its cover made of stretched leather bearing a human face. {HERO} watches from the aisle. Red only: the open mouth of the face on the book's cover."
+  },
+  {
+   "batch": 6,
+   "name": "e053",
+   "out": "events/e053.png",
+   "ja": "湖の歌声",
+   "prompt": "On a rock in the middle of an underground lake sits a beautiful pale woman in a long tattered dress with long wet hair, singing. Her reflection in the water is a drowned skeleton. {HERO} stands on the shore, drawn toward her. Red only: her lips."
+  },
+  {
+   "batch": 6,
+   "name": "e054",
+   "out": "events/e054.png",
+   "ja": "死神の賭け",
+   "prompt": "A black-robed figure with a large scythe sits at a chessboard on a table in a crypt; under the hood is a skull. It gestures for the viewer to take the empty seat. Large in the frame. Red only: one chess piece, a king, on the board."
+  },
+  {
+   "batch": 6,
+   "name": "e055",
+   "out": "events/e055.png",
+   "ja": "蛆の床",
+   "prompt": "A crypt floor entirely covered by a white, writhing carpet of maggots. Beneath them lies the vast carcass of some creature, its swollen belly slowly rising and falling as if still breathing. {HERO} stands at the edge, small. Red only: a gash in the carcass."
+  },
+  {
+   "batch": 6,
+   "name": "e056",
+   "out": "events/e056.png",
+   "ja": "メモの続き",
+   "prompt": "On a stone floor in a corridor lies another handwritten note, the writing shown only as illegible scratches, with a pressed flower tucked into it. Far down the corridor, in the darkness, a faint silhouette of armour can be seen. {HERO} kneels to pick up the note. Red only: the pressed flower."
+  },
+  {
+   "batch": 6,
+   "name": "e057",
+   "out": "events/e057.png",
+   "ja": "喰らう扉",
+   "prompt": "A heavy wooden door where the handle should be, there is a wet, fleshy mouth with teeth, open and speaking, drool running down the wood. {HERO} stands before it. Large in the frame. Red only: the tongue inside the mouth."
+  },
+  {
+   "batch": 6,
+   "name": "e058",
+   "out": "events/e058.png",
+   "ja": "胞子の森",
+   "prompt": "A forest of giant mushrooms reaching up to the cave ceiling, spores falling like snow and piling on the ground. Deep in the forest, dim shapes. {HERO} walks in with a cloth over their mouth, small. Red only: one small glowing light deep in the forest."
+  },
+  {
+   "batch": 6,
+   "name": "e059",
+   "out": "events/e059.png",
+   "ja": "地下都市の大通り",
+   "prompt": "A grand avenue of an underground city lined with stone houses exactly like a royal capital, but drained of all colour. Every window is lit and shows the silhouette of a person moving, yet the doors stand open on empty rooms. {HERO} walks down the middle of the avenue, small. Red only: one single lit window."
+  },
+  {
+   "batch": 6,
+   "name": "e061",
+   "out": "events/e061.png",
+   "ja": "蛾の女王",
+   "prompt": "A gigantic moth descends with its wings spread, glowing with a ghostly light. The patterns on its wings are made of countless human faces. {HERO} stands below, small. Red only: the moth's two large eyes."
+  },
+  {
+   "batch": 6,
+   "name": "e062",
+   "out": "events/e062.png",
+   "ja": "菌糸の人",
+   "prompt": "A man with mushrooms growing all over his body walks slowly toward the viewer with open arms; thread-like fungal tendrils reach out from his chest. Grotesque and realistic. Large in the frame. Red only: the caps of a few mushrooms on his shoulders."
+  },
+  {
+   "batch": 6,
+   "name": "e063",
+   "out": "events/e063.png",
+   "ja": "逆さ時計の塔",
+   "prompt": "The huge clock face of a ruined clock tower in an underground city, its hands turning the wrong way. Below the clock face is a small door with a carved inscription shown only as illegible marks. {HERO} stands before the door, small. Red only: the hands of the clock."
+  },
+  {
+   "batch": 6,
+   "name": "e064",
+   "out": "events/e064.png",
+   "ja": "黒い聖堂",
+   "prompt": "A cathedral built of black obsidian. On the altar a black flame burns with a dark glow. The pews are empty of people, but shadows sit in them, praying. {HERO} stands in the aisle. Red only: the outline of the black flame."
+  },
+  {
+   "batch": 6,
+   "name": "e065",
+   "out": "events/e065.png",
+   "ja": "双子の扉",
+   "prompt": "Two identical doors side by side in a corridor; one is carved with an open eye, the other with a closed eye (no words). In front of them stand pale twin children in identical old-fashioned clothes, speaking at the same time, with unsettling smiles. Large in the frame. Red only: the ribbons in the twins' hair."
+  },
+  {
+   "batch": 6,
+   "name": "e066",
+   "out": "events/e066.png",
+   "ja": "竜の骨",
+   "prompt": "The enormous skeleton of a dragon lies across a whole cave. Inside its ribcage, a pile of treasure glints dully. Hot air shimmers up from gaps between the bones. {HERO} stands small at the dragon's skull. Red only: a large gem at the top of the treasure pile."
+  },
+  {
+   "batch": 6,
+   "name": "e067",
+   "out": "events/e067.png",
+   "ja": "影の自分",
+   "prompt": "{HERO} stands in a ruin, and their own shadow on the floor has risen up by itself into a standing black figure with the same shape, facing them. The shadow speaks. Both large in the frame. Red only: the shadow's two eyes."
+  },
+  {
+   "batch": 6,
+   "name": "e068",
+   "out": "events/e068.png",
+   "ja": "仮面の商人",
+   "prompt": "A merchant wearing many masks layered over one another runs a small stall in a ruined street; the stall is covered with hanging masks of human faces. The merchant leans forward to greet the viewer. Large in the frame. Red only: the mouth of the outermost mask."
+  },
+  {
+   "batch": 6,
+   "name": "e069",
+   "out": "events/e069.png",
+   "ja": "脈打つ卵",
+   "prompt": "A huge egg wrapped in fungal threads, pulsing like a heart, in a fungus-filled cave. Cracks run across its shell, and something is knocking from inside. {HERO} stands small before it. Red only: the light leaking out of the cracks."
+  },
+  {
+   "batch": 6,
+   "name": "e070",
+   "out": "events/e070.png",
+   "ja": "亡者の行進",
+   "prompt": "A column of dead soldiers in rusted armour marches toward the viewer through a ruined street, none of them alive, empty helmets. The standard-bearer at the front has stopped and looks straight at the viewer. Large in the frame. Red only: the tattered banner carried by the standard-bearer."
+  },
+  {
+   "batch": 6,
+   "name": "e071",
+   "out": "events/e071.png",
+   "ja": "魔女の再訪",
+   "prompt": "The same swamp witch as before, a hunched old crone with wild grey hair, stirs her bubbling cauldron in a cave hut and looks up with a knowing, crooked grin, as if remembering the viewer. Hourglasses and bones hang around her. Realistic and grotesque. Large in the frame. Red only: the sand in one hourglass."
   }
  ]
 }
