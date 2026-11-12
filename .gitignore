@@ -4,3 +4,6 @@
 *.keystore
 export_credentials.cfg
 __pycache__/
+
+# AI still raw images are kept outside git (PC + cloud storage)
+art_ai/test/raw/

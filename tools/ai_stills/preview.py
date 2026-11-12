@@ -1,8 +1,10 @@
-"""Pixelize every raw image (two densities) and build a comparison sheet.
+"""Pixelize the raw images into the game's still format (px1: 336x200, 6 colours) and build review sheets.
 
-python3 tools/ai_stills/preview.py [--dither 0.6] [--red-sat 0.42]
-Reads  every art_ai/test/raw/<name>.png that exists so far (all batches). JPEG is refused.
-Writes art_ai/test/px1/<out>, art_ai/test/px2/<out>, art_ai/test/preview.png
+python3 tools/ai_stills/preview.py [--batch N] [--dither 0.6] [--red-sat 0.42]
+Reads  art_ai/test/raw/<name>.png (raw images are kept outside git; JPEG is refused)
+Writes art_ai/test/px1/<out>                 the finished stills
+       art_ai/test/preview_b<batch>.png      raw | px1 | current placeholder, one sheet per batch
+A job whose raw image is not here keeps its existing px1 file and still appears on its sheet.
 """
 import argparse, json, os, sys
 from PIL import Image, ImageDraw
@@ -26,42 +28,53 @@ def find_raw(name):
     return None
 
 
+def sheet(rows, path):
+    gap, head = 8, 14
+    im = Image.new('RGB', (3 * W + 4 * gap, len(rows) * (H + head + gap) + head + gap), (40, 40, 40))
+    d = ImageDraw.Draw(im)
+    for i, t in enumerate(('raw', 'px1 (336x200, in game)', 'current placeholder')):
+        d.text((gap + i * (W + gap), 4), t, fill=(255, 255, 255))
+    for r, (name, cells) in enumerate(rows):
+        y = head + gap + r * (H + head + gap)
+        d.text((gap, y), name, fill=(255, 255, 255))
+        for i, c in enumerate(cells):
+            if c is not None:
+                im.paste(c, (gap + i * (W + gap), y + head))
+    im.save(path)
+
+
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument('--batch', type=int, help='only this batch')
     ap.add_argument('--dither', type=float, default=0.6)
     ap.add_argument('--red-sat', type=float, default=0.42)
     a = ap.parse_args()
     spec = json.load(open(os.path.join(HERE, 'jobs.json'), encoding='utf-8'))
-    rows, missing = [], []
+    batches, made, missing = {}, 0, []
     for job in spec['jobs']:
+        if a.batch is not None and job['batch'] != a.batch:
+            continue
+        dst = os.path.join(TEST, 'px1', job['out'])
         raw = find_raw(job['name'])
-        if not raw:
-            missing.append(job['name']); continue
-        src = Image.open(raw)
-        cells = [src.convert('RGB').resize((W, H), Image.Resampling.LANCZOS)]
-        for px in (1, 2):
-            im = pixelize(src, px, a.dither, a.red_sat)
+        thumb = None
+        if raw:
+            src = Image.open(raw)
+            im = pixelize(src, 1, a.dither, a.red_sat)
             check(im)
-            dst = os.path.join(TEST, 'px%d' % px, job['out'])
             os.makedirs(os.path.dirname(dst), exist_ok=True)
             im.save(dst)
-            cells.append(im)
+            made += 1
+            thumb = src.convert('RGB').resize((W, H), Image.Resampling.LANCZOS)
+        elif not os.path.exists(dst):
+            missing.append(job['name'])
+            continue
         old = os.path.join(ROOT, 'art', job['out'])
-        cells.append(Image.open(old).convert('RGB') if os.path.exists(old) else Image.new('RGB', (W, H)))
-        rows.append((job['name'], cells))
-    if rows:
-        gap, head = 8, 14
-        sheet = Image.new('RGB', (4 * W + 5 * gap, len(rows) * (H + head + gap) + head + gap), (40, 40, 40))
-        d = ImageDraw.Draw(sheet)
-        for i, t in enumerate(('raw', 'px1 (336x200)', 'px2 (168x100 x2)', 'current placeholder')):
-            d.text((gap + i * (W + gap), 4), t, fill=(255, 255, 255))
-        for r, (name, cells) in enumerate(rows):
-            y = head + gap + r * (H + head + gap)
-            d.text((gap, y), name, fill=(255, 255, 255))
-            for i, c in enumerate(cells):
-                sheet.paste(c, (gap + i * (W + gap), y + head))
-        sheet.save(os.path.join(TEST, 'preview.png'))
-        print('wrote preview with', len(rows), 'rows')
+        cells = [thumb, Image.open(dst).convert('RGB'),
+                 Image.open(old).convert('RGB') if os.path.exists(old) else None]
+        batches.setdefault(job['batch'], []).append((job['name'], cells))
+    for b, rows in sorted(batches.items()):
+        sheet(rows, os.path.join(TEST, 'preview_b%d.png' % b))
+    print('pixelized', made, 'raw images; sheets for batches', sorted(batches))
     if missing:
         print('not generated yet:', ' '.join(missing))
 
