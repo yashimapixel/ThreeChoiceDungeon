@@ -2006,7 +2006,7 @@
    "name": "e029_0_ng",
    "out": "results/e029_0_ng.png",
    "ja": "盗賊の待ち伏せ→戦う（失敗）",
-   "prompt": "{HERO} clutches their side, wounded, while a bandit runs off with their pack. Red only: the wound."
+   "prompt": "In a dark cave with rock walls all around, {HERO} clutches their side, wounded, while a bandit with a red scarf runs off into a tunnel with their pack. Red only: the wound."
   },
   {
    "batch": 8,
@@ -2034,7 +2034,7 @@
    "name": "e029_3_r",
    "out": "results/e029_3_r.png",
    "ja": "盗賊の待ち伏せ→大人しく荷物を渡す",
-   "prompt": "{HERO} hands over their pack to a bandit holding a dagger. Red only: the bandit's scarf."
+   "prompt": "In a dark cave with rock walls all around, {HERO} hands over their pack to a bandit holding a dagger. Red only: the bandit's scarf."
   },
   {
    "batch": 8,
@@ -2062,7 +2062,7 @@
    "name": "e030_2_ok",
    "out": "results/e030_2_ok.png",
    "ja": "水晶玉→水晶玉を持ち去る（成功）",
-   "prompt": "{HERO} wraps a glowing crystal ball in cloth and tucks it under their arm. Red only: a small red glint in the ball."
+   "prompt": "In a dark stone room underground, {HERO} wraps a glowing crystal ball in cloth and tucks it under their arm, beside an empty pedestal. Red only: a small red glint in the ball."
   },
   {
    "batch": 8,
@@ -2083,7 +2083,7 @@
    "name": "e031_0_ng",
    "out": "results/e031_0_ng.png",
    "ja": "弔いの鐘→鐘を鳴らす（失敗）",
-   "prompt": "{HERO} has rung a huge bell; in the darkness beyond the tower, giant eyes open. Red only: the eyes."
+   "prompt": "Inside a ruined underground bell tower enclosed by rock and stone, {HERO} has rung a huge bell; in the darkness beyond, giant eyes open. Red only: the eyes."
   },
   {
    "batch": 8,
@@ -2097,14 +2097,14 @@
    "name": "e031_1_ng",
    "out": "results/e031_1_ng.png",
    "ja": "弔いの鐘→自分の名前を削り取る（失敗）",
-   "prompt": "{HERO} scrapes at a bell's rim but the glowing mark keeps reappearing. Red only: the glowing mark."
+   "prompt": "Inside a ruined underground bell tower with no windows, {HERO} scrapes at a bell's rim with a knife but the glowing mark keeps reappearing. Red only: the glowing mark, with no letters or symbols in it."
   },
   {
    "batch": 8,
    "name": "e031_2_r",
    "out": "results/e031_2_r.png",
    "ja": "弔いの鐘→静かに通り過ぎる",
-   "prompt": "{HERO} walks away from a ruined bell tower as the bell swings once behind them. Red only: the glow on the bell's rim."
+   "prompt": "Inside a vast underground cavern, {HERO} walks away from a ruined bell tower as the bell swings once behind them; cave ceiling above, no sky. Red only: the glow on the bell's rim."
   },
   {
    "batch": 8,
@@ -2167,7 +2167,7 @@
    "name": "n06_2_r",
    "out": "results/n06_2_r.png",
    "ja": "迷宮の中の街角→街灯の火をもらう",
-   "prompt": "{HERO} lights a torch from a street lamp; the new flame burns oddly white. Red only: the street lamp's flame."
+   "prompt": "On a city street corner standing inside a dungeon passage, its edges fading into cave rock and a rock ceiling above with no sky, {HERO} lights a torch from an iron street lamp; the new flame burns oddly white. Red only: the street lamp's flame."
   },
   {
    "batch": 8,
@@ -2363,21 +2363,21 @@
    "name": "e037_1_r",
    "out": "results/e037_1_r.png",
    "ja": "渡し守→思い出を一つ払う",
-   "prompt": "{HERO} sits in a small boat on a black lake, eyes empty, as a faint memory image of a village drifts away over the water. Red only: the lantern at the bow."
+   "prompt": "On a still black lake in a vast underground cavern with a rock ceiling above, {HERO} sits in a small boat with empty eyes as a faint memory image of a village drifts away over the water like mist. Red only: the lantern at the bow."
   },
   {
    "batch": 8,
    "name": "e037_2_ok",
    "out": "results/e037_2_ok.png",
    "ja": "渡し守→渡し守を突き落として舟を奪う（成功）",
-   "prompt": "{HERO} rows a stolen boat across a black lake while pale hands reach up from the water behind. Red only: the lantern at the bow."
+   "prompt": "On a black lake in a vast underground cavern with a rock ceiling above, {HERO} rows a stolen boat while pale hands reach up from the water behind. Red only: the lantern at the bow."
   },
   {
    "batch": 8,
    "name": "e037_2_ng",
    "out": "results/e037_2_ng.png",
    "ja": "渡し守→渡し守を突き落として舟を奪う（失敗）",
-   "prompt": "{HERO} drags themselves soaking wet onto a lake shore, the ferryman standing in his boat behind. Red only: the lantern at the bow."
+   "prompt": "On the rocky shore of an underground lake in a vast cavern, {HERO} drags themselves out soaking wet while the hooded ferryman stands in his boat behind. Red only: the lantern at the bow."
   },
   {
    "batch": 8,
@@ -2433,7 +2433,7 @@
    "name": "e039_1_r",
    "out": "results/e039_1_r.png",
    "ja": "沼の魔女→薬だけ売ってもらう",
-   "prompt": "A swamp witch counts coins and hands {HERO} a small potion bottle. Red only: the liquid in the cauldron."
+   "prompt": "In a witch's hut built inside a cave, with no windows and rock walls behind, a swamp witch counts coins and hands {HERO} a small potion bottle. Red only: the liquid in the cauldron."
   },
   {
    "batch": 8,
