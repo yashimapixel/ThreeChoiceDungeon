@@ -2447,7 +2447,7 @@
    "name": "e039_2_ng",
    "out": "results/e039_2_ng.png",
    "ja": "沼の魔女→鍋をひっくり返して逃げる（失敗）",
-   "prompt": "A witch's curse, a dark streak of light, strikes {HERO} in the back as they flee. Red only: the curse."
+   "prompt": "Inside a dark cave, with rock walls and a low rock ceiling, a witch's curse, a dark streak of light from her outstretched hand, strikes {HERO} in the back as they flee. Red only: the curse."
   },
   {
    "batch": 8,

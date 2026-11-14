@@ -1,6 +1,6 @@
-# Codex 向け作業指示：画像22枚の作り直し（元画像のみ）
+# Codex 向け作業指示：画像23枚の作り直し（元画像のみ）
 
-ゲーム「三択ダンジョン」のイベント画像の元絵を、下の22枚分、まとめて生成してください。
+ゲーム「三択ダンジョン」のイベント画像の元絵を、下の23枚分、まとめて生成してください。
 減色・縮小などの加工は、こちらで別に行います。**あなたの作業は、画像を生成して PNG で保存することだけです。**
 
 ## ルール
@@ -13,9 +13,9 @@
 6. 途中で中断して再開したときは、`generated/` に既にある画像は作り直さず、残りから続ける。
 7. 品質の確認と作り直しの判断はこちらで行う。生成した画像を開いて確認したり、説明したりしなくてよい（作り直しも不要）。
 8. スクリプトの作成、リポジトリの取得、コミットは不要。返信は「OK e005_1_ng」のように1枚1行の短い報告だけにする。
-9. 22枚すべて保存したら終了する。最後に、保存できたファイル名の一覧と、生成できなかったものがあればその名前を書く。クラウド環境で作業している場合は、`generated/` の PNG を **`stills_redo3.zip`** にまとめてダウンロードできる形で出力する（自分のPCで作業している場合は zip は不要）。
+9. 23枚すべて保存したら終了する。最後に、保存できたファイル名の一覧と、生成できなかったものがあればその名前を書く。クラウド環境で作業している場合は、`generated/` の PNG を **`stills_redo3.zip`** にまとめてダウンロードできる形で出力する（自分のPCで作業している場合は zip は不要）。
 
-## 画像リスト（22枚）
+## 画像リスト（23枚）
 
 | # | name | 内容 | 作り直す理由 |
 | --- | --- | --- | --- |
@@ -41,6 +41,7 @@
 | 20 | `e037_2_ok` | 渡し守→渡し守を突き落として舟を奪う（成功） | 湖の上に月 → 地下の湖に |
 | 21 | `e037_2_ng` | 渡し守→渡し守を突き落として舟を奪う（失敗） | 湖の上に月 → 地下の湖に |
 | 22 | `e039_1_r` | 沼の魔女→薬だけ売ってもらう | 窓に月 → 窓のない洞窟の小屋に |
+| 23 | `e039_2_ng` | 沼の魔女→鍋をひっくり返して逃げる（失敗） | 空と月 → 洞窟の中に |
 
 ---
 
@@ -331,6 +332,19 @@ Characters (keep them consistent across images):
 Dark fantasy horror illustration for a retro game, wide landscape composition. Strictly monochrome: pure black, charcoal grey, light grey and off-white only, plus blood red used ONLY on the elements listed as red. No other colours, no blue, brown, sepia or warm tint anywhere. Strong chiaroscuro: mostly deep black darkness, one dim light source, very high contrast. Large, simple, clearly readable shapes and silhouettes with minimal fine texture and no tiny details, because the image will be shrunk to 336x200 pixels. Flat graphic shading in three or four tones, like a woodcut or ink wash, crisp edges. Every element listed as red must be bold and clearly visible, because tiny red details disappear when shrunk, but red should cover only a small part of the image unless the scene says otherwise. Main characters should be large in the frame unless the scene says they are small. Everything happens underground inside the labyrinth: no sky, no moon, no sun, no trees, no outdoor scenery, unless the scene says it is outside. Any royal crest or emblem is always a simple crown shape. Keep every important subject inside the central horizontal band; the top and bottom 6% will be cropped. No text, no letters, no runes, no logo, no frame, no border, no UI, no signature, no watermark. Not anime or manga style: no big eyes, no cute or stylised faces; realistic human proportions and restrained, naturalistic faces, like a classic dark fantasy book illustration or etching. Not pixel art and no pixel grid (it will be pixelized afterwards).
 
 Scene: In a witch's hut built inside a cave, with no windows and rock walls behind, a swamp witch counts coins and hands the hooded adventurer a small potion bottle. Red only: the liquid in the cauldron.
+
+Characters (keep them consistent across images):
+- the hooded adventurer: a lone adventurer in a long dark hooded cloak; the face is completely hidden in black shadow inside the hood except for two tiny white glowing dots for eyes; carries a small lantern and a short sword; slim, ordinary human size
+```
+
+### 23. e039_2_ng：沼の魔女→鍋をひっくり返して逃げる（失敗）
+
+保存名：`generated/e039_2_ng.png`
+
+```
+Dark fantasy horror illustration for a retro game, wide landscape composition. Strictly monochrome: pure black, charcoal grey, light grey and off-white only, plus blood red used ONLY on the elements listed as red. No other colours, no blue, brown, sepia or warm tint anywhere. Strong chiaroscuro: mostly deep black darkness, one dim light source, very high contrast. Large, simple, clearly readable shapes and silhouettes with minimal fine texture and no tiny details, because the image will be shrunk to 336x200 pixels. Flat graphic shading in three or four tones, like a woodcut or ink wash, crisp edges. Every element listed as red must be bold and clearly visible, because tiny red details disappear when shrunk, but red should cover only a small part of the image unless the scene says otherwise. Main characters should be large in the frame unless the scene says they are small. Everything happens underground inside the labyrinth: no sky, no moon, no sun, no trees, no outdoor scenery, unless the scene says it is outside. Any royal crest or emblem is always a simple crown shape. Keep every important subject inside the central horizontal band; the top and bottom 6% will be cropped. No text, no letters, no runes, no logo, no frame, no border, no UI, no signature, no watermark. Not anime or manga style: no big eyes, no cute or stylised faces; realistic human proportions and restrained, naturalistic faces, like a classic dark fantasy book illustration or etching. Not pixel art and no pixel grid (it will be pixelized afterwards).
+
+Scene: Inside a dark cave, with rock walls and a low rock ceiling, a witch's curse, a dark streak of light from her outstretched hand, strikes the hooded adventurer in the back as they flee. Red only: the curse.
 
 Characters (keep them consistent across images):
 - the hooded adventurer: a lone adventurer in a long dark hooded cloak; the face is completely hidden in black shadow inside the hood except for two tiny white glowing dots for eyes; carries a small lantern and a short sword; slim, ordinary human size
