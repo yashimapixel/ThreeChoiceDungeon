@@ -1068,6 +1068,1406 @@
    "out": "results/g100_6_r.png",
    "ja": "迷宮の底→闇の代わりに底に残る",
    "prompt": "{HERO} sits alone on a throne of black flesh and bone at the very bottom of the labyrinth, in total darkness, surrounded by closed eyes in the walls, waiting. Red only: the adventurer's two eyes glow red instead of white."
+  },
+  {
+   "batch": 8,
+   "name": "e001_0_r",
+   "out": "results/e001_0_r.png",
+   "ja": "錆びた扉→錆びた鍵で開ける",
+   "prompt": "Behind an opened rusted iron door, a tiny storeroom: {HERO} kneels by shelves of dry rations and a small scatter of coins, a rusty key still in the lock. Red only: a small red cloth sack among the rations."
+  },
+  {
+   "batch": 8,
+   "name": "e001_1_ok",
+   "out": "results/e001_1_ok.png",
+   "ja": "錆びた扉→体当たりで押し開ける（成功）",
+   "prompt": "A heavy rusted iron door has crashed flat onto the floor in a cloud of dust; {HERO} pulls a coil of rope from an old backpack lying beyond it. Red only: rust streaks on the fallen door."
+  },
+  {
+   "batch": 8,
+   "name": "e001_1_ng",
+   "out": "results/e001_1_ng.png",
+   "ja": "錆びた扉→体当たりで押し開ける（失敗）",
+   "prompt": "{HERO} rebounds from a rusted iron door that has not moved at all, clutching their bruised shoulder in pain. Red only: a few rust streaks on the door."
+  },
+  {
+   "batch": 8,
+   "name": "e001_2_ok",
+   "out": "results/e001_2_ok.png",
+   "ja": "錆びた扉→耳を当てて様子をうかがう（成功）",
+   "prompt": "A rusted iron door stands open; beyond it only a chain sways gently in the draft, and {HERO} walks calmly through. Red only: a small rust patch on the chain."
+  },
+  {
+   "batch": 8,
+   "name": "e001_3_r",
+   "out": "results/e001_3_r.png",
+   "ja": "錆びた扉→扉には触れず迂回する",
+   "prompt": "{HERO} trudges along a long, damp, dark detour passage, shoulders slumped with fatigue, water dripping from the ceiling. Red only: a faint red glow at the far end of the passage."
+  },
+  {
+   "batch": 8,
+   "name": "e002_0_r",
+   "out": "results/e002_0_r.png",
+   "ja": "ネズミの群れ→たいまつを振りかざす",
+   "prompt": "{HERO} thrusts a blazing torch forward and a flood of grey rats scatters away squealing into the dark corners of a stone corridor. Red only: the flame of the torch."
+  },
+  {
+   "batch": 8,
+   "name": "e002_1_ok",
+   "out": "results/e002_1_ok.png",
+   "ja": "ネズミの群れ→踏みつけて突っ切る（成功）",
+   "prompt": "{HERO} charges through a river of rats in a corridor, stamping through them, the boots slipping. Red only: small splashes of blood under the boots."
+  },
+  {
+   "batch": 8,
+   "name": "e002_1_ng",
+   "out": "results/e002_1_ng.png",
+   "ja": "ネズミの群れ→踏みつけて突っ切る（失敗）",
+   "prompt": "{HERO} has fallen on the floor of a corridor and is swarmed by hundreds of rats biting at their arms and legs. Red only: the rats' eyes as small bold dots."
+  },
+  {
+   "batch": 8,
+   "name": "e002_2_ok",
+   "out": "results/e002_2_ok.png",
+   "ja": "ネズミの群れ→息を殺して通り過ぎるのを待つ（成功）",
+   "prompt": "{HERO} stands pressed silently against a corridor wall as the last of a river of rats flows away into the distance; stillness returns. Red only: the eyes of the last few rats."
+  },
+  {
+   "batch": 8,
+   "name": "e002_2_ng",
+   "out": "results/e002_2_ng.png",
+   "ja": "ネズミの群れ→息を殺して通り過ぎるのを待つ（失敗）",
+   "prompt": "{HERO} sits huddled and exhausted against a corridor wall while rats still crawl over their boots and around them in the dark. Red only: the rats' eyes as small dots."
+  },
+  {
+   "batch": 8,
+   "name": "e002_3_r",
+   "out": "results/e002_3_r.png",
+   "ja": "ネズミの群れ→携帯食を投げて気を逸らす",
+   "prompt": "A swarm of rats piles onto a tossed bundle of food in a corridor while {HERO} slips past, a hand on their empty stomach. Red only: the rats' eyes as small dots."
+  },
+  {
+   "batch": 8,
+   "name": "e003_0_ok",
+   "out": "results/e003_0_ok.png",
+   "ja": "先客の亡骸→荷物を漁る（成功）",
+   "prompt": "{HERO} kneels beside a skeleton slumped against a wall and pulls a usable torch and a few coins out of its old backpack. Red only: the head of the torch."
+  },
+  {
+   "batch": 8,
+   "name": "e003_0_ng",
+   "out": "results/e003_0_ng.png",
+   "ja": "先客の亡骸→荷物を漁る（失敗）",
+   "prompt": "{HERO} leaps back in fright from a slumped skeleton whose jaw has just clacked open, the backpack left untouched. Red only: a faint glow in the skeleton's eye sockets."
+  },
+  {
+   "batch": 8,
+   "name": "e003_1_r",
+   "out": "results/e003_1_r.png",
+   "ja": "先客の亡骸→指し示す先の床を調べる",
+   "prompt": "{HERO} has lifted a floor stone where a skeleton's finger points, revealing a rusty key hidden underneath. Red only: the rusty key."
+  },
+  {
+   "batch": 8,
+   "name": "e003_2_r",
+   "out": "results/e003_2_r.png",
+   "ja": "先客の亡骸→祈りを捧げて弔う",
+   "prompt": "{HERO} kneels in prayer before a skeleton slumped against a dungeon wall, head bowed; a gentle light falls on them. Red only: a small red cloth tied on the skeleton's broken sword."
+  },
+  {
+   "batch": 8,
+   "name": "e004_0_ok",
+   "out": "results/e004_0_ok.png",
+   "ja": "宝箱→迷わず開ける（成功）",
+   "prompt": "An ornate treasure chest thrown open, overflowing with gold coins that spill onto the floor; {HERO} stares in surprise. Red only: a large gem among the coins."
+  },
+  {
+   "batch": 8,
+   "name": "e004_0_ng",
+   "out": "results/e004_0_ng.png",
+   "ja": "宝箱→迷わず開ける（失敗）",
+   "prompt": "A treasure chest has split open into a mimic with rows of fangs and a long tongue, biting at {HERO}, who flees clutching their arm. Red only: the mimic's tongue."
+  },
+  {
+   "batch": 8,
+   "name": "e004_1_ok",
+   "out": "results/e004_1_ok.png",
+   "ja": "宝箱→剣で叩いてから開ける（成功）",
+   "prompt": "A dead mimic chest lies limp after being struck; coins spill from its open mouth as {HERO} lowers the sword. Red only: the mimic's lolling tongue."
+  },
+  {
+   "batch": 8,
+   "name": "e004_1_ng",
+   "out": "results/e004_1_ng.png",
+   "ja": "宝箱→剣で叩いてから開ける（失敗）",
+   "prompt": "{HERO} fights a thrashing mimic chest with fangs, sword raised, a wound on their arm. Red only: the mimic's tongue."
+  },
+  {
+   "batch": 8,
+   "name": "e004_2_r",
+   "out": "results/e004_2_r.png",
+   "ja": "宝箱→触らずに立ち去る",
+   "prompt": "{HERO} walks away from an ornate treasure chest in an empty room; behind them the chest lid has opened a crack, showing teeth. Red only: a tongue tip peeking from the lid."
+  },
+  {
+   "batch": 8,
+   "name": "e005_0_ok",
+   "out": "results/e005_0_ok.png",
+   "ja": "囁く井戸→金貨を一枚投げ入れる（成功）",
+   "prompt": "A warm glow rises from a stone well like a column of soft light; {HERO} stands at the rim, bathed in it. Red only: a coin glinting as it falls."
+  },
+  {
+   "batch": 8,
+   "name": "e005_0_ng",
+   "out": "results/e005_0_ng.png",
+   "ja": "囁く井戸→金貨を一枚投げ入れる（失敗）",
+   "prompt": "{HERO} leans over a stone well; from the darkness below, a mouth full of teeth grins up. Red only: the grinning mouth's gums."
+  },
+  {
+   "batch": 8,
+   "name": "e005_1_ok",
+   "out": "results/e005_1_ok.png",
+   "ja": "囁く井戸→水を汲んで飲む（成功）",
+   "prompt": "{HERO} drinks clear water from a bucket at a stone well, eyes closed in relief. Red only: a small red flower growing from a crack in the well."
+  },
+  {
+   "batch": 8,
+   "name": "e005_1_ng",
+   "out": "results/e005_1_ng.png",
+   "ja": "囁く井戸→水を汲んで飲む（失敗）",
+   "prompt": "{HERO} spits out a mouthful of dark liquid from a bucket at a stone well, recoiling. Red only: the liquid, which is blood."
+  },
+  {
+   "batch": 8,
+   "name": "e005_2_ok",
+   "out": "results/e005_2_ok.png",
+   "ja": "囁く井戸→声に応える（成功）",
+   "prompt": "{HERO} leans over a stone well as a faint pale figure deep below raises a hand as if waving them away; peaceful. Red only: none except a faint red glow far down."
+  },
+  {
+   "batch": 8,
+   "name": "e005_2_ng",
+   "out": "results/e005_2_ng.png",
+   "ja": "囁く井戸→声に応える（失敗）",
+   "prompt": "{HERO} runs away from a stone well as long pale arms crawl up over its rim behind them. Red only: the fingernails of the arms."
+  },
+  {
+   "batch": 8,
+   "name": "e006_0_ok",
+   "out": "results/e006_0_ok.png",
+   "ja": "ゴブリンの見張り→寝込みを襲う（成功）",
+   "prompt": "A goblin lies knocked out against the rock while {HERO} picks a small potion bottle and coins from its stolen goods. Red only: the potion in the bottle."
+  },
+  {
+   "batch": 8,
+   "name": "e006_0_ng",
+   "out": "results/e006_0_ng.png",
+   "ja": "ゴブリンの見張り→寝込みを襲う（失敗）",
+   "prompt": "A goblin wakes and screeches, more goblin eyes appearing in the dark tunnels, while {HERO} flees wounded. Red only: the goblins' eyes."
+  },
+  {
+   "batch": 8,
+   "name": "e006_1_ok",
+   "out": "results/e006_1_ok.png",
+   "ja": "ゴブリンの見張り→忍び足で横を抜ける（成功）",
+   "prompt": "{HERO} tiptoes silently past a sleeping goblin hugging its spear at a cave fork. Red only: the red cloth tied on the goblin's spear."
+  },
+  {
+   "batch": 8,
+   "name": "e006_1_ng",
+   "out": "results/e006_1_ng.png",
+   "ja": "ゴブリンの見張り→忍び足で横を抜ける（失敗）",
+   "prompt": "A goblin's thrown spear grazes {HERO}'s shoulder as they run past, a pebble skittering on the floor. Red only: a thin cut on the shoulder."
+  },
+  {
+   "batch": 8,
+   "name": "e006_2_ok",
+   "out": "results/e006_2_ok.png",
+   "ja": "ゴブリンの見張り→話しかけてみる（成功）",
+   "prompt": "A frightened goblin points a long finger toward a narrow side tunnel while {HERO} crouches to listen. Red only: a small red cloth on the goblin's spear."
+  },
+  {
+   "batch": 8,
+   "name": "e006_2_ng",
+   "out": "results/e006_2_ng.png",
+   "ja": "ゴブリンの見張り→話しかけてみる（失敗）",
+   "prompt": "A goblin screams shrilly at {HERO}, who covers their ears in pain. Red only: the goblin's open mouth."
+  },
+  {
+   "batch": 8,
+   "name": "e007_0_r",
+   "out": "results/e007_0_r.png",
+   "ja": "古い祭壇→血を一滴捧げる",
+   "prompt": "{HERO} lets a drop of blood fall from a fingertip onto an old black stone altar, where it soaks into the stone. Red only: the drop of blood."
+  },
+  {
+   "batch": 8,
+   "name": "e007_1_ok",
+   "out": "results/e007_1_ok.png",
+   "ja": "古い祭壇→静かに祈る（成功）",
+   "prompt": "{HERO} kneels in prayer at an old stone altar, enveloped in soft pale light from above. Red only: old dried stains on the altar, small."
+  },
+  {
+   "batch": 8,
+   "name": "e007_1_ng",
+   "out": "results/e007_1_ng.png",
+   "ja": "古い祭壇→静かに祈る（失敗）",
+   "prompt": "{HERO} kneels at an old stone altar while huge eyes open in the darkness behind the pillars, watching. Red only: the eyes in the dark."
+  },
+  {
+   "batch": 8,
+   "name": "e007_2_ok",
+   "out": "results/e007_2_ok.png",
+   "ja": "古い祭壇→供物の金貨をくすねる（成功）",
+   "prompt": "{HERO} slips a coin from an offering bowl on an old altar into a pouch, glancing around. Red only: the coin in hand."
+  },
+  {
+   "batch": 8,
+   "name": "e007_2_ng",
+   "out": "results/e007_2_ng.png",
+   "ja": "古い祭壇→供物の金貨をくすねる（失敗）",
+   "prompt": "{HERO} stares at their own fingertips, turned black, holding a coin taken from an altar. Red only: dark red veins spreading from the fingertips."
+  },
+  {
+   "batch": 8,
+   "name": "e008_1_r",
+   "out": "results/e008_1_r.png",
+   "ja": "迷子の少女→聖水を振りかける",
+   "prompt": "{GIRL} smiles gently and dissolves into motes of light as drops of holy water sparkle in the air before {HERO}. Red only: the crest pendant on her chest."
+  },
+  {
+   "batch": 8,
+   "name": "e008_2_ok",
+   "out": "results/e008_2_ok.png",
+   "ja": "迷子の少女→気づかないふりをする（成功）",
+   "prompt": "{HERO} walks on down a dark corridor without looking back; far behind, the small white figure of {GIRL} grows distant. Red only: the crest pendant on the girl."
+  },
+  {
+   "batch": 8,
+   "name": "e008_2_ng",
+   "out": "results/e008_2_ng.png",
+   "ja": "迷子の少女→気づかないふりをする（失敗）",
+   "prompt": "As {HERO} passes, {GIRL}'s head has turned all the way around to face them, her face hidden by her dark hair. Red only: the crest pendant on her chest."
+  },
+  {
+   "batch": 8,
+   "name": "e008_3_r",
+   "out": "results/e008_3_r.png",
+   "ja": "迷子の少女→走って逃げる",
+   "prompt": "{HERO} runs breathlessly down a dark corridor while the small pale figure of {GIRL} follows far behind. Red only: the crest pendant on the girl."
+  },
+  {
+   "batch": 8,
+   "name": "e009_0_ok",
+   "out": "results/e009_0_ok.png",
+   "ja": "燃え残りの焚き火→火にあたって眠る（成功）",
+   "prompt": "{HERO} sleeps peacefully curled by a smouldering campfire in a cave. Red only: the embers of the fire."
+  },
+  {
+   "batch": 8,
+   "name": "e009_0_ng",
+   "out": "results/e009_0_ng.png",
+   "ja": "燃え残りの焚き火→火にあたって眠る（失敗）",
+   "prompt": "{HERO} wakes by a burnt-out campfire to find countless small footprints in the dust all around where they slept. Red only: the last embers."
+  },
+  {
+   "batch": 8,
+   "name": "e009_1_r",
+   "out": "results/e009_1_r.png",
+   "ja": "燃え残りの焚き火→火を絶やさぬよう番をする",
+   "prompt": "{HERO} sits awake by a campfire, feeding it a stick, warming their hands. Red only: the flames."
+  },
+  {
+   "batch": 8,
+   "name": "e009_2_r",
+   "out": "results/e009_2_r.png",
+   "ja": "燃え残りの焚き火→火の中から薪を一本拝借する",
+   "prompt": "{HERO} walks away from a campfire holding a burning branch up as a torch. Red only: the flame on the branch."
+  },
+  {
+   "batch": 8,
+   "name": "e009_3_r",
+   "out": "results/e009_3_r.png",
+   "ja": "燃え残りの焚き火→火の傍で装備を手入れする",
+   "prompt": "{HERO} sits by a campfire sharpening a short sword on a whetstone, boots laced tight. Red only: the embers."
+  },
+  {
+   "batch": 8,
+   "name": "e010_0_r",
+   "out": "results/e010_0_r.png",
+   "ja": "闇の行商人→血で聖水を買う",
+   "prompt": "The hooded faceless peddler makes a thin cut on {HERO}'s forearm with a small blade and hands over a little vial. Red only: the thin cut."
+  },
+  {
+   "batch": 8,
+   "name": "e010_1_r",
+   "out": "results/e010_1_r.png",
+   "ja": "闇の行商人→記憶で薬瓶を買う",
+   "prompt": "{HERO} stands dazed holding a small potion bottle while the hooded peddler pockets a glowing wisp drawn from their head. Red only: the liquid in the bottle."
+  },
+  {
+   "batch": 8,
+   "name": "e010_2_r",
+   "out": "results/e010_2_r.png",
+   "ja": "闇の行商人→運を売って古地図を買う",
+   "prompt": "The hooded faceless peddler nods and hands an old map to {HERO}. Red only: a route marked on the map."
+  },
+  {
+   "batch": 8,
+   "name": "e010_3_r",
+   "out": "results/e010_3_r.png",
+   "ja": "闇の行商人→何も買わない",
+   "prompt": "The hooded peddler's lantern goes out and only darkness remains where they stood; {HERO} stands alone. Red only: the last ember in the lantern."
+  },
+  {
+   "batch": 8,
+   "name": "e011_0_r",
+   "out": "results/e011_0_r.png",
+   "ja": "落とし穴→ロープを使って渡る",
+   "prompt": "{HERO} crosses a black pit in a corridor by a rope tied to a pillar, hand over hand. Red only: a red cloth tied on the pillar."
+  },
+  {
+   "batch": 8,
+   "name": "e011_1_ok",
+   "out": "results/e011_1_ok.png",
+   "ja": "落とし穴→助走をつけて跳ぶ（成功）",
+   "prompt": "{HERO} lands safely on the far side of a black pit after a running jump, cloak flaring. Red only: a faint red glow deep in the pit."
+  },
+  {
+   "batch": 8,
+   "name": "e011_2_ok",
+   "out": "results/e011_2_ok.png",
+   "ja": "落とし穴→穴に飛び込む（成功）",
+   "prompt": "{HERO} lands softly in a big pile of straw on a lower floor after falling through a hole far above. Red only: a small red flower in the straw."
+  },
+  {
+   "batch": 8,
+   "name": "e011_2_ng",
+   "out": "results/e011_2_ng.png",
+   "ja": "落とし穴→穴に飛び込む（失敗）",
+   "prompt": "{HERO} lies sprawled on a hard stone floor after a long fall, a hole far above. Red only: a small bloody scrape."
+  },
+  {
+   "batch": 8,
+   "name": "e012_0_r",
+   "out": "results/e012_0_r.png",
+   "ja": "蜘蛛の巣→たいまつで巣を焼く",
+   "prompt": "A huge spider web blazes up in flames; a scorched cocoon drops a ring that rolls toward {HERO}'s feet. Red only: the flames."
+  },
+  {
+   "batch": 8,
+   "name": "e012_1_ok",
+   "out": "results/e012_1_ok.png",
+   "ja": "蜘蛛の巣→剣で切り裂いて進む（成功）",
+   "prompt": "{HERO} slashes through thick white spider web with a short sword and steps through. Red only: the spider's eyes far up in the dark."
+  },
+  {
+   "batch": 8,
+   "name": "e012_1_ng",
+   "out": "results/e012_1_ng.png",
+   "ja": "蜘蛛の巣→剣で切り裂いて進む（失敗）",
+   "prompt": "A giant spider drops from the ceiling onto {HERO}, fangs sinking in; the world tilts. Red only: the spider's eyes."
+  },
+  {
+   "batch": 8,
+   "name": "e012_2_ok",
+   "out": "results/e012_2_ok.png",
+   "ja": "蜘蛛の巣→動く繭を切り開く（成功）",
+   "prompt": "{HERO} helps a weak, starving adventurer out of a cut-open cocoon; the adventurer offers a small charm. Red only: the charm."
+  },
+  {
+   "batch": 8,
+   "name": "e013_0_ok",
+   "out": "results/e013_0_ok.png",
+   "ja": "鏡の間→鏡の自分に話しかける（成功）",
+   "prompt": "In a tall mirror, the reflection of {HERO} grins and points to the right, while the real adventurer stares. Red only: the reflection's eyes."
+  },
+  {
+   "batch": 8,
+   "name": "e013_0_ng",
+   "out": "results/e013_0_ng.png",
+   "ja": "鏡の間→鏡の自分に話しかける（失敗）",
+   "prompt": "In a tall mirror, the reflection of {HERO} has its mouth stretched wide open in a silent scream. Red only: the inside of the reflection's mouth."
+  },
+  {
+   "batch": 8,
+   "name": "e013_1_r",
+   "out": "results/e013_1_r.png",
+   "ja": "鏡の間→鏡を叩き割る",
+   "prompt": "A shattered mirror; {HERO} holds a cut hand among the shards on the floor. Red only: the cut on the hand."
+  },
+  {
+   "batch": 8,
+   "name": "e013_2_r",
+   "out": "results/e013_2_r.png",
+   "ja": "鏡の間→目を伏せて通り抜ける",
+   "prompt": "{HERO} walks with eyes down through a hall of mirrors; in every mirror the reflections have turned their heads to watch. Red only: the reflections' eyes."
+  },
+  {
+   "batch": 8,
+   "name": "e014_0_ok",
+   "out": "results/e014_0_ok.png",
+   "ja": "這い寄る粘液→核を狙って斬る（成功）",
+   "prompt": "A black slime collapses into a puddle after its core is cut; {HERO} picks a coin out of the goo. Red only: the shattered core."
+  },
+  {
+   "batch": 8,
+   "name": "e014_0_ng",
+   "out": "results/e014_0_ng.png",
+   "ja": "這い寄る粘液→核を狙って斬る（失敗）",
+   "prompt": "{HERO}'s sword and arm sink into a black slime that burns and smokes, {HERO} recoiling in pain. Red only: the glowing core."
+  },
+  {
+   "batch": 8,
+   "name": "e014_1_r",
+   "out": "results/e014_1_r.png",
+   "ja": "這い寄る粘液→火で追い払う",
+   "prompt": "A black slime flees from a torch, oozing into cracks in the floor, as {HERO} holds the fire out. Red only: the torch flame."
+  },
+  {
+   "batch": 8,
+   "name": "e014_2_ok",
+   "out": "results/e014_2_ok.png",
+   "ja": "這い寄る粘液→壁際をすり抜ける（成功）",
+   "prompt": "{HERO} edges along a cave wall past a black slime that does not notice. Red only: the slime's glowing core."
+  },
+  {
+   "batch": 8,
+   "name": "e014_2_ng",
+   "out": "results/e014_2_ng.png",
+   "ja": "這い寄る粘液→壁際をすり抜ける（失敗）",
+   "prompt": "Black slime wraps {HERO}'s ankle, the boot melting and smoking. Red only: the slime's core."
+  },
+  {
+   "batch": 8,
+   "name": "e015_0_ok",
+   "out": "results/e015_0_ok.png",
+   "ja": "祈る修道士→祝福を乞う（成功）",
+   "prompt": "A monk with clouded eyes traces a sign on {HERO}'s forehead with a finger; a soft glow. Red only: the sign on the forehead."
+  },
+  {
+   "batch": 8,
+   "name": "e015_0_ng",
+   "out": "results/e015_0_ng.png",
+   "ja": "祈る修道士→祝福を乞う（失敗）",
+   "prompt": "A monk with clouded eyes grips {HERO}'s forehead with an icy hand, frost spreading. Red only: the votive candle flame behind."
+  },
+  {
+   "batch": 8,
+   "name": "e015_1_r",
+   "out": "results/e015_1_r.png",
+   "ja": "祈る修道士→呪いを祓ってもらう",
+   "prompt": "A monk prays over {HERO}'s blackened hand; the black fades from the fingers. Red only: the last dark red mark fading."
+  },
+  {
+   "batch": 8,
+   "name": "e015_2_ok",
+   "out": "results/e015_2_ok.png",
+   "ja": "祈る修道士→聖水を分けてもらう（成功）",
+   "prompt": "A monk silently holds out a small vial of holy water to {HERO}. Red only: the candle flame on the altar."
+  },
+  {
+   "batch": 8,
+   "name": "e015_2_ng",
+   "out": "results/e015_2_ng.png",
+   "ja": "祈る修道士→聖水を分けてもらう（失敗）",
+   "prompt": "A monk shakes his head and turns his back on {HERO} in a ruined chapel. Red only: the candle flame on the altar."
+  },
+  {
+   "batch": 8,
+   "name": "e015_3_r",
+   "out": "results/e015_3_r.png",
+   "ja": "祈る修道士→邪魔をせず立ち去る",
+   "prompt": "{HERO} walks away from a ruined chapel; behind them the kneeling monk's shadow on the wall has become something inhuman. Red only: the shadow's eyes."
+  },
+  {
+   "batch": 8,
+   "name": "e016_0_ok",
+   "out": "results/e016_0_ok.png",
+   "ja": "崩れた階段→瓦礫を伝って一気に降りる（成功）",
+   "prompt": "{HERO} leaps down from broken stair blocks into the darkness, landing two levels lower. Red only: a faint red glow below."
+  },
+  {
+   "batch": 8,
+   "name": "e016_0_ng",
+   "out": "results/e016_0_ng.png",
+   "ja": "崩れた階段→瓦礫を伝って一気に降りる（失敗）",
+   "prompt": "{HERO} tumbles down a collapsing staircase among falling rubble. Red only: a small bloody scrape."
+  },
+  {
+   "batch": 8,
+   "name": "e016_1_r",
+   "out": "results/e016_1_r.png",
+   "ja": "崩れた階段→古地図で別の階段を探す",
+   "prompt": "{HERO} holds an old map and finds a hidden staircase behind a loose wall. Red only: a route marked on the map."
+  },
+  {
+   "batch": 8,
+   "name": "e016_2_r",
+   "out": "results/e016_2_r.png",
+   "ja": "崩れた階段→遠回りして別の道を探す",
+   "prompt": "{HERO} walks a long winding detour passage, small in the frame. Red only: a faint glow far ahead."
+  },
+  {
+   "batch": 8,
+   "name": "e017_0_ok",
+   "out": "results/e017_0_ok.png",
+   "ja": "壁の顔→壁を砕いて助け出す（成功）",
+   "prompt": "A gaunt man tumbles out of a broken stone wall and presses an old key into {HERO}'s hand before vanishing into the dark. Red only: the key."
+  },
+  {
+   "batch": 8,
+   "name": "e017_0_ng",
+   "out": "results/e017_0_ng.png",
+   "ja": "壁の顔→壁を砕いて助け出す（失敗）",
+   "prompt": "{HERO} has smashed a stone wall open to find nothing inside; a laughing face has risen out of the wall further along. Red only: the laughing face's mouth."
+  },
+  {
+   "batch": 8,
+   "name": "e017_1_ok",
+   "out": "results/e017_1_ok.png",
+   "ja": "壁の顔→顔の話を聞く（成功）",
+   "prompt": "A face in a stone wall speaks while {HERO} listens closely; faint visions of a deep labyrinth and a weeping figure appear around it. Red only: the tear on the face."
+  },
+  {
+   "batch": 8,
+   "name": "e017_1_ng",
+   "out": "results/e017_1_ng.png",
+   "ja": "壁の顔→顔の話を聞く（失敗）",
+   "prompt": "A face in a stone wall babbles while {HERO} clutches their head, dizzy. Red only: the face's mouth."
+  },
+  {
+   "batch": 8,
+   "name": "e017_2_r",
+   "out": "results/e017_2_r.png",
+   "ja": "壁の顔→足早に通り過ぎる",
+   "prompt": "{HERO} hurries past while a face in the wall turns to follow them, mouth open. Red only: the face's eyes."
+  },
+  {
+   "batch": 8,
+   "name": "e018_0_ok",
+   "out": "results/e018_0_ok.png",
+   "ja": "光るキノコ→食べてみる（成功）",
+   "prompt": "{HERO} bites into a glowing mushroom and stands taller, strength surging. Red only: the cap of the largest mushroom."
+  },
+  {
+   "batch": 8,
+   "name": "e018_0_ng",
+   "out": "results/e018_0_ng.png",
+   "ja": "光るキノコ→食べてみる（失敗）",
+   "prompt": "{HERO} staggers in a cave where the walls seem to breathe and the floor grins, warped and swirling. Red only: the grinning mouth in the floor."
+  },
+  {
+   "batch": 8,
+   "name": "e018_1_ok",
+   "out": "results/e018_1_ok.png",
+   "ja": "光るキノコ→摘んで薬を作る（成功）",
+   "prompt": "{HERO} grinds glowing mushrooms in a small bowl and fills a potion bottle. Red only: the potion."
+  },
+  {
+   "batch": 8,
+   "name": "e018_1_ng",
+   "out": "results/e018_1_ng.png",
+   "ja": "光るキノコ→摘んで薬を作る（失敗）",
+   "prompt": "{HERO} coughs violently in a cloud of glowing spores. Red only: the cap of the largest mushroom."
+  },
+  {
+   "batch": 8,
+   "name": "e018_2_r",
+   "out": "results/e018_2_r.png",
+   "ja": "光るキノコ→踏まないように進む",
+   "prompt": "{HERO} steps carefully between glowing mushrooms on a cave floor, avoiding them. Red only: the cap of the largest mushroom."
+  },
+  {
+   "batch": 8,
+   "name": "e019_0_r",
+   "out": "results/e019_0_r.png",
+   "ja": "吊るされた檻→錆びた鍵で檻を開ける",
+   "prompt": "A freed gaunt man hands a small whistle to {HERO}; from the darkness a thin black dog appears. Red only: the dog's one eye."
+  },
+  {
+   "batch": 8,
+   "name": "e019_1_ok",
+   "out": "results/e019_1_ok.png",
+   "ja": "吊るされた檻→檻を揺らして壊す（成功）",
+   "prompt": "A hanging iron cage has broken its chain and fallen; a gaunt man crawls out free, pointing a warning finger at {HERO}. Red only: the broken padlock."
+  },
+  {
+   "batch": 8,
+   "name": "e019_1_ng",
+   "out": "results/e019_1_ng.png",
+   "ja": "吊るされた檻→檻を揺らして壊す（失敗）",
+   "prompt": "A hanging iron cage swings wildly while the man inside screams and {HERO} clutches a hurt arm. Red only: the padlock."
+  },
+  {
+   "batch": 8,
+   "name": "e019_2_r",
+   "out": "results/e019_2_r.png",
+   "ja": "吊るされた檻→見なかったことにする",
+   "prompt": "{HERO} walks away while the gaunt man in a hanging cage curses after them, fist through the bars. Red only: the padlock."
+  },
+  {
+   "batch": 8,
+   "name": "e020_1_ok",
+   "out": "results/e020_1_ok.png",
+   "ja": "黒い犬→撫でようと手を伸ばす（成功）",
+   "prompt": "A thin black dog leans its head into {HERO}'s hand, eyes half closed. Red only: the dog's one eye."
+  },
+  {
+   "batch": 8,
+   "name": "e020_1_ng",
+   "out": "results/e020_1_ng.png",
+   "ja": "黒い犬→撫でようと手を伸ばす（失敗）",
+   "prompt": "A thin black dog bites {HERO}'s hand and darts away into the dark. Red only: the dog's one eye."
+  },
+  {
+   "batch": 8,
+   "name": "e020_2_r",
+   "out": "results/e020_2_r.png",
+   "ja": "黒い犬→追い払う",
+   "prompt": "A thin black dog glances back once at {HERO} as it walks away into darkness. Red only: the dog's one eye."
+  },
+  {
+   "batch": 8,
+   "name": "e021_0_r",
+   "out": "results/e021_0_r.png",
+   "ja": "走り書きのメモ→最後まで読む",
+   "prompt": "{HERO} holds a handwritten note whose bottom half is torn away; the writing is illegible scratches. Red only: the broken wax seal."
+  },
+  {
+   "batch": 8,
+   "name": "e021_1_r",
+   "out": "results/e021_1_r.png",
+   "ja": "走り書きのメモ→メモを持っていく",
+   "prompt": "{HERO} folds a note and tucks it inside their cloak, standing by a rotting desk. Red only: the wax seal."
+  },
+  {
+   "batch": 8,
+   "name": "e021_2_r",
+   "out": "results/e021_2_r.png",
+   "ja": "走り書きのメモ→火にくべる",
+   "prompt": "A note burns in a candle flame held by {HERO}; in the smoke, the faint shape of a screaming woman's face. Red only: the flame."
+  },
+  {
+   "batch": 8,
+   "name": "e022_0_ok",
+   "out": "results/e022_0_ok.png",
+   "ja": "地下水脈→水を飲んで休む（成功）",
+   "prompt": "{HERO} kneels at a small clear pool in a cave, drinking cold water from cupped hands. Red only: a small red stone at the bottom of the pool."
+  },
+  {
+   "batch": 8,
+   "name": "e022_0_ng",
+   "out": "results/e022_0_ng.png",
+   "ja": "地下水脈→水を飲んで休む（失敗）",
+   "prompt": "{HERO} doubles over in pain beside a small cave pool, clutching their stomach. Red only: a small red stone at the bottom of the pool."
+  },
+  {
+   "batch": 8,
+   "name": "e022_1_ok",
+   "out": "results/e022_1_ok.png",
+   "ja": "地下水脈→水底の光を拾う（成功）",
+   "prompt": "{HERO} climbs out of an icy cave pool, holding up a small dripping pouch of silver coins. Red only: the pouch's drawstring."
+  },
+  {
+   "batch": 8,
+   "name": "e022_1_ng",
+   "out": "results/e022_1_ng.png",
+   "ja": "地下水脈→水底の光を拾う（失敗）",
+   "prompt": "A pale hand from the bottom of a cave pool grips {HERO}'s ankle as they struggle to pull free. Red only: the fingernails of the hand."
+  },
+  {
+   "batch": 8,
+   "name": "e022_2_r",
+   "out": "results/e022_2_r.png",
+   "ja": "地下水脈→顔を洗って気を引き締める",
+   "prompt": "{HERO} splashes cold water on their face at a cave pool, eyes sharp. Red only: a small red stone at the bottom of the pool."
+  },
+  {
+   "batch": 8,
+   "name": "e023_1_ok",
+   "out": "results/e023_1_ok.png",
+   "ja": "甲冑の亡霊→手合わせを願う（成功）",
+   "prompt": "{KNIGHT} swings his sword clean through {HERO}'s body, who stands unharmed, the ghostly blade's arc glowing. Red only: the crown crest on the tabard."
+  },
+  {
+   "batch": 8,
+   "name": "e023_1_ng",
+   "out": "results/e023_1_ng.png",
+   "ja": "甲冑の亡霊→手合わせを願う（失敗）",
+   "prompt": "{KNIGHT} lowers his sword as {HERO} reels back, a chill wound in their spirit, the knight fading away. Red only: the crown crest on the tabard."
+  },
+  {
+   "batch": 8,
+   "name": "e023_2_r",
+   "out": "results/e023_2_r.png",
+   "ja": "甲冑の亡霊→関わらずに先へ行く",
+   "prompt": "{HERO} walks away down a ruined corridor while {KNIGHT} stands silently watching them go. Red only: the crown crest on the tabard."
+  },
+  {
+   "batch": 8,
+   "name": "e024_0_ok",
+   "out": "results/e024_0_ok.png",
+   "ja": "コウモリの嵐→伏せてやり過ごす（成功）",
+   "prompt": "{HERO} lies flat on a cave floor as a storm of bats rushes overhead. Red only: the eyes of the nearest bats."
+  },
+  {
+   "batch": 8,
+   "name": "e024_0_ng",
+   "out": "results/e024_0_ng.png",
+   "ja": "コウモリの嵐→伏せてやり過ごす（失敗）",
+   "prompt": "{HERO} clutches their head as bats swirl all around them in a cave. Red only: the eyes of the nearest bats."
+  },
+  {
+   "batch": 8,
+   "name": "e024_1_ok",
+   "out": "results/e024_1_ok.png",
+   "ja": "コウモリの嵐→顔を庇って走り抜ける（成功）",
+   "prompt": "{HERO} runs through a swarm of bats with an arm shielding their face, unharmed. Red only: the eyes of the nearest bats."
+  },
+  {
+   "batch": 8,
+   "name": "e024_1_ng",
+   "out": "results/e024_1_ng.png",
+   "ja": "コウモリの嵐→顔を庇って走り抜ける（失敗）",
+   "prompt": "A swarm of bats tears at {HERO} with claws and teeth; scratches on the arms. Red only: the scratches."
+  },
+  {
+   "batch": 8,
+   "name": "e024_2_r",
+   "out": "results/e024_2_r.png",
+   "ja": "コウモリの嵐→黒い犬に追い払わせる",
+   "prompt": "A thin black dog barks at a swarm of bats, which flees in all directions; {HERO} stands behind it. Red only: the dog's one eye."
+  },
+  {
+   "batch": 8,
+   "name": "e024_3_ok",
+   "out": "results/e024_3_ok.png",
+   "ja": "コウモリの嵐→群れが去った後の巣を漁る（成功）",
+   "prompt": "{HERO} digs in a heap of bat droppings on a cave floor and holds up a gemstone. Red only: the gemstone."
+  },
+  {
+   "batch": 8,
+   "name": "e024_3_ng",
+   "out": "results/e024_3_ng.png",
+   "ja": "コウモリの嵐→群れが去った後の巣を漁る（失敗）",
+   "prompt": "{HERO} is ambushed by returning bats while digging in a cave nest. Red only: the eyes of the bats."
+  },
+  {
+   "batch": 8,
+   "name": "e025_0_ok",
+   "out": "results/e025_0_ok.png",
+   "ja": "骸骨の賭博師→運命を賭ける（成功）",
+   "prompt": "A skeleton gambler in a tricorn hat shrugs and pushes a pile of coins across the table toward {HERO}. Red only: the dice on the table."
+  },
+  {
+   "batch": 8,
+   "name": "e025_0_ng",
+   "out": "results/e025_0_ng.png",
+   "ja": "骸骨の賭博師→運命を賭ける（失敗）",
+   "prompt": "A skeleton gambler grins as its eye sockets flash red across the table from {HERO}. Red only: the skeleton's eye sockets."
+  },
+  {
+   "batch": 8,
+   "name": "e025_1_ok",
+   "out": "results/e025_1_ok.png",
+   "ja": "骸骨の賭博師→イカサマを見破る（成功）",
+   "prompt": "{HERO} holds up a die showing six pips on every face; the skeleton gambler laughs and tosses a coin. Red only: the die."
+  },
+  {
+   "batch": 8,
+   "name": "e025_1_ng",
+   "out": "results/e025_1_ng.png",
+   "ja": "骸骨の賭博師→イカサマを見破る（失敗）",
+   "prompt": "{HERO} slumps at a gambling table as the skeleton gambler sweeps up all the coins, laughing. Red only: the dice."
+  },
+  {
+   "batch": 8,
+   "name": "e025_2_r",
+   "out": "results/e025_2_r.png",
+   "ja": "骸骨の賭博師→断ってテーブルをひっくり返す",
+   "prompt": "A table is flipped over and a skeleton gambler has collapsed into scattered bones; {HERO} gathers coins from the floor. Red only: the dice on the floor."
+  },
+  {
+   "batch": 8,
+   "name": "e026_0_ok",
+   "out": "results/e026_0_ok.png",
+   "ja": "赤い扉→開けて中に入る（成功）",
+   "prompt": "{HERO} steps through an open red door into a corridor that leads far down a stairway. Red only: the door."
+  },
+  {
+   "batch": 8,
+   "name": "e026_0_ng",
+   "out": "results/e026_0_ng.png",
+   "ja": "赤い扉→開けて中に入る（失敗）",
+   "prompt": "Beyond an open red door lies a heap of corpses all wearing the same hooded cloak as {HERO}, who recoils. Red only: the door frame."
+  },
+  {
+   "batch": 8,
+   "name": "e026_1_ok",
+   "out": "results/e026_1_ok.png",
+   "ja": "赤い扉→ノックする（成功）",
+   "prompt": "An old map is pushed out through the gap under a red door; {HERO} bends to take it. Red only: the door."
+  },
+  {
+   "batch": 8,
+   "name": "e026_1_ng",
+   "out": "results/e026_1_ng.png",
+   "ja": "赤い扉→ノックする（失敗）",
+   "prompt": "A red door shakes violently as something pounds on it from inside; {HERO} backs away. Red only: the door."
+  },
+  {
+   "batch": 8,
+   "name": "e026_2_r",
+   "out": "results/e026_2_r.png",
+   "ja": "赤い扉→見なかったことにする",
+   "prompt": "{HERO} walks away down a grey corridor, glancing back at a red door that pulses. Red only: the door."
+  },
+  {
+   "batch": 8,
+   "name": "e027_0_ok",
+   "out": "results/e027_0_ok.png",
+   "ja": "子守唄→一緒に歌う（成功）",
+   "prompt": "{HERO} stands by an ornate wooden cradle that has stopped rocking, a calm soft light filling the dark room. Red only: the carved crest on the cradle."
+  },
+  {
+   "batch": 8,
+   "name": "e027_0_ng",
+   "out": "results/e027_0_ng.png",
+   "ja": "子守唄→一緒に歌う（失敗）",
+   "prompt": "{HERO} backs away from an ornate cradle as a pale shape stirs inside it, crying. Red only: the carved crest on the cradle."
+  },
+  {
+   "batch": 8,
+   "name": "e027_1_ok",
+   "out": "results/e027_1_ok.png",
+   "ja": "子守唄→揺りかごを止める（成功）",
+   "prompt": "{HERO} holds a stilled cradle and finds coins hidden under its floorboard. Red only: the carved crest on the cradle."
+  },
+  {
+   "batch": 8,
+   "name": "e027_1_ng",
+   "out": "results/e027_1_ng.png",
+   "ja": "子守唄→揺りかごを止める（失敗）",
+   "prompt": "A small pale ghostly hand grips {HERO}'s wrist as they try to stop a rocking cradle. Red only: the carved crest on the cradle."
+  },
+  {
+   "batch": 8,
+   "name": "e027_3_r",
+   "out": "results/e027_3_r.png",
+   "ja": "子守唄→耳を塞いで通り抜ける",
+   "prompt": "{HERO} walks through a dark room with hands pressed over their ears, a cradle rocking behind them. Red only: the carved crest on the cradle."
+  },
+  {
+   "batch": 8,
+   "name": "e028_0_r",
+   "out": "results/e028_0_r.png",
+   "ja": "泣く石像→体力を捧げる",
+   "prompt": "{HERO} touches a veiled weeping stone statue, kneeling weakly, but with a calm, clear face. Red only: the statue's tears."
+  },
+  {
+   "batch": 8,
+   "name": "e028_1_r",
+   "out": "results/e028_1_r.png",
+   "ja": "泣く石像→心を捧げる",
+   "prompt": "{HERO} stands stronger before a veiled weeping statue as a faint wisp of memory drifts from their head into the stone. Red only: the statue's tears."
+  },
+  {
+   "batch": 8,
+   "name": "e028_2_ok",
+   "out": "results/e028_2_ok.png",
+   "ja": "泣く石像→涙を拭ってやる（成功）",
+   "prompt": "The veiled stone statue's tears have stopped; a red amulet falls from its clasped hands into {HERO}'s palm. Red only: the amulet."
+  },
+  {
+   "batch": 8,
+   "name": "e028_2_ng",
+   "out": "results/e028_2_ng.png",
+   "ja": "泣く石像→涙を拭ってやる（失敗）",
+   "prompt": "{HERO} stares at a stain burned into their fingers after wiping the veiled statue's tears. Red only: the stain on the fingers."
+  },
+  {
+   "batch": 8,
+   "name": "e029_0_ok",
+   "out": "results/e029_0_ok.png",
+   "ja": "盗賊の待ち伏せ→戦う（成功）",
+   "prompt": "{HERO} stands over a defeated bandit in a cave, holding up the bandit's heavy purse. Red only: the bandit's scarf."
+  },
+  {
+   "batch": 8,
+   "name": "e029_0_ng",
+   "out": "results/e029_0_ng.png",
+   "ja": "盗賊の待ち伏せ→戦う（失敗）",
+   "prompt": "{HERO} clutches their side, wounded, while a bandit runs off with their pack. Red only: the wound."
+  },
+  {
+   "batch": 8,
+   "name": "e029_1_ok",
+   "out": "results/e029_1_ok.png",
+   "ja": "盗賊の待ち伏せ→言いくるめる（成功）",
+   "prompt": "A bandit turns pale and runs away in fear as {HERO} points down a dark tunnel. Red only: the bandit's scarf."
+  },
+  {
+   "batch": 8,
+   "name": "e029_1_ng",
+   "out": "results/e029_1_ng.png",
+   "ja": "盗賊の待ち伏せ→言いくるめる（失敗）",
+   "prompt": "A bandit punches {HERO} in a cave. Red only: the bandit's scarf."
+  },
+  {
+   "batch": 8,
+   "name": "e029_2_r",
+   "out": "results/e029_2_r.png",
+   "ja": "盗賊の待ち伏せ→黒い犬をけしかける",
+   "prompt": "A black dog lunges at a bandit, who flees screaming and drops coins; {HERO} stands behind. Red only: the bandit's scarf."
+  },
+  {
+   "batch": 8,
+   "name": "e029_3_r",
+   "out": "results/e029_3_r.png",
+   "ja": "盗賊の待ち伏せ→大人しく荷物を渡す",
+   "prompt": "{HERO} hands over their pack to a bandit holding a dagger. Red only: the bandit's scarf."
+  },
+  {
+   "batch": 8,
+   "name": "e030_0_ok",
+   "out": "results/e030_0_ok.png",
+   "ja": "水晶玉→未来を見届ける（成功）",
+   "prompt": "{HERO} stares into a crystal ball with resolve; inside it a tiny vision of death is shown clearly. Red only: a small pool of blood in the vision."
+  },
+  {
+   "batch": 8,
+   "name": "e030_0_ng",
+   "out": "results/e030_0_ng.png",
+   "ja": "水晶玉→未来を見届ける（失敗）",
+   "prompt": "{HERO} kneels before a crystal ball showing endless visions of their own death, head in hands. Red only: blood in the visions."
+  },
+  {
+   "batch": 8,
+   "name": "e030_1_r",
+   "out": "results/e030_1_r.png",
+   "ja": "水晶玉→水晶玉を砕く",
+   "prompt": "A crystal ball shatters on the floor; {HERO} stands among the glittering shards. Red only: one glowing shard."
+  },
+  {
+   "batch": 8,
+   "name": "e030_2_ok",
+   "out": "results/e030_2_ok.png",
+   "ja": "水晶玉→水晶玉を持ち去る（成功）",
+   "prompt": "{HERO} wraps a glowing crystal ball in cloth and tucks it under their arm. Red only: a small red glint in the ball."
+  },
+  {
+   "batch": 8,
+   "name": "e030_2_ng",
+   "out": "results/e030_2_ng.png",
+   "ja": "水晶玉→水晶玉を持ち去る（失敗）",
+   "prompt": "A crystal ball cracks apart in {HERO}'s hands, shards piercing the palm. Red only: the cuts on the palm."
+  },
+  {
+   "batch": 8,
+   "name": "e031_0_ok",
+   "out": "results/e031_0_ok.png",
+   "ja": "弔いの鐘→鐘を鳴らす（成功）",
+   "prompt": "{HERO} rings a huge bell in a ruined tower; rings of sound ripple out and dark wisps peel away from their body. Red only: the glow on the bell's rim."
+  },
+  {
+   "batch": 8,
+   "name": "e031_0_ng",
+   "out": "results/e031_0_ng.png",
+   "ja": "弔いの鐘→鐘を鳴らす（失敗）",
+   "prompt": "{HERO} has rung a huge bell; in the darkness beyond the tower, giant eyes open. Red only: the eyes."
+  },
+  {
+   "batch": 8,
+   "name": "e031_1_ok",
+   "out": "results/e031_1_ok.png",
+   "ja": "弔いの鐘→自分の名前を削り取る（成功）",
+   "prompt": "{HERO} scrapes at the rim of a huge bell with a knife, shoulders relaxing. Red only: the glow on the bell's rim."
+  },
+  {
+   "batch": 8,
+   "name": "e031_1_ng",
+   "out": "results/e031_1_ng.png",
+   "ja": "弔いの鐘→自分の名前を削り取る（失敗）",
+   "prompt": "{HERO} scrapes at a bell's rim but the glowing mark keeps reappearing. Red only: the glowing mark."
+  },
+  {
+   "batch": 8,
+   "name": "e031_2_r",
+   "out": "results/e031_2_r.png",
+   "ja": "弔いの鐘→静かに通り過ぎる",
+   "prompt": "{HERO} walks away from a ruined bell tower as the bell swings once behind them. Red only: the glow on the bell's rim."
+  },
+  {
+   "batch": 8,
+   "name": "e032_0_ok",
+   "out": "results/e032_0_ok.png",
+   "ja": "岩に刺さった剣→渾身の力で引き抜く（成功）",
+   "prompt": "{HERO} pulls a shining silver sword free from a rock with a burst of light, skeletons around the rock. Red only: the gem in the sword's pommel."
+  },
+  {
+   "batch": 8,
+   "name": "e032_0_ng",
+   "out": "results/e032_0_ng.png",
+   "ja": "岩に刺さった剣→渾身の力で引き抜く（失敗）",
+   "prompt": "{HERO} strains at a sword stuck fast in a rock; the skeletons around seem to grin. Red only: the gem in the sword's pommel."
+  },
+  {
+   "batch": 8,
+   "name": "e032_1_ok",
+   "out": "results/e032_1_ok.png",
+   "ja": "岩に刺さった剣→運命に任せて引き抜く（成功）",
+   "prompt": "A silver sword slides easily from a rock into {HERO}'s hand as if it was waiting. Red only: the gem in the pommel."
+  },
+  {
+   "batch": 8,
+   "name": "e032_1_ng",
+   "out": "results/e032_1_ng.png",
+   "ja": "岩に刺さった剣→運命に任せて引き抜く（失敗）",
+   "prompt": "A sword crumbles into sand in {HERO}'s hand, a black bruise spreading across the palm. Red only: the gem falling with the sand."
+  },
+  {
+   "batch": 8,
+   "name": "e032_2_r",
+   "out": "results/e032_2_r.png",
+   "ja": "岩に刺さった剣→骸骨たちの持ち物を漁る",
+   "prompt": "{HERO} kneels among skeletons around a sword in a rock, gathering coins and a dirty rope. Red only: the gem in the sword's pommel."
+  },
+  {
+   "batch": 8,
+   "name": "n06_0_ok",
+   "out": "results/n06_0_ok.png",
+   "ja": "迷宮の中の街角→窓を覗く（成功）",
+   "prompt": "Through a window on a colourless city street corner, a family sits around a dinner table; {HERO} peers in from outside. Red only: the flame of the street lamp."
+  },
+  {
+   "batch": 8,
+   "name": "n06_0_ng",
+   "out": "results/n06_0_ng.png",
+   "ja": "迷宮の中の街角→窓を覗く（失敗）",
+   "prompt": "Through a window, a figure inside has turned toward {HERO}; it has no face. Red only: the flame of the street lamp."
+  },
+  {
+   "batch": 8,
+   "name": "n06_1_r",
+   "out": "results/n06_1_r.png",
+   "ja": "迷宮の中の街角→走り書きの続きを読む",
+   "prompt": "{HERO} reads a scrawled message on a wall under a street lamp; the scrawl is illegible scratches. Red only: the flame of the street lamp."
+  },
+  {
+   "batch": 8,
+   "name": "n06_2_r",
+   "out": "results/n06_2_r.png",
+   "ja": "迷宮の中の街角→街灯の火をもらう",
+   "prompt": "{HERO} lights a torch from a street lamp; the new flame burns oddly white. Red only: the street lamp's flame."
+  },
+  {
+   "batch": 8,
+   "name": "g025_1_r",
+   "out": "results/g025_1_r.png",
+   "ja": "骨の門番→聖水を浴びせる",
+   "prompt": "A colossal gate of bones smokes and crumbles where holy water splashes on it; {HERO} holds an empty vial. Red only: the dying glow in the great skull's eyes."
+  },
+  {
+   "batch": 8,
+   "name": "g025_2_ok",
+   "out": "results/g025_2_ok.png",
+   "ja": "骨の門番→門をよじ登って越える（成功）",
+   "prompt": "{HERO} climbs over the top of a colossal gate of bones, kicking away grasping skeletal hands. Red only: the glow in the great skull's eyes."
+  },
+  {
+   "batch": 8,
+   "name": "g025_2_ng",
+   "out": "results/g025_2_ng.png",
+   "ja": "骨の門番→門をよじ登って越える（失敗）",
+   "prompt": "Countless skeletal hands drag {HERO} down from a gate of bones. Red only: the glow in the great skull's eyes."
+  },
+  {
+   "batch": 8,
+   "name": "g025_3_ok",
+   "out": "results/g025_3_ok.png",
+   "ja": "骨の門番→門と問答する（成功）",
+   "prompt": "A colossal gate of bones unravels, its bones parting to open a path before {HERO}. Red only: the glow in the great skull's eyes."
+  },
+  {
+   "batch": 8,
+   "name": "g025_3_ng",
+   "out": "results/g025_3_ng.png",
+   "ja": "骨の門番→門と問答する（失敗）",
+   "prompt": "{HERO} kneels before a gate of bones as faint wisps of memory are drawn from their head into the great skull. Red only: the skull's eyes."
+  },
+  {
+   "batch": 8,
+   "name": "g025_4_r",
+   "out": "results/g025_4_r.png",
+   "ja": "骨の門番→通行料として運を払う",
+   "prompt": "A gate of bones creaks open; {HERO} walks through, a faint glow drained from their body. Red only: the great skull's eyes."
+  },
+  {
+   "batch": 8,
+   "name": "e033_0_ok",
+   "out": "results/e033_0_ok.png",
+   "ja": "納骨堂→骨の山を漁る（成功）",
+   "prompt": "{HERO} digs among skulls in an ossuary and holds up old coins. Red only: one skull's eye sockets."
+  },
+  {
+   "batch": 8,
+   "name": "e033_0_ng",
+   "out": "results/e033_0_ng.png",
+   "ja": "納骨堂→骨の山を漁る（失敗）",
+   "prompt": "A wall of skulls collapses onto {HERO}, half burying them. Red only: one skull's eye sockets."
+  },
+  {
+   "batch": 8,
+   "name": "e033_1_r",
+   "out": "results/e033_1_r.png",
+   "ja": "納骨堂→死者に祈りを捧げる",
+   "prompt": "{HERO} kneels in prayer in an ossuary; the screaming skulls around have begun to close their jaws. Red only: one skull's eye sockets."
+  },
+  {
+   "batch": 8,
+   "name": "e033_2_ok",
+   "out": "results/e033_2_ok.png",
+   "ja": "納骨堂→息を止めて走り抜ける（成功）",
+   "prompt": "{HERO} sprints through an ossuary corridor holding their breath. Red only: one skull's eye sockets."
+  },
+  {
+   "batch": 8,
+   "name": "e033_2_ng",
+   "out": "results/e033_2_ng.png",
+   "ja": "納骨堂→息を止めて走り抜ける（失敗）",
+   "prompt": "{HERO} slips and falls into a pile of skulls in an ossuary. Red only: one skull's eye sockets."
+  },
+  {
+   "batch": 8,
+   "name": "e034_0_r",
+   "out": "results/e034_0_r.png",
+   "ja": "さまよう亡霊→聖水で浄化する",
+   "prompt": "A faceless ghost dissolves with a sigh in a mist of holy water; a silver ring drops to the floor before {HERO}. Red only: the ribbon on the ghost's wrist."
+  },
+  {
+   "batch": 8,
+   "name": "e034_1_ok",
+   "out": "results/e034_1_ok.png",
+   "ja": "さまよう亡霊→一緒に死に場所を探す（成功）",
+   "prompt": "A faceless ghost lies down peacefully over its own bones in a crypt niche while {HERO} watches. Red only: the ribbon on the ghost's wrist."
+  },
+  {
+   "batch": 8,
+   "name": "e034_1_ng",
+   "out": "results/e034_1_ng.png",
+   "ja": "さまよう亡霊→一緒に死に場所を探す（失敗）",
+   "prompt": "A faceless ghost wraps itself around {HERO}, who shivers, frost on their cloak. Red only: the ribbon on the ghost's wrist."
+  },
+  {
+   "batch": 8,
+   "name": "e034_2_ok",
+   "out": "results/e034_2_ok.png",
+   "ja": "さまよう亡霊→気配を消してやり過ごす（成功）",
+   "prompt": "A faceless ghost passes straight through {HERO}, who stands still and calm. Red only: the ribbon on the ghost's wrist."
+  },
+  {
+   "batch": 8,
+   "name": "e034_2_ng",
+   "out": "results/e034_2_ng.png",
+   "ja": "さまよう亡霊→気配を消してやり過ごす（失敗）",
+   "prompt": "A faceless ghost passes through {HERO}, pulling a faint glowing wisp out of their chest. Red only: the ribbon on the ghost's wrist."
+  },
+  {
+   "batch": 8,
+   "name": "e035_0_ok",
+   "out": "results/e035_0_ok.png",
+   "ja": "釘打たれた棺→棺を開ける（成功）",
+   "prompt": "An opened black coffin holds a dried noble corpse wearing a jewelled necklace; {HERO} leans in. Red only: the jewels of the necklace."
+  },
+  {
+   "batch": 8,
+   "name": "e035_0_ng",
+   "out": "results/e035_0_ng.png",
+   "ja": "釘打たれた棺→棺を開ける（失敗）",
+   "prompt": "A white arm shoots out of a nailed coffin and grips {HERO}'s throat. Red only: the blood smear on the lid."
+  },
+  {
+   "batch": 8,
+   "name": "e035_1_ok",
+   "out": "results/e035_1_ok.png",
+   "ja": "釘打たれた棺→釘をさらに打ち込む（成功）",
+   "prompt": "{HERO} hammers another nail into a black coffin; the scratching has stopped. Red only: the blood smear on the lid."
+  },
+  {
+   "batch": 8,
+   "name": "e035_1_ng",
+   "out": "results/e035_1_ng.png",
+   "ja": "釘打たれた棺→釘をさらに打ち込む（失敗）",
+   "prompt": "A nail springs back out of a coffin and cuts {HERO}'s cheek. Red only: the cut on the cheek."
+  },
+  {
+   "batch": 8,
+   "name": "e035_2_ok",
+   "out": "results/e035_2_ok.png",
+   "ja": "釘打たれた棺→棺に話しかける（成功）",
+   "prompt": "{HERO} leans close to a nailed coffin, listening; a crack of light shows a hidden passage in the wall. Red only: the blood smear on the lid."
+  },
+  {
+   "batch": 8,
+   "name": "e035_2_ng",
+   "out": "results/e035_2_ng.png",
+   "ja": "釘打たれた棺→棺に話しかける（失敗）",
+   "prompt": "{HERO} recoils from a nailed coffin, from which their own voice answered. Red only: the blood smear on the lid."
+  },
+  {
+   "batch": 8,
+   "name": "e036_0_ok",
+   "out": "results/e036_0_ok.png",
+   "ja": "水没した回廊→泳いで渡る（成功）",
+   "prompt": "{HERO} climbs out of black water onto the far end of a flooded corridor, dripping. Red only: the eye of the shape beneath the water."
+  },
+  {
+   "batch": 8,
+   "name": "e036_0_ng",
+   "out": "results/e036_0_ng.png",
+   "ja": "水没した回廊→泳いで渡る（失敗）",
+   "prompt": "{HERO} struggles in black water as a long serpent-like shape coils around their leg. Red only: the shape's eye."
+  },
+  {
+   "batch": 8,
+   "name": "e036_1_r",
+   "out": "results/e036_1_r.png",
+   "ja": "水没した回廊→ロープを渡して進む",
+   "prompt": "{HERO} crosses a flooded corridor on a rope strung between pillars, above the black water. Red only: the eye of the shape beneath the water."
+  },
+  {
+   "batch": 8,
+   "name": "e036_2_ok",
+   "out": "results/e036_2_ok.png",
+   "ja": "水没した回廊→水が引くのを待つ（成功）",
+   "prompt": "{HERO} stands in a corridor whose black water has drained away, puddles left on the stones. Red only: a small red glint in a puddle."
+  },
+  {
+   "batch": 8,
+   "name": "e036_2_ng",
+   "out": "results/e036_2_ng.png",
+   "ja": "水没した回廊→水が引くのを待つ（失敗）",
+   "prompt": "{HERO} waits shivering in chest-deep black water in the dark. Red only: the eye of the shape beneath the water."
+  },
+  {
+   "batch": 8,
+   "name": "e037_1_r",
+   "out": "results/e037_1_r.png",
+   "ja": "渡し守→思い出を一つ払う",
+   "prompt": "{HERO} sits in a small boat on a black lake, eyes empty, as a faint memory image of a village drifts away over the water. Red only: the lantern at the bow."
+  },
+  {
+   "batch": 8,
+   "name": "e037_2_ok",
+   "out": "results/e037_2_ok.png",
+   "ja": "渡し守→渡し守を突き落として舟を奪う（成功）",
+   "prompt": "{HERO} rows a stolen boat across a black lake while pale hands reach up from the water behind. Red only: the lantern at the bow."
+  },
+  {
+   "batch": 8,
+   "name": "e037_2_ng",
+   "out": "results/e037_2_ng.png",
+   "ja": "渡し守→渡し守を突き落として舟を奪う（失敗）",
+   "prompt": "{HERO} drags themselves soaking wet onto a lake shore, the ferryman standing in his boat behind. Red only: the lantern at the bow."
+  },
+  {
+   "batch": 8,
+   "name": "e037_3_r",
+   "out": "results/e037_3_r.png",
+   "ja": "渡し守→湖岸を歩いて回り込む",
+   "prompt": "{HERO} walks a long underground lakeshore path in mist, small in the frame. Red only: the distant boat's lantern."
+  },
+  {
+   "batch": 8,
+   "name": "e038_0_ok",
+   "out": "results/e038_0_ok.png",
+   "ja": "屍喰らい→先手を取って斬りかかる（成功）",
+   "prompt": "{HERO} stands over a beheaded ghoul in a crypt, sword lowered. Red only: the blood on the ghoul."
+  },
+  {
+   "batch": 8,
+   "name": "e038_0_ng",
+   "out": "results/e038_0_ng.png",
+   "ja": "屍喰らい→先手を取って斬りかかる（失敗）",
+   "prompt": "A ghoul's claws slash {HERO}'s arm in a crypt. Red only: the wound."
+  },
+  {
+   "batch": 8,
+   "name": "e038_1_r",
+   "out": "results/e038_1_r.png",
+   "ja": "屍喰らい→銀の剣を抜く",
+   "prompt": "A ghoul shrinks back from the gleam of a silver sword held by {HERO} and flees. Red only: the blood on the ghoul's mouth."
+  },
+  {
+   "batch": 8,
+   "name": "e038_2_ok",
+   "out": "results/e038_2_ok.png",
+   "ja": "屍喰らい→死骸を差し出して後ずさる（成功）",
+   "prompt": "A ghoul returns to its meal while {HERO} backs quietly away. Red only: the blood on the ghoul's hands."
+  },
+  {
+   "batch": 8,
+   "name": "e038_2_ng",
+   "out": "results/e038_2_ng.png",
+   "ja": "屍喰らい→死骸を差し出して後ずさる（失敗）",
+   "prompt": "A ghoul leaps at {HERO} the moment they look away. Red only: the blood on the ghoul's mouth."
+  },
+  {
+   "batch": 8,
+   "name": "e039_0_r",
+   "out": "results/e039_0_r.png",
+   "ja": "沼の魔女→取引に応じる",
+   "prompt": "A swamp witch presses a glowing finger to {HERO}'s neck, burning a mark. Red only: the mark on the neck."
+  },
+  {
+   "batch": 8,
+   "name": "e039_1_r",
+   "out": "results/e039_1_r.png",
+   "ja": "沼の魔女→薬だけ売ってもらう",
+   "prompt": "A swamp witch counts coins and hands {HERO} a small potion bottle. Red only: the liquid in the cauldron."
+  },
+  {
+   "batch": 8,
+   "name": "e039_2_ok",
+   "out": "results/e039_2_ok.png",
+   "ja": "沼の魔女→鍋をひっくり返して逃げる（成功）",
+   "prompt": "{HERO} flees a cave hut as a cauldron tips over behind them and the witch shrieks. Red only: the spilled liquid."
+  },
+  {
+   "batch": 8,
+   "name": "e039_2_ng",
+   "out": "results/e039_2_ng.png",
+   "ja": "沼の魔女→鍋をひっくり返して逃げる（失敗）",
+   "prompt": "A witch's curse, a dark streak of light, strikes {HERO} in the back as they flee. Red only: the curse."
+  },
+  {
+   "batch": 8,
+   "name": "e040_0_ok",
+   "out": "results/e040_0_ok.png",
+   "ja": "囁く人形→遊んであげる（成功）",
+   "prompt": "A porcelain doll sits still on a chair, a coin in its hand; {HERO} sits on the floor beside it. Red only: the doll's lips."
+  },
+  {
+   "batch": 8,
+   "name": "e040_0_ng",
+   "out": "results/e040_0_ng.png",
+   "ja": "囁く人形→遊んであげる（失敗）",
+   "prompt": "{HERO} sits exhausted on the floor before a porcelain doll, in a room that seems to stretch. Red only: the doll's lips."
+  },
+  {
+   "batch": 8,
+   "name": "e040_1_ok",
+   "out": "results/e040_1_ok.png",
+   "ja": "囁く人形→人形を叩き壊す（成功）",
+   "prompt": "A porcelain doll lies shattered on the floor, dried flower petals spilling from inside; {HERO} stands over it. Red only: the petals."
+  },
+  {
+   "batch": 8,
+   "name": "e040_1_ng",
+   "out": "results/e040_1_ng.png",
+   "ja": "囁く人形→人形を叩き壊す（失敗）",
+   "prompt": "Shards of a broken porcelain doll crawl up {HERO}'s fingers, cutting them. Red only: the cuts."
   }
  ]
 }
