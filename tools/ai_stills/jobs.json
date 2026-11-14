@@ -2909,7 +2909,7 @@
    "name": "e053_1_ng",
    "out": "results/e053_1_ng.png",
    "ja": "湖の歌声→歌に合わせて歌い返す（失敗）",
-   "prompt": "{HERO} sings on the shore of an underground lake, clutching their throat as their voice fades away. Red only: the woman's lips."
+   "prompt": "On the rocky shore of an underground lake, {HERO} sings toward a pale woman sitting on a rock in the water; faint wisps of light drift from the adventurer's open mouth across the water to her, as if their voice is being carried away. One hand is raised in surprise. Red only: the woman's lips."
   },
   {
    "batch": 9,
@@ -3679,7 +3679,7 @@
    "name": "e074_1_r",
    "out": "results/e074_1_r.png",
    "ja": "血の泉→傷口を泉に浸す",
-   "prompt": "{HERO} dips a wounded arm in a blood fountain; thin streams of their own blood are drawn into it. Red only: the blood."
+   "prompt": "In a great underground hall, {HERO} kneels at the rim of a stone fountain filled with dark red liquid and dips one forearm into it; thin red threads curl from the arm into the pool, as if the fountain is drinking. Red only: the liquid in the fountain."
   },
   {
    "batch": 9,
@@ -3714,7 +3714,7 @@
    "name": "e075_1_ng",
    "out": "results/e075_1_ng.png",
    "ja": "吊るされた人々→せめて楽にしてやる（失敗）",
-   "prompt": "A hanging person reaches toward {HERO} with their last breath. Red only: the person's eyes."
+   "prompt": "Beneath a gigantic mushroom in a dark cave, people are wrapped like cocoons in pale fungal threads that hold them up under its cap. One of them stretches a weak hand toward {HERO}, who reaches back sorrowfully. Not gory. Red only: that person's eyes."
   },
   {
    "batch": 9,
