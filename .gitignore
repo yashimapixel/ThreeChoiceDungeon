@@ -7,3 +7,6 @@ __pycache__/
 
 # AI still raw images are kept outside git (PC + cloud storage)
 art_ai/test/raw/
+
+# generated review sheet (12MB, rebuilt with tools/review/make_review.py)
+/review/
