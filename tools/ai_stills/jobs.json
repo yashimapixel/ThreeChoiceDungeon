@@ -1,5 +1,5 @@
 {
- "style": "Dark fantasy horror illustration for a retro game, wide landscape composition. Strictly monochrome: pure black, charcoal grey, light grey and off-white only, plus blood red used ONLY on the elements listed as red. No other colours, no blue, brown, sepia or warm tint anywhere. Strong chiaroscuro: mostly deep black darkness, one dim light source, very high contrast. Large, simple, clearly readable shapes and silhouettes with minimal fine texture and no tiny details, because the image will be shrunk to 336x200 pixels. Flat graphic shading in three or four tones, like a woodcut or ink wash, crisp edges. Every element listed as red must be bold and clearly visible, because tiny red details disappear when shrunk, but red should cover only a small part of the image unless the scene says otherwise. Main characters should be large in the frame unless the scene says they are small. Keep every important subject inside the central horizontal band; the top and bottom 6% will be cropped. No text, no letters, no runes, no logo, no frame, no border, no UI, no signature, no watermark. Not anime or manga style: no big eyes, no cute or stylised faces; realistic human proportions and restrained, naturalistic faces, like a classic dark fantasy book illustration or etching. Not pixel art and no pixel grid (it will be pixelized afterwards).",
+ "style": "Dark fantasy horror illustration for a retro game, wide landscape composition. Strictly monochrome: pure black, charcoal grey, light grey and off-white only, plus blood red used ONLY on the elements listed as red. No other colours, no blue, brown, sepia or warm tint anywhere. Strong chiaroscuro: mostly deep black darkness, one dim light source, very high contrast. Large, simple, clearly readable shapes and silhouettes with minimal fine texture and no tiny details, because the image will be shrunk to 336x200 pixels. Flat graphic shading in three or four tones, like a woodcut or ink wash, crisp edges. Every element listed as red must be bold and clearly visible, because tiny red details disappear when shrunk, but red should cover only a small part of the image unless the scene says otherwise. Main characters should be large in the frame unless the scene says they are small. Everything happens underground inside the labyrinth: no sky, no moon, no sun, no trees, no outdoor scenery, unless the scene says it is outside. Keep every important subject inside the central horizontal band; the top and bottom 6% will be cropped. No text, no letters, no runes, no logo, no frame, no border, no UI, no signature, no watermark. Not anime or manga style: no big eyes, no cute or stylised faces; realistic human proportions and restrained, naturalistic faces, like a classic dark fantasy book illustration or etching. Not pixel art and no pixel grid (it will be pixelized afterwards).",
  "characters": {
   "HERO": {
    "name": "the hooded adventurer",
@@ -16,6 +16,10 @@
   "QUEEN": {
    "name": "the queen",
    "look": "a woman with long loose hair in a long pale gown"
+  },
+  "PEDDLER": {
+   "name": "the faceless peddler",
+   "look": "a tall figure in a long dark hooded robe; under the hood there is no face at all, only darkness; long bony hands; carries a lantern and a huge pack of strange goods"
   }
  },
  "jobs": [
@@ -1235,7 +1239,7 @@
    "name": "e005_1_ng",
    "out": "results/e005_1_ng.png",
    "ja": "囁く井戸→水を汲んで飲む（失敗）",
-   "prompt": "{HERO} spits out a mouthful of dark liquid from a bucket at a stone well, recoiling. Red only: the liquid, which is blood."
+   "prompt": "In a dark stone room underground, {HERO} spits out a mouthful of dark liquid from a bucket at an old stone well, recoiling. Red only: the liquid, which is blood."
   },
   {
    "batch": 8,
@@ -1375,42 +1379,42 @@
    "name": "e009_1_r",
    "out": "results/e009_1_r.png",
    "ja": "燃え残りの焚き火→火を絶やさぬよう番をする",
-   "prompt": "{HERO} sits awake by a campfire, feeding it a stick, warming their hands. Red only: the flames."
+   "prompt": "In a dark cave, {HERO} sits awake beside a small campfire, feeding it a stick and warming their hands; rock walls all around. Red only: the small flames."
   },
   {
    "batch": 8,
    "name": "e009_2_r",
    "out": "results/e009_2_r.png",
    "ja": "燃え残りの焚き火→火の中から薪を一本拝借する",
-   "prompt": "{HERO} walks away from a campfire holding a burning branch up as a torch. Red only: the flame on the branch."
+   "prompt": "In a dark cave, {HERO} walks away from a small campfire holding up a burning branch as a torch; rock walls all around. Red only: the flame on the branch."
   },
   {
    "batch": 8,
    "name": "e009_3_r",
    "out": "results/e009_3_r.png",
    "ja": "燃え残りの焚き火→火の傍で装備を手入れする",
-   "prompt": "{HERO} sits by a campfire sharpening a short sword on a whetstone, boots laced tight. Red only: the embers."
+   "prompt": "In a dark cave, {HERO} sits beside a small campfire sharpening a short sword on a whetstone, boots laced tight; rock walls all around. Red only: the embers."
   },
   {
    "batch": 8,
    "name": "e010_0_r",
    "out": "results/e010_0_r.png",
    "ja": "闇の行商人→血で聖水を買う",
-   "prompt": "The hooded faceless peddler makes a thin cut on {HERO}'s forearm with a small blade and hands over a little vial. Red only: the thin cut."
+   "prompt": "In a dark stone room, {PEDDLER} makes a thin cut on the forearm of {HERO} with a small blade and hands over a little vial. Red only: the thin cut."
   },
   {
    "batch": 8,
    "name": "e010_1_r",
    "out": "results/e010_1_r.png",
    "ja": "闇の行商人→記憶で薬瓶を買う",
-   "prompt": "{HERO} stands dazed holding a small potion bottle while the hooded peddler pockets a glowing wisp drawn from their head. Red only: the liquid in the bottle."
+   "prompt": "In a dark stone room, {HERO} stands dazed holding a small potion bottle while {PEDDLER} draws a glowing wisp of memory out of their head. Red only: the liquid in the bottle."
   },
   {
    "batch": 8,
    "name": "e010_2_r",
    "out": "results/e010_2_r.png",
    "ja": "闇の行商人→運を売って古地図を買う",
-   "prompt": "The hooded faceless peddler nods and hands an old map to {HERO}. Red only: a route marked on the map."
+   "prompt": "In a dark stone room, {PEDDLER} nods and hands an old map to {HERO}. Red only: a route marked on the map."
   },
   {
    "batch": 8,
