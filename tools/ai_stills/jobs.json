@@ -451,7 +451,7 @@
    "name": "e028",
    "out": "events/e028.png",
    "ja": "泣く石像",
-   "prompt": "A stone statue of a goddess with a serene face in a ruined shrine; tears flow continuously from both of her eyes and run down her cheeks and robes onto a plinth. The plinth has a carved inscription shown only as worn, illegible marks. Large in the frame. Red only: the tears running from her eyes."
+   "prompt": "A weathered stone statue of a mourning goddess in a ruined shrine, carved like a medieval church sculpture: her head is covered by a simple veil and her hands are clasped in prayer at her chest. No crown, no rays, no torch, no raised arm; nothing resembling the Statue of Liberty. Tears flow continuously from both of her eyes down her cheeks and robes onto a plinth carved with worn, illegible marks. Large in the frame. Red only: the tears running from her eyes."
   },
   {
    "batch": 6,
@@ -563,7 +563,7 @@
    "name": "e048",
    "out": "events/e048.png",
    "ja": "牢番",
-   "prompt": "A huge jailer patrols in front of iron bars, a giant ring of keys hanging from his belt. Above his shoulders there is nothing: he has no head. He carries a lantern. Large in the frame. Red only: the light of his lantern."
+   "prompt": "A huge jailer patrols in front of iron bars, a giant ring of keys hanging from his belt. Above his shoulders there is nothing: he has no head. He carries a lantern. Large in the frame. Red only: the small flame inside the lantern glass. His clothes, arms and hands, the bars and the walls are black and grey with no red on them at all."
   },
   {
    "batch": 6,
@@ -661,7 +661,7 @@
    "name": "e063",
    "out": "events/e063.png",
    "ja": "逆さ時計の塔",
-   "prompt": "The huge clock face of a ruined clock tower in an underground city, its hands turning the wrong way. Below the clock face is a small door with a carved inscription shown only as illegible marks. {HERO} stands before the door, small. Red only: the hands of the clock."
+   "prompt": "The huge clock face of a ruined clock tower in an underground city, its hands turning the wrong way. The clock face has plain tick marks instead of numerals. Below the clock face is a small door with a blank stone plaque above it: no writing, no letters, no symbols of any kind. {HERO} stands before the door, small. Red only: the hands of the clock. Absolutely no writing, letters or alphabet anywhere in the image."
   },
   {
    "batch": 6,
@@ -718,6 +718,356 @@
    "out": "events/e071.png",
    "ja": "魔女の再訪",
    "prompt": "The same swamp witch as before, a hunched old crone with wild grey hair, stirs her bubbling cauldron in a cave hut and looks up with a knowing, crooked grin, as if remembering the viewer. Hourglasses and bones hang around her. Realistic and grotesque. Large in the frame. Red only: the sand in one hourglass."
+  },
+  {
+   "batch": 7,
+   "name": "e072",
+   "out": "events/e072.png",
+   "ja": "最後のメモ",
+   "prompt": "A wall of living flesh in a deep chamber. A single handwritten note is half sunk into the flesh; its writing is broken and blurred, shown only as illegible scratches, and the lines of writing continue off the paper into the flesh itself. {HERO} holds up the lantern to it. Red only: the veins in the flesh around the note."
+  },
+  {
+   "batch": 7,
+   "name": "e073",
+   "out": "events/e073.png",
+   "ja": "沈黙の司書",
+   "prompt": "An endless maze of tall bookshelves. A gaunt librarian in a long robe, whose mouth is sewn shut with thread, quietly shelves books and raises one finger to the stitched lips, signalling silence. {HERO} stands in the aisle. Large in the frame. Red only: the thread sewing the librarian's mouth shut."
+  },
+  {
+   "batch": 7,
+   "name": "e074",
+   "out": "events/e074.png",
+   "ja": "血の泉",
+   "prompt": "In the centre of a great hall, a stone fountain wells up with blood that overflows into its basin. Ancient marks carved on its rim are worn and illegible. {HERO} stands at the rim, looking down. Red only: the blood in the fountain; in this scene the red element may be fairly large."
+  },
+  {
+   "batch": 7,
+   "name": "e075",
+   "out": "events/e075.png",
+   "ja": "吊るされた人々",
+   "prompt": "From the cap of a gigantic mushroom, people hang suspended by fungal threads like limp puppets. One of them is still alive and weakly lifts a hand toward the viewer. {HERO} stands below, small. Horrifying but not gory. Red only: the eyes of the one who is still alive."
+  },
+  {
+   "batch": 7,
+   "name": "e076",
+   "out": "events/e076.png",
+   "ja": "忘却の川",
+   "prompt": "A silent grey river flows through a vast dark cavern. On its surface, fragments of memories float past as faint pale images: a house, a face, a child, a field. {HERO} kneels on the bank, cupping the water in one hand. Red only: one memory fragment, a small flower, floating on the water."
+  },
+  {
+   "batch": 7,
+   "name": "e077",
+   "out": "events/e077.png",
+   "ja": "鉄の処女",
+   "prompt": "In the centre of a torture chamber stands an iron maiden, an iron coffin shaped like a woman with a serene metal face. Blood drips from the gap between its doors. Torture tools hang on the walls. {HERO} stands before it, listening. Red only: the blood dripping from the gap."
+  },
+  {
+   "batch": 7,
+   "name": "e078",
+   "out": "events/e078.png",
+   "ja": "眠る巨人",
+   "prompt": "Inside the mouth of a sleeping giant that looks like a cave: enormous teeth like stalactites and stalagmites, a vast tongue as the floor, scattered with the packs, swords and helmets of swallowed adventurers, and the dark throat far behind. {HERO} stands small on the tongue. Red only: a single torn banner among the scattered belongings."
+  },
+  {
+   "batch": 7,
+   "name": "e079",
+   "out": "events/e079.png",
+   "ja": "少女の記憶",
+   "prompt": "{GIRL} has stopped in a ruined street and stands with a distant look, holding her own hands together at her chest as if remembering someone holding them. Above her, faint and dreamlike, a vision of a mother's hand holding a small hand. {HERO} kneels beside her. Red only: the crest pendant on her chest."
+  },
+  {
+   "batch": 7,
+   "name": "e080",
+   "out": "events/e080.png",
+   "ja": "肉の回廊",
+   "prompt": "A corridor whose walls and floor are made of living flesh, pulsing veins on the walls and the floor sagging softly underfoot, bending away into darkness. {HERO} walks in, small. Red only: the largest veins on the walls, glowing faintly."
+  },
+  {
+   "batch": 7,
+   "name": "e081",
+   "out": "events/e081.png",
+   "ja": "眼の群れ",
+   "prompt": "Countless eyes have opened all over the walls of a passage: human eyes, animal eyes and nameless eyes of every size, all staring at the viewer without blinking. {HERO} stands in the middle, small. Red only: the irises of a few of the largest eyes."
+  },
+  {
+   "batch": 7,
+   "name": "e083",
+   "out": "events/e083.png",
+   "ja": "手の海",
+   "prompt": "Below a rocky ledge spreads a sea of countless pale hands and arms, reaching up and grasping at the air, stretching to a distant shore. {HERO} stands on the ledge, looking down at it. Red only: a faint glow on the distant shore."
+  },
+  {
+   "batch": 7,
+   "name": "e084",
+   "out": "events/e084.png",
+   "ja": "堕ちた天使",
+   "prompt": "A fallen angel with broken wings floats in the air, bound by chains. Half of its face is beautiful and serene; the other half has rotted away to the skull. It looks down at the viewer. Large in the frame. Red only: the eye on the rotted half of its face."
+  },
+  {
+   "batch": 7,
+   "name": "e085",
+   "out": "events/e085.png",
+   "ja": "名前を呼ぶ声",
+   "prompt": "Total darkness. {HERO} stands frozen in the centre, refusing to turn around. Behind them, faint pale shapes of familiar figures (a mother, a friend, a stranger) reach out of the darkness, almost touching their shoulders. Red only: the lips of the nearest figure, which is calling a name."
+  },
+  {
+   "batch": 7,
+   "name": "e086",
+   "out": "events/e086.png",
+   "ja": "逆さまの階段",
+   "prompt": "A staircase that twists impossibly, like an impossible-geometry drawing: it goes down, then curves up and over, with landings upside down overhead. {HERO} stands on a step, looking up at a landing above where their own earlier footprints run upside down. Red only: a lantern hanging upside down from that landing."
+  },
+  {
+   "batch": 7,
+   "name": "e087",
+   "out": "events/e087.png",
+   "ja": "自分の死体",
+   "prompt": "In the middle of a passage lies a dead body identical to the hooded adventurer, with the same cloak and lantern. Its hand clutches something unknown that glows. {HERO} stands over it, looking down at their own corpse. Red only: the glowing object in the dead hand."
+  },
+  {
+   "batch": 7,
+   "name": "e088",
+   "out": "events/e088.png",
+   "ja": "深淵の司祭",
+   "prompt": "A priest wearing a crown of tentacles stands before a black altar in a dark temple, arms spread in welcome, robes trailing, a dark pit behind him. Large in the frame. Red only: the priest's eyes."
+  },
+  {
+   "batch": 7,
+   "name": "e089",
+   "out": "events/e089.png",
+   "ja": "星の落ちる井戸",
+   "prompt": "In a black void stands a single old stone well. Inside it, the bottom of the well shows a full starry sky, and stars fall upward out of the well into the void. {HERO} leans over the rim. Red only: one star rising out of the well."
+  },
+  {
+   "batch": 7,
+   "name": "e090",
+   "out": "events/e090.png",
+   "ja": "喰らうもの",
+   "prompt": "The passage itself is a gigantic mouth: rows of huge teeth line the floor and ceiling, a writhing tongue forms the path, and a foul wind blows from the dark throat beyond. {HERO} stands at the entrance, small. Red only: a glow deep inside the throat."
+  },
+  {
+   "batch": 7,
+   "name": "e091",
+   "out": "events/e091.png",
+   "ja": "鏡の迷宮",
+   "prompt": "An endless maze of mirrors. In every mirror stands a different dead version of the hooded adventurer, wounded, skeletal, drowned or burned, all shouting and pointing in different directions. {HERO} stands in the centre. Red only: the eyes of the reflections."
+  },
+  {
+   "batch": 7,
+   "name": "e092",
+   "out": "events/e092.png",
+   "ja": "騎士の亡霊",
+   "prompt": "In a black void, {KNIGHT} stands alone, faintly glowing, holding his sword point-down and turning his empty helmet toward the viewer as if recognising an old friend. Large in the frame. Red only: the crown crest on the tabard."
+  },
+  {
+   "batch": 7,
+   "name": "e093",
+   "out": "events/e093.png",
+   "ja": "最後の商人",
+   "prompt": "A single lantern floats in a black void, and beside it the same tall hooded peddler with no visible face, carrying a huge pack of goods, beckons with a long bony hand. Nothing else, only endless darkness. Large in the frame. Red only: the small flame inside the lantern glass; the peddler's clothes are black and grey."
+  },
+  {
+   "batch": 7,
+   "name": "e094",
+   "out": "events/e094.png",
+   "ja": "赤い月",
+   "prompt": "Deep underground, a gigantic moon hangs overhead in a black void. Its surface is covered with cracks like an eggshell about to hatch, with something dark pressing from inside. {HERO} stands small on a rocky ridge below, looking up. Red only: the moon; in this scene the red element may be large."
+  },
+  {
+   "batch": 7,
+   "name": "n05",
+   "out": "events/n05.png",
+   "ja": "何度目の挑戦者",
+   "prompt": "In the corner of a passage sits the ghost of an old adventurer in worn, outdated gear, grey and translucent, laughing dryly as he looks up at the viewer. Around him lie the rusted weapons and gear of many failed attempts. {HERO} stands before him. Large in the frame. Red only: a scarf around the ghost's neck."
+  },
+  {
+   "batch": 7,
+   "name": "x01",
+   "out": "events/x01.png",
+   "ja": "底の向こう（エンドレス）",
+   "prompt": "Below the bottom of the labyrinth: an impossible staircase continues down into absolute darkness, surrounded by countless faint pale wisps like the whispers of unfulfilled wishes. {HERO} stands at the top, small, seen from behind. Red only: a glow at the very bottom of the stairs."
+  },
+  {
+   "batch": 7,
+   "name": "x02",
+   "out": "events/x02.png",
+   "ja": "誰かの足跡（エンドレス）",
+   "prompt": "A dusty floor in a dark corridor with a single trail of footprints leading forward into the darkness, exactly the size of the adventurer's boots; no footprints come back. {HERO} stands at the start of the trail, looking down at it. Red only: the last visible footprint in the distance."
+  },
+  {
+   "batch": 7,
+   "name": "x03",
+   "out": "events/x03.png",
+   "ja": "願いの墓場（エンドレス）",
+   "prompt": "A cave piled high with countless scraps of paper and torn cloth, each bearing a wish written only as illegible scribbles, like a snowdrift of discarded wishes. {HERO} stands among the piles, holding one scrap. Red only: the single scrap in the adventurer's hand."
+  },
+  {
+   "batch": 7,
+   "name": "x04",
+   "out": "events/x04.png",
+   "ja": "子守唄の残響（エンドレス）",
+   "prompt": "An empty black void in which faint pale ribbons of light drift and curl like a melody made visible, flowing around an empty spot where a singer once stood. {HERO} stands listening, small. Red only: one ribbon of the melody."
+  },
+  {
+   "batch": 7,
+   "name": "x05",
+   "out": "events/x05.png",
+   "ja": "眼の欠片（エンドレス）",
+   "prompt": "A floor of flesh with a shattered fragment of a gigantic eye embedded in it: a curved shard holding part of an iris, still alive and looking up at the viewer. {HERO} stands over it. Red only: the iris on the shard."
+  },
+  {
+   "batch": 7,
+   "name": "x06",
+   "out": "events/x06.png",
+   "ja": "鏡の中の踏破者（エンドレス）",
+   "prompt": "A maze of mirrors. In the largest mirror stands the hooded adventurer as a battle-worn veteran who has already reached the bottom, cloak in tatters and armour scarred, speaking to the viewer. {HERO} faces the mirror. Red only: the reflection's two eyes."
+  },
+  {
+   "batch": 7,
+   "name": "x07",
+   "out": "events/x07.png",
+   "ja": "果ての商人（エンドレス）",
+   "prompt": "In an endless black void, the tall hooded peddler with no visible face sits on nothing, his strange goods spread on a cloth floating in the air and his lantern hanging from an invisible hook. Large in the frame. Red only: the small flame inside the lantern glass; everything else is black and grey."
+  },
+  {
+   "batch": 7,
+   "name": "x08",
+   "out": "events/x08.png",
+   "ja": "王の使者（エンドレス）",
+   "prompt": "In the darkness waits a royal messenger in a long travel cloak, holding up a staff with a banner bearing the royal crown crest, a lantern at his feet, holding out a hand toward the viewer in invitation. Large in the frame. Red only: the crown crest on the banner."
+  },
+  {
+   "batch": 7,
+   "name": "g025_0_r",
+   "out": "results/g025_0_r.png",
+   "ja": "骨の門番→銀の剣で門を断つ",
+   "prompt": "{HERO} swings a silver sword through a colossal gate of bones and skulls, which shatters and collapses in a burst of bone fragments. Red only: the dying glow in the eye sockets of the great skull."
+  },
+  {
+   "batch": 7,
+   "name": "g050_1_r",
+   "out": "results/g050_1_r.png",
+   "ja": "都市の番人→王冠を掲げる",
+   "prompt": "The colossal stone-and-iron guardian kneels and bows its head before {HERO}, who holds a crown high above their head, the ruined city gate behind. Red only: the furnace core in the guardian's chest, dimming."
+  },
+  {
+   "batch": 7,
+   "name": "g075_0_r",
+   "out": "results/g075_0_r.png",
+   "ja": "深淵の竜→銀の剣で立ち向かう",
+   "prompt": "{HERO} drives a silver sword into the chest of a huge skeletal dragon above a chasm; the dragon rears back and begins to crumble into the void. Red only: the fire in the dragon's eye sockets, going out."
+  },
+  {
+   "batch": 7,
+   "name": "e023_0_r",
+   "out": "results/e023_0_r.png",
+   "ja": "甲冑の亡霊→共に戦うと誓う",
+   "prompt": "{KNIGHT} stands before {HERO} and gives a soldier's salute, fist to chest, as his form begins to dissolve into the darkness. Large in the frame. Red only: the crown crest on the tabard."
+  },
+  {
+   "batch": 7,
+   "name": "e046_2_r",
+   "out": "results/e046_2_r.png",
+   "ja": "少女の墓→お母さまのところへ行こう",
+   "prompt": "{GIRL} grips the hand of {HERO} tightly; together they turn away from a small gravestone carved with a crown crest and face a staircase leading down into darkness. The girl looks determined. Red only: the crest pendant on her chest."
+  },
+  {
+   "batch": 7,
+   "name": "e046_1_ok",
+   "out": "results/e046_1_ok.png",
+   "ja": "少女の墓→墓を掘り起こす（成功）：布のお守り",
+   "prompt": "An open, empty grave in a crypt, with no body in it. {GIRL} places a small hand-sewn cloth charm into the open palm of {HERO}, who kneels before her. Red only: the cloth charm."
+  },
+  {
+   "batch": 7,
+   "name": "n03_1_ok",
+   "out": "results/n03_1_ok.png",
+   "ja": "騎士の告白→「あなたのせいではない」（成功）",
+   "prompt": "{KNIGHT}, his helmet at his side, sits on a fallen stone in a ruin with his head lowered, and {HERO} sits beside him in silence. A long, quiet moment. Red only: the crown crest on the tabard."
+  },
+  {
+   "batch": 7,
+   "name": "e096_0_ok",
+   "out": "results/e096_0_ok.png",
+   "ja": "あの夜の部屋→枕元の椅子に座る（成功）",
+   "prompt": "{HERO} sits in a wooden chair beside a small white child's bed in a quiet sickroom, looking down at their own open palm, where a faint glow of a remembered hand lingers. A flower on the windowsill; black nothingness outside the window. Red only: the flower."
+  },
+  {
+   "batch": 7,
+   "name": "e096_0_ng",
+   "out": "results/e096_0_ng.png",
+   "ja": "あの夜の部屋→枕元の椅子に座る（失敗）：あの夜の記憶",
+   "prompt": "The same small sickroom, seen as a ghostly vision of a memory: the door has been flung open and the dark silhouettes of armoured soldiers stand in the doorway, while a woman's silhouette clings to a small sick child on the bed. {HERO} watches from the chair, startled. Red only: the flower on the windowsill."
+  },
+  {
+   "batch": 7,
+   "name": "e072_0_r",
+   "out": "results/e072_0_r.png",
+   "ja": "最後のメモ→最後まで読む",
+   "prompt": "Close-up of a handwritten note half sunk into a wall of living flesh; the illegible lines of writing continue off the paper into the flesh as raised scars. The hand of {HERO} touches the paper. Red only: the veins around the note."
+  },
+  {
+   "batch": 7,
+   "name": "n04_0_r",
+   "out": "results/n04_0_r.png",
+   "ja": "王の手紙→一通開いて読む",
+   "prompt": "Close-up: the hands of {HERO} hold an opened letter among piles of sealed envelopes; the writing on the letter is only illegible lines, blurred by tear stains. Red only: the broken wax seal of the opened letter."
+  },
+  {
+   "batch": 7,
+   "name": "e079_0_r",
+   "out": "results/e079_0_r.png",
+   "ja": "少女の記憶→歌を聞かせてもらう",
+   "prompt": "{GIRL} sits on a stone and sings softly with her eyes closed; around her, faint pale ribbons of melody drift up into the darkness and are joined by another melody coming from far away. {HERO} sits nearby, listening. Red only: the crest pendant on her chest."
+  },
+  {
+   "batch": 7,
+   "name": "e092_0_r",
+   "out": "results/e092_0_r.png",
+   "ja": "騎士の亡霊→二人を救うと約束する：騎士が剣に宿る",
+   "prompt": "In a black void, {KNIGHT} dissolves into light that flows into the sword held up by {HERO}; the blade begins to glow. Red only: the crown crest on the tabard of the fading knight."
+  },
+  {
+   "batch": 7,
+   "name": "e095_0_r",
+   "out": "results/e095_0_r.png",
+   "ja": "胎動する闇→少女に歌ってもらう",
+   "prompt": "{GIRL} stands in a pulsing darkness like the inside of a living body and sings with her hands clasped; the darkness around her calms and parts, opening a path of faint light. {HERO} follows behind her. Red only: a heartbeat glow in the walls, quieting."
+  },
+  {
+   "batch": 7,
+   "name": "e082_1_ok",
+   "out": "results/e082_1_ok.png",
+   "ja": "心臓の間→心臓に手を当てる（成功）",
+   "prompt": "{HERO} presses one palm against the surface of a gigantic beating heart in a chamber of flesh; faint visions of a mother rocking a cradle drift around them like memories. Red only: the glowing crystal embedded in the heart."
+  },
+  {
+   "batch": 7,
+   "name": "g100_2_r",
+   "out": "results/g100_2_r.png",
+   "ja": "迷宮の底→騎士と共に、あの眼を討つ",
+   "prompt": "{KNIGHT} kneels before {QUEEN}, who has just fallen free of a crumbling wall of flesh and sits on the floor, looking around as if searching for someone. Behind them the giant eye, pierced by two blades, collapses. {HERO} stands nearby with sword lowered. Red only: the wound in the collapsing giant eye."
+  },
+  {
+   "batch": 7,
+   "name": "g100_3_r",
+   "out": "results/g100_3_r.png",
+   "ja": "迷宮の底→「お別れを言わせてあげて」と願う",
+   "prompt": "A great crack runs across the giant eye in the darkness; below it the wall of flesh unravels and {QUEEN} steps out of it as if waking. {HERO} stands with empty open hands, having given up their own wish. Red only: the crack in the giant eye."
+  },
+  {
+   "batch": 7,
+   "name": "g100_5_r",
+   "out": "results/g100_5_r.png",
+   "ja": "迷宮の底→「生きて帰りたい」と願う",
+   "prompt": "{HERO} wakes lying at the entrance of the labyrinth, a dark cave mouth behind them, in dim grey dawn light, holding a small black stone from the bottom in one hand. Red only: a faint glow inside the stone."
+  },
+  {
+   "batch": 7,
+   "name": "g100_6_r",
+   "out": "results/g100_6_r.png",
+   "ja": "迷宮の底→闇の代わりに底に残る",
+   "prompt": "{HERO} sits alone on a throne of black flesh and bone at the very bottom of the labyrinth, in total darkness, surrounded by closed eyes in the walls, waiting. Red only: the adventurer's two eyes glow red instead of white."
   }
  ]
 }
