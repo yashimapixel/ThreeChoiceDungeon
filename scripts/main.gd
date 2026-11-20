@@ -1034,7 +1034,7 @@ func _effect_text(r: Dictionary, tint := "") -> String:
 			var d := Game.sv(int(r[st]), fx)
 			parts.append("[color=%s]%s%+d[/color]" % [_hex(R if d < 0 else W), Game.STAT_NAME[st], d])
 	if r.has("g") and int(r["g"]) != 0:
-		var g := Game.sv(int(r["g"]), fx)
+		var g := Game.sv(int(r["g"]), fx or r.get("gfix", false))
 		parts.append("[color=%s]金貨%+d[/color]" % [_hex(R if g < 0 else W), g])
 	for f in r.get("set", []):
 		if Game.ITEMS.has(f) and not (Game.ITEMS[f].get("unique", false) and Game.flags.has(f)):
@@ -1093,6 +1093,8 @@ func _build_choices() -> void:
 			tag = "［%s判定 成功率 %d%%］" % [Game.STAT_NAME[c["chk"]], roundi(info["chance"] * 100)]
 			if info["chance"] < 0.35:
 				tagcol = R
+		if en and int(info.get("cost", 0)) > 0:
+			tag = "〔金貨%d枚〕" % int(info["cost"]) + (" " + tag if tag != "" else "")
 		if info["tag"] != "":
 			tag = info["tag"] + (" " + tag if tag != "" else "")
 			if info["locked"]:

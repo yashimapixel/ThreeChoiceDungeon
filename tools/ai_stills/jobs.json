@@ -207,7 +207,7 @@
    "name": "e007",
    "out": "events/e007.png",
    "ja": "古い祭壇",
-   "prompt": "Moss-covered pillars surround an old black stone altar in a ruined shrine, with a few candle stubs. The altar top is covered in layers of dried stains running down its sides. No people. Red only: the dried blood stains on the altar, large and dripping down its sides."
+   "prompt": "Moss-covered pillars surround an old black stone altar in a ruined underground shrine, with a few candle stubs. The altar top is covered with layered, old, dried dark stains: overlapping dark rings and a few old streaks that stop at the edge. Nothing is wet or dripping. No people. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere. Red only: the dried stains on the altar top, dark red, old and dry."
   },
   {
    "batch": 5,
@@ -242,7 +242,7 @@
    "name": "e020",
    "out": "events/e020.png",
    "ja": "黒い犬",
-   "prompt": "A thin, gaunt black dog emerges from the darkness of a stone corridor and stands still, staring straight at the viewer without growling. Low camera, the dog large in the frame. Red only: one of the dog's eyes glows red; the other eye is dark and normal."
+   "prompt": "{DOG} emerges from the darkness of a stone corridor and stands still, staring at the viewer without growling. It is the size of an ordinary medium dog, thin and gaunt, not a large hound. Red only: the dog's one glowing eye."
   },
   {
    "batch": 5,
@@ -256,14 +256,14 @@
    "name": "e031",
    "out": "events/e031.png",
    "ja": "弔いの鐘",
-   "prompt": "A ruined bell tower. A huge bell hangs from a cracked wooden beam, and countless names are engraved all around its rim, shown only as rows of tiny scratches, never as readable letters. {HERO} stands below, looking up at it. Red only: a red glow on one small spot of the bell's rim, a glowing smudge with no letters or symbols in it. Absolutely no writing, letters or alphabet anywhere in the image."
+   "prompt": "A ruined bell tower. A huge bell hangs from a cracked wooden beam, and countless names are engraved all around its rim, shown only as rows of tiny scratches, never as readable letters. {HERO} stands below, looking up at it. Red only: a red glow on one small spot of the bell's rim, a glowing smudge with no letters or symbols in it. Absolutely no writing, letters or alphabet anywhere in the image. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere."
   },
   {
    "batch": 5,
    "name": "e037",
    "out": "events/e037.png",
    "ja": "渡し守",
-   "prompt": "The shore of a black underground lake. A tall hooded ferryman stands beside a small wooden boat moored at the water's edge, holding a long oar and holding out an open bony hand toward the viewer to ask for payment. Mist on the water. Red only: a small lantern hanging at the boat's bow."
+   "prompt": "The shore of a black underground lake inside a vast cavern. A tall ferryman in a long hooded robe stands beside a small wooden boat; under his hood there is no face at all, only darkness. He holds a long oar and holds out an open bony hand toward the viewer to ask for payment. Mist on the water. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere. Red only: a small lantern hanging at the boat's bow."
   },
   {
    "batch": 5,
@@ -312,7 +312,7 @@
    "name": "n03",
    "out": "events/n03.png",
    "ja": "騎士の告白",
-   "prompt": "In a corner of a ruin, {KNIGHT} has taken off his helmet and holds it in both hands against his chest. Above the neck of the armour there is no head at all, only empty darkness. Side view, quiet and sorrowful, large in the frame. Red only: the crown crest on the tabard."
+   "prompt": "In a corner of a ruin, {KNIGHT} has taken off his helmet and holds it in both hands against his chest. Above the neck of the armour there is no head at all, only empty darkness. Side view, quiet and sorrowful, large in the frame. Red only: the crown crest on the tabard. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere."
   },
   {
    "batch": 5,
@@ -396,7 +396,7 @@
    "name": "e015",
    "out": "events/e015.png",
    "ja": "祈る修道士",
-   "prompt": "A collapsed chapel with broken pews. A monk in a ragged hooded habit kneels in prayer before a cracked altar and has just turned his head toward the viewer; his eyes are clouded milky white. Large in the frame. Red only: a small votive candle flame on the altar."
+   "prompt": "A collapsed underground chapel with broken pews. A bald, elderly monk with a short grey beard and milky white clouded eyes, in a ragged robe with the hood down, kneels in prayer before a cracked altar and has just turned his head toward the viewer. Large in the frame. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere. Red only: a small votive candle flame on the altar."
   },
   {
    "batch": 6,
@@ -550,7 +550,7 @@
    "name": "e043",
    "out": "events/e043.png",
    "ja": "錬金術師の工房",
-   "prompt": "An abandoned alchemist's workshop: shelves crowded with bottles of many shapes, glass tubes and a cold furnace. On the empty desk stand three bottles side by side next to a note whose writing is only illegible scratches. No people. Red only: the liquid in one of the three bottles on the desk."
+   "prompt": "An abandoned alchemist's workshop: shelves crowded with bottles, glass tubes and a cold furnace. On the empty desk stand three clearly different bottles side by side next to a note whose writing is only illegible scratches: a round milky-white flask, a square bottle of red liquid in the middle, and a tall slender bottle of black liquid with a bright rim. No people. Red only: the liquid in the square middle bottle."
   },
   {
    "batch": 6,
@@ -662,7 +662,7 @@
    "name": "e062",
    "out": "events/e062.png",
    "ja": "菌糸の人",
-   "prompt": "A man with mushrooms growing all over his body walks slowly toward the viewer with open arms; thread-like fungal tendrils reach out from his chest. Grotesque and realistic. Large in the frame. Red only: the caps of a few mushrooms on his shoulders."
+   "prompt": "A man with mushrooms growing all over his body walks slowly toward the viewer with open arms; thread-like fungal tendrils reach out from his chest. Grotesque and realistic. Large in the frame. Red only: the caps of a few mushrooms on his shoulders. He walks through a damp fungal cave. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere."
   },
   {
    "batch": 6,
@@ -704,7 +704,7 @@
    "name": "e068",
    "out": "events/e068.png",
    "ja": "仮面の商人",
-   "prompt": "A merchant wearing many masks layered over one another runs a small stall in a ruined street; the stall is covered with hanging masks of human faces. The merchant leans forward to greet the viewer. Large in the frame. Red only: the mouth of the outermost mask."
+   "prompt": "A merchant wearing many masks layered over one another runs a small stall in a ruined street; the stall is covered with hanging masks of human faces. The merchant leans forward to greet the viewer. Large in the frame. Red only: the mouth of the outermost mask. The ruined street lies inside a vast cavern. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere."
   },
   {
    "batch": 6,
@@ -718,7 +718,7 @@
    "name": "e070",
    "out": "events/e070.png",
    "ja": "亡者の行進",
-   "prompt": "A column of dead soldiers in rusted armour marches toward the viewer through a ruined street, none of them alive, empty helmets. The standard-bearer at the front has stopped and looks straight at the viewer. Large in the frame. Red only: the tattered banner carried by the standard-bearer."
+   "prompt": "A column of dead soldiers in rusted armour marches toward the viewer through a ruined street, none of them alive, empty helmets. The standard-bearer at the front has stopped and looks straight at the viewer. Large in the frame. Red only: the tattered banner carried by the standard-bearer. The ruined street lies inside a vast cavern. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere."
   },
   {
    "batch": 6,
@@ -809,7 +809,7 @@
    "name": "e084",
    "out": "events/e084.png",
    "ja": "堕ちた天使",
-   "prompt": "A fallen angel with broken wings floats in the air, bound by chains. Half of its face is beautiful and serene; the other half has rotted away to the skull. It looks down at the viewer. Large in the frame. Red only: the eye on the rotted half of its face."
+   "prompt": "A fallen angel with broken wings floats in the air, bound by chains. Its face is split down the middle: the left half beautiful and serene, the right half clearly rotted away to bare skull and torn flesh, plainly visible. It looks down at the viewer. Large in the frame. Red only: the eye on the rotted half."
   },
   {
    "batch": 7,
@@ -956,7 +956,7 @@
    "name": "g050_1_r",
    "out": "results/g050_1_r.png",
    "ja": "都市の番人→王冠を掲げる",
-   "prompt": "The colossal stone-and-iron guardian kneels and bows its head before {HERO}, who holds a crown high above their head, the ruined city gate behind. Red only: the furnace core in the guardian's chest, dimming."
+   "prompt": "Inside a vast cavern, before the broken gate of a ruined underground city, the colossal stone-and-iron guardian kneels and bows its head before {HERO}, who holds a crown high above their head. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere. Red only: the furnace core in the guardian's chest, dimming."
   },
   {
    "batch": 7,
@@ -991,7 +991,7 @@
    "name": "n03_1_ok",
    "out": "results/n03_1_ok.png",
    "ja": "騎士の告白→「あなたのせいではない」（成功）",
-   "prompt": "{KNIGHT}, his helmet at his side, sits on a fallen stone in a ruin with his head lowered, and {HERO} sits beside him in silence. A long, quiet moment. Red only: the crown crest on the tabard."
+   "prompt": "{KNIGHT}, his helmet at his side, sits on a fallen stone in a ruin with his head lowered, and {HERO} sits beside him in silence. A long, quiet moment. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere. Red only: the crown crest on the tabard."
   },
   {
    "batch": 7,
@@ -1026,7 +1026,7 @@
    "name": "e079_0_r",
    "out": "results/e079_0_r.png",
    "ja": "少女の記憶→歌を聞かせてもらう",
-   "prompt": "{GIRL} sits on a stone and sings softly with her eyes closed; around her, faint pale ribbons of melody drift up into the darkness and are joined by another melody coming from far away. {HERO} sits nearby, listening. Red only: the crest pendant on her chest."
+   "prompt": "{GIRL} sits on a stone and sings softly with her eyes closed; around her, faint pale ribbons of melody drift up into the darkness and are joined by another melody coming from far away. {HERO} sits nearby, listening. They sit in a ruined underground street. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere. Red only: the crest pendant on her chest."
   },
   {
    "batch": 7,
@@ -1194,7 +1194,7 @@
    "name": "e004_0_ng",
    "out": "results/e004_0_ng.png",
    "ja": "宝箱→迷わず開ける（失敗）",
-   "prompt": "A treasure chest has split open into a mimic with rows of fangs and a long tongue, biting at {HERO}, who flees clutching their arm. Red only: the mimic's tongue."
+   "prompt": "A treasure chest has split open into a mimic with rows of fangs and a long tongue. {HERO} flees from it, clutching a torn sleeve on one forearm where the mimic has just bitten. Red only: the mimic's tongue."
   },
   {
    "batch": 8,
@@ -1355,7 +1355,7 @@
    "name": "e008_2_ng",
    "out": "results/e008_2_ng.png",
    "ja": "迷子の少女→気づかないふりをする（失敗）",
-   "prompt": "As {HERO} passes, {GIRL}'s head has turned all the way around to face them, her face hidden by her dark hair. Red only: the crest pendant on her chest."
+   "prompt": "In a dark stone corridor, {HERO} has just walked one step past {GIRL}. The girl's body and bare feet still face away down the corridor, but her head alone has turned all the way around to face the adventurer, her face hidden by her dark hair. Unsettling. Red only: the crest pendant on her chest."
   },
   {
    "batch": 8,
@@ -1880,7 +1880,7 @@
    "name": "e025_1_ok",
    "out": "results/e025_1_ok.png",
    "ja": "骸骨の賭博師→イカサマを見破る（成功）",
-   "prompt": "{HERO} holds up a die showing six pips on every face; the skeleton gambler laughs and tosses a coin. Red only: the die."
+   "prompt": "{HERO} holds up one large die toward the viewer; all three visible faces clearly show six pips in two rows of three. Across the table, the skeleton gambler in a tricorn hat laughs and tosses a coin. Red only: the die."
   },
   {
    "batch": 8,
@@ -1936,14 +1936,14 @@
    "name": "e027_0_ok",
    "out": "results/e027_0_ok.png",
    "ja": "子守唄→一緒に歌う（成功）",
-   "prompt": "{HERO} stands by an ornate wooden cradle that has stopped rocking, a calm soft light filling the dark room. Red only: the carved crest on the cradle."
+   "prompt": "In a dark stone room with no windows, {HERO} stands by an ornate wooden cradle that has stopped rocking, a calm soft light filling the room. A simple crown crest is carved on the cradle's headboard. Red only: the crown crest."
   },
   {
    "batch": 8,
    "name": "e027_0_ng",
    "out": "results/e027_0_ng.png",
    "ja": "子守唄→一緒に歌う（失敗）",
-   "prompt": "{HERO} backs away from an ornate cradle as a pale shape stirs inside it, crying. Red only: the carved crest on the cradle."
+   "prompt": "In a dark stone room with no windows, {HERO} backs away from an ornate wooden cradle as a pale small shape stirs inside it, crying. A simple crown crest is carved on the headboard. Red only: the crown crest."
   },
   {
    "batch": 8,
@@ -1957,14 +1957,14 @@
    "name": "e027_1_ng",
    "out": "results/e027_1_ng.png",
    "ja": "子守唄→揺りかごを止める（失敗）",
-   "prompt": "A small pale ghostly hand grips {HERO}'s wrist as they try to stop a rocking cradle. Red only: the carved crest on the cradle."
+   "prompt": "In a dark stone room with no windows, a small pale ghostly hand grips the wrist of {HERO} as they try to stop a rocking ornate cradle. A simple crown crest is carved on the headboard. Red only: the crown crest."
   },
   {
    "batch": 8,
    "name": "e027_3_r",
    "out": "results/e027_3_r.png",
    "ja": "子守唄→耳を塞いで通り抜ける",
-   "prompt": "{HERO} walks through a dark room with hands pressed over their ears, a cradle rocking behind them. Red only: the carved crest on the cradle."
+   "prompt": "{HERO} walks through a dark stone room with no windows, hands pressed over their ears, while an ornate cradle rocks by itself behind them. A simple crown crest is carved on the headboard. Red only: the crown crest."
   },
   {
    "batch": 8,
@@ -2272,7 +2272,7 @@
    "name": "e034_2_ok",
    "out": "results/e034_2_ok.png",
    "ja": "さまよう亡霊→気配を消してやり過ごす（成功）",
-   "prompt": "A faceless ghost passes straight through {HERO}, who stands still and calm. Red only: the ribbon on the ghost's wrist."
+   "prompt": "In a crypt corridor, {HERO} hides motionless behind a stone pillar, holding their breath, while a faceless ghost in a tattered shroud drifts past just beside them; there is a clear gap between the two, they do not touch. Red only: the ribbon on the ghost's wrist."
   },
   {
    "batch": 8,
@@ -2426,7 +2426,7 @@
    "name": "e039_0_r",
    "out": "results/e039_0_r.png",
    "ja": "沼の魔女→取引に応じる",
-   "prompt": "A swamp witch presses a glowing finger to {HERO}'s neck, burning a mark. Red only: the mark on the neck."
+   "prompt": "Inside a witch's hut built into a cave, rock walls behind, a swamp witch presses a glowing finger to the neck of {HERO}, burning a mark. Enclosed underground: a rock or stone ceiling overhead; no sky, no moon, no stars and no windows to the outside anywhere. Red only: the mark on the neck."
   },
   {
    "batch": 8,
@@ -2489,21 +2489,21 @@
    "name": "e041_0_ok",
    "out": "results/e041_0_ok.png",
    "ja": "肖像画の回廊→絵の自分に触れる（成功）",
-   "prompt": "In a gallery of portraits, {HERO} touches the last portrait of their old self, which smiles and reaches out; a soft glow flows into the adventurer's hand. Red only: the portrait's eyes."
+   "prompt": "In a gallery of portraits, {HERO} touches the last portrait, which shows the same hooded adventurer grown very old and withered, the face still hidden in the shadow of the hood. The painted old figure reaches out from the canvas and a soft glow flows into the adventurer's hand. Red only: the two eyes of the painted figure."
   },
   {
    "batch": 9,
    "name": "e041_0_ng",
    "out": "results/e041_0_ng.png",
    "ja": "肖像画の回廊→絵の自分に触れる（失敗）",
-   "prompt": "{HERO} touches the last portrait in a gallery and their hand withers and ages while the painted old self grows younger. Red only: the portrait's eyes."
+   "prompt": "{HERO} touches the last portrait in a gallery, which shows the same hooded adventurer grown very old, the face hidden in the shadow of the hood. The adventurer's own hand withers and ages where it touches the canvas. Red only: the two eyes of the painted figure."
   },
   {
    "batch": 9,
    "name": "e041_1_r",
    "out": "results/e041_1_r.png",
    "ja": "肖像画の回廊→絵を切り裂く",
-   "prompt": "{HERO} slashes a portrait with a short sword; the canvas splits and the painted face screams. Red only: the gash in the canvas."
+   "prompt": "{HERO} slashes the last portrait in a gallery with a short sword; the portrait shows the same hooded adventurer grown very old, the face hidden in the shadow of the hood, and the canvas splits open as if screaming. Red only: the gash in the canvas."
   },
   {
    "batch": 9,
@@ -2867,7 +2867,7 @@
    "name": "e052_1_r",
    "out": "results/e052_1_r.png",
    "ja": "禁書庫→本を焼き払う",
-   "prompt": "A chained book with a human face burns, screaming, while {HERO} holds a torch to it. Red only: the flames."
+   "prompt": "In a forbidden library, the chained book with a human face has burned down to glowing embers and ash; in front of the crumbled cover lies one bright metal clasp, and {HERO} reaches down toward it, torch in the other hand. Red only: the last embers."
   },
   {
    "batch": 9,
@@ -3525,7 +3525,7 @@
    "name": "e069_1_ok",
    "out": "results/e069_1_ok.png",
    "ja": "脈打つ卵→孵るのを見届ける（成功）",
-   "prompt": "A tiny white dragon hatchling nuzzles {HERO} beside a broken fungal egg, offering a single scale. Red only: the hatchling's eyes."
+   "prompt": "A tiny white dragon hatchling sits beside a broken fungal egg. In the open palm of {HERO} lies a single white scale tied with a small red cord, made into a little charm. Red only: the red cord."
   },
   {
    "batch": 9,
@@ -3665,28 +3665,28 @@
    "name": "e074_0_ok",
    "out": "results/e074_0_ok.png",
    "ja": "血の泉→泉の血を飲む（成功）",
-   "prompt": "{HERO} drinks blood from a fountain with cupped hands; wounds on their arms close. Red only: the blood."
+   "prompt": "{HERO} drinks blood with cupped hands from a round stone basin fountain on a low pedestal in the centre of a great underground hall, with a short central spout welling up dark blood into the basin (no statue, no lion, no carved figure); wounds on their arms close. Red only: the blood."
   },
   {
    "batch": 9,
    "name": "e074_0_ng",
    "out": "results/e074_0_ng.png",
    "ja": "血の泉→泉の血を飲む（失敗）",
-   "prompt": "{HERO} drinks from a blood fountain, eyes hungry. Red only: the blood."
+   "prompt": "{HERO} drinks from a round stone basin fountain on a low pedestal in the centre of a great underground hall, with a short central spout welling up dark blood into the basin (no statue, no lion, no carved figure), eyes hungry. Red only: the blood."
   },
   {
    "batch": 9,
    "name": "e074_1_r",
    "out": "results/e074_1_r.png",
    "ja": "血の泉→傷口を泉に浸す",
-   "prompt": "In a great underground hall, {HERO} kneels at the rim of a stone fountain filled with dark red liquid and dips one forearm into it; thin red threads curl from the arm into the pool, as if the fountain is drinking. Red only: the liquid in the fountain."
+   "prompt": "{HERO} kneels at the rim of a round stone basin fountain on a low pedestal in the centre of a great underground hall, with a short central spout welling up dark blood into the basin (no statue, no lion, no carved figure) and dips one forearm into it; thin red threads curl from the arm into the pool, as if the fountain is drinking. Red only: the blood in the basin."
   },
   {
    "batch": 9,
    "name": "e074_2_r",
    "out": "results/e074_2_r.png",
    "ja": "血の泉→泉に聖水を注ぐ",
-   "prompt": "A fountain once full of blood now runs with clear water after holy water is poured in; {HERO} drinks. Red only: a last drop of blood on the rim."
+   "prompt": "The same round stone basin fountain on a low pedestal in a great underground hall (no statue, no lion) now runs with clear water after holy water is poured in; {HERO} drinks from it. Red only: a last drop of blood on the rim."
   },
   {
    "batch": 9,
@@ -4064,7 +4064,7 @@
    "name": "e082_0_ng",
    "out": "results/e082_0_ng.png",
    "ja": "心臓の間→結晶をえぐり取る（失敗）",
-   "prompt": "A gigantic heart convulses and a flood of dark fluid sweeps {HERO} away. Red only: the glowing crystal."
+   "prompt": "In a chamber of flesh, a gigantic heart convulses. A glowing crystal is still half-embedded in the folds of the heart, and a flood of dark fluid pushes back the outstretched hand of {HERO}, sweeping them away. Red only: the glowing crystal in the heart."
   },
   {
    "batch": 9,
@@ -4127,7 +4127,7 @@
    "name": "e084_0_ok",
    "out": "results/e084_0_ok.png",
    "ja": "堕ちた天使→鎖を断つ（成功）",
-   "prompt": "A freed fallen angel, chains broken, wraps its one remaining wing around {HERO}. Red only: the eye on the rotted half of its face."
+   "prompt": "A freed fallen angel, chains broken, wraps its one remaining wing around {HERO}; its face is split down the middle, one half beautiful, the other half clearly rotted to bare skull. Red only: the eye on the rotted half."
   },
   {
    "batch": 9,
@@ -4148,14 +4148,14 @@
    "name": "e084_1_ng",
    "out": "results/e084_1_ng.png",
    "ja": "堕ちた天使→天使の正体を見極める（失敗）",
-   "prompt": "{HERO} gazes enchanted at the beautiful half of a fallen angel's face while a glowing wisp is drawn from their chest. Red only: the eye on the rotted half of its face."
+   "prompt": "{HERO} gazes enchanted at the beautiful left half of a fallen angel's face while a glowing wisp is drawn from their chest; the right half of the angel's face is clearly rotted to bare skull. Red only: the eye on the rotted half."
   },
   {
    "batch": 9,
    "name": "e084_2_r",
    "out": "results/e084_2_r.png",
    "ja": "堕ちた天使→聖水を捧げる",
-   "prompt": "A fallen angel, rotted half and all, dissolves into light as {HERO} offers holy water. Red only: the eye on the rotted half, fading."
+   "prompt": "A fallen angel whose face is half beautiful and half rotted to bare skull dissolves into light as {HERO} offers holy water. Red only: the eye on the rotted half, fading."
   },
   {
    "batch": 9,
@@ -4470,14 +4470,14 @@
    "name": "e093_0_r",
    "out": "results/e093_0_r.png",
    "ja": "最後の商人→体と引き換えに心を癒す",
-   "prompt": "{PEDDLER} nods contentedly to {HERO} in a black void as a glowing wisp flows from the adventurer's body. Red only: the small flame inside the lantern glass."
+   "prompt": "{PEDDLER} nods contentedly to {HERO} in a black void as a glowing wisp flows from the adventurer's body. The peddler holds the lantern with the red flame; the adventurer's own lantern shows a plain white light. Red only: the small flame inside the peddler's lantern glass."
   },
   {
    "batch": 9,
    "name": "e093_1_r",
    "out": "results/e093_1_r.png",
    "ja": "最後の商人→心と引き換えに体を癒す",
-   "prompt": "{PEDDLER} hands {HERO} a potion in a black void, bowing. Red only: the small flame inside the lantern glass."
+   "prompt": "In a black void, {HERO} hands an empty potion bottle back to {PEDDLER}, standing straight and strong again. The peddler holds the lantern with the red flame; the adventurer's own lantern shows a plain white light. Red only: the small flame inside the peddler's lantern glass."
   },
   {
    "batch": 9,
@@ -4491,7 +4491,7 @@
    "name": "e093_3_r",
    "out": "results/e093_3_r.png",
    "ja": "最後の商人→金貨で全てを少しずつ",
-   "prompt": "{PEDDLER} accepts coins from {HERO} with a shrug in a black void. Red only: the small flame inside the lantern glass."
+   "prompt": "{PEDDLER} accepts coins from {HERO} with a shrug in a black void. The peddler holds the lantern with the red flame; the adventurer's own lantern shows a plain white light. Red only: the small flame inside the peddler's lantern glass."
   },
   {
    "batch": 9,
@@ -4624,7 +4624,7 @@
    "name": "n05_2_r",
    "out": "results/n05_2_r.png",
    "ja": "何度目の挑戦者→亡霊の装備をもらう",
-   "prompt": "The ghost of an old adventurer hands his old gear to {HERO} and begins to fade. Red only: the scarf."
+   "prompt": "The fading ghost of an old adventurer, a red scarf on his shoulders, hands {HERO} a coiled rope with the neck of a corked potion bottle poking out from the centre of the coil. Red only: the ghost's scarf."
   },
   {
    "batch": 9,
@@ -4764,14 +4764,14 @@
    "name": "x04_2_ok",
    "out": "results/x04_2_ok.png",
    "ja": "子守唄の残響→旋律の源を探す（成功）",
-   "prompt": "{HERO} finds a small cradle at the source of a melody in a black void, a single coin left inside as an offering. Red only: the crown crest on the cradle."
+   "prompt": "In a black void, {HERO} finds a small cradle at the source of a melody; by its pillow lies a small open drawstring purse with a few coins peeking out of its mouth. Red only: the crown crest carved on the cradle."
   },
   {
    "batch": 9,
    "name": "x04_2_ng",
    "out": "results/x04_2_ng.png",
    "ja": "子守唄の残響→旋律の源を探す（失敗）",
-   "prompt": "{HERO} searches a black void as ribbons of melody come from every direction. Red only: one ribbon."
+   "prompt": "{HERO} searches a black void; thin pale ribbons of light drift in from every direction, break apart and fade into separate patches of darkness, impossible to follow. No musical notes, no staff lines. Red only: one thin ribbon."
   },
   {
    "batch": 9,
@@ -4813,14 +4813,14 @@
    "name": "x06_0_ok",
    "out": "results/x06_0_ok.png",
    "ja": "鏡の中の踏破者→「願いのために」と答える（成功）",
-   "prompt": "The veteran reflection in a mirror smiles and steps aside, opening a path for {HERO}. Red only: the reflection's eyes."
+   "prompt": "In a maze of mirrors, the reflection in a large mirror is the same hooded adventurer as a battle-worn veteran, the face completely hidden in the black shadow of the hood; it steps aside to open a path for {HERO}. Red only: the reflection's two eyes."
   },
   {
    "batch": 9,
    "name": "x06_0_ng",
    "out": "results/x06_0_ng.png",
    "ja": "鏡の中の踏破者→「願いのために」と答える（失敗）",
-   "prompt": "{HERO} stands silent before a mirror, unable to answer the veteran reflection. Red only: the reflection's eyes."
+   "prompt": "{HERO} stands silent before a large mirror; the reflection is the same hooded adventurer as a battle-worn veteran, the face completely hidden in the black shadow of the hood, waiting for an answer. Red only: the reflection's two eyes."
   },
   {
    "batch": 9,

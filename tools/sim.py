@@ -75,8 +75,8 @@ def visible_choices(e, st, F, meta=None):
     return av[:3]
 
 def gold_ok(c, st, F):
-    r = c.get('r')
-    if r and r.get('g', 0) < 0: return st['gold'] >= sv(-r['g'], F)
+    r = c.get('r') or c.get('ok')
+    if r and r.get('g', 0) < 0: return st['gold'] >= sv(-r['g'], F, r.get('fixed', False) or r.get('gfix', False))
     return True
 
 def apply(r, st, F):
@@ -86,7 +86,7 @@ def apply(r, st, F):
         k = 'm' + s
         if k in r:
             st['max'][s] = max(1, st['max'][s] + r[k]); st['cur'][s] = min(st['max'][s], st['cur'][s] + max(0, r[k]))
-    if 'g' in r: st['gold'] = max(0, st['gold'] + sv(r['g'], F, fx))
+    if 'g' in r: st['gold'] = max(0, st['gold'] + sv(r['g'], F, fx or r.get('gfix', False)))
     for f in r.get('set', []): add_item(st, f)
     for f in r.get('clr', []): remove_item(st, f)
     st['meta_new'] |= set(r.get('meta', []))

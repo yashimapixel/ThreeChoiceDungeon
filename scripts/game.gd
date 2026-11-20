@@ -375,10 +375,11 @@ func visible_choices() -> Array:
 			info["tag"] = "〈" + "・".join(names) + "〉"
 		if c.has("chk"):
 			info["chance"] = chance(c)
-		var r: Dictionary = c.get("r", {})
-		if req_ok and r.get("g", 0) < 0 and gold < sv(-int(r["g"])):
+		var cost := gold_cost(c)
+		info["cost"] = cost
+		if req_ok and cost > 0 and gold < cost:
 			info["enabled"] = false
-			info["tag"] += "金貨%d枚が必要" % sv(-int(r["g"]))
+			info["tag"] += "金貨%d枚が必要" % cost
 		if req_ok:
 			avail.append(info)
 		else:
@@ -389,6 +390,15 @@ func visible_choices() -> Array:
 		out.append(locked[i])
 		i += 1
 	return out
+
+
+## Coins a choice costs on the current floor (0 if it costs nothing). "gfix" keeps the cost unscaled.
+func gold_cost(c: Dictionary) -> int:
+	var r: Dictionary = c.get("r", c.get("ok", {}))
+	var g := int(r.get("g", 0))
+	if g >= 0:
+		return 0
+	return -sv(g, r.get("fixed", false) or r.get("gfix", false))
 
 
 func chance(c: Dictionary) -> float:
@@ -442,7 +452,7 @@ func resolve(c: Dictionary) -> Dictionary:
 			deltas[s] = int(cur[s]) - before
 	res["deltas"] = deltas
 	if r.has("g"):
-		var g := sv(int(r["g"]), fx)
+		var g := sv(int(r["g"]), fx or r.get("gfix", false))
 		gold = maxi(0, gold + g)
 		res["gold"] = g
 	var gained := []
